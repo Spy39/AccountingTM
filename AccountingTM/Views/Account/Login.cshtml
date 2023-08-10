@@ -1,0 +1,42 @@
+﻿@using AccountingTM.ViewModels.Account;
+@using AccountingTM.Views.Shared.Components.Input;
+@model LoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизация</title>
+    <link rel="stylesheet" href="/css/fonts.css" />
+    <link rel="stylesheet" href="/css/Components/input.css" />
+    <link rel="stylesheet" href="/css/Components/button.css"/>
+    <link rel="stylesheet" href="/css/Components/card.css" />
+    <link rel="stylesheet" href="/css/Account/index.css">
+</head>
+<body>
+
+        <div class="card">
+
+            <form asp-action="Login" asp-controller="Account" method="post" class="form login">
+
+            <div class="card__header">
+                <h2 class="card__title">Авторизация</h2>
+            </div>
+            <div class="card__body">
+                @await Component.InvokeAsync("Input", new InputViewModel {Label="Логин", Placeholder="Введите логин", Type="text", AspFor="Login"})
+                @await Component.InvokeAsync("Input", new InputViewModel {Label="Пароль", Placeholder="Введите пароль", Type="password", AspFor="Password", Icon=@"\img\visibility_off.png"})
+            </div>
+            <div class="card__footer">
+                <button class="btn btn-primary" style="width:100%">Войти</button>
+            </div>
+
+            </form>
+
+        </div>
+
+</body>
+</html>

@@ -1,0 +1,88 @@
+﻿.sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 16px 40px;
+    gap: 25px;
+    width: 200px;
+    height: 1007px;
+    left: 17px;
+    top: 30px;
+    /* White */
+    margin-right: 10px;
+    background: #ffffff;
+    /* shadow */
+
+    box-shadow: 0px 4px 20px rgba(170, 169, 184, 0.1);
+    border-radius: 12px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.sidebar li {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+}
+
+.sidebar li + li{
+    margin-top: 10px;
+
+}
+
+.sidebar a {
+    padding: 16px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    border-radius: 6px;
+    transition: all linear 200ms;
+    cursor: pointer;
+}
+.sidebar a:hover {
+    background: #E5F3FF;
+}
+.sidebar .active {
+    background: #E5F3FF;
+}
+
+.sidebar .item {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    /* Grey/700 */
+    margin-left: 10px;
+    color: #586A84;
+}
+
+.sidebar .profile{
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .profile img{
+    width: 40px;
+    height 40px;
+    margin-right: 6px;
+}
+
+.sidebar .profile h3 {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    color: #000000;
+}

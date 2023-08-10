@@ -1,0 +1,7 @@
+﻿footer {
+    color: rgba(88, 106, 132, 1);
+    display: flex;
+    justify-content: end;
+    margin-top: 20px;
+    width: 100%;
+}

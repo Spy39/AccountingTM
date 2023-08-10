@@ -1,0 +1,45 @@
+﻿.btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 12px;
+    height: 48px;
+    /* Primary/600 */
+
+    border-radius: 6px;
+    /* Inside auto layout */
+
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all linear 200ms;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+    /* identical to box height */
+    /* White */
+
+    /* Inside auto layout */
+
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+}
+
+.btn-primary {
+    background: #319DFF;
+    color: white;
+    border-color: #319DFF;
+}
+
+    .btn-primary:hover {
+        background: transparent;
+        color: #319DFF;
+        border-color: #319DFF;
+    }

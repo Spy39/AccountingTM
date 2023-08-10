@@ -1,0 +1,55 @@
+﻿@using AccountingTM.ViewModels.Account;
+@using AccountingTM.Views.Shared.Components.Input;
+@model LoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="/css/Account/Index.css">
+    <link rel="stylesheet" href="/css/Components/Input.css" />
+    <link rel="stylesheet" href="/css/Components/Button.css" />
+    <link rel="stylesheet" href="/css/Components/Card.css" />
+</head>
+<body>
+    <!-- partial:index.partial.html -->
+    <body class="align">
+
+        <div class="card">
+
+            <form asp-action="Login" asp-controller="Account" method="post" class="form login">
+
+                <div class="card">
+                    <div class="card__header">
+                        <div class="card__title">
+                            <h2 class="register__title">Регистрация</h2>
+                        </div>
+                    </div>
+                    <div class="card__body">
+                        <div class="login__body">
+
+                            @await Component.InvokeAsync("Input", new InputViewModel {Label="Логин", Placeholder="Введите логин", Type="text", AspFor="Login"})
+                            @await Component.InvokeAsync("Input", new InputViewModel {Label="Пароль", Placeholder="Введите надежный пароль...", Type="password", AspFor="Password", Icon=@"\img\visibility_off.png"})
+                            @await Component.InvokeAsync("Input", new InputViewModel {Label="Пароль", Placeholder="Введите пароль еще раз...", Type="password", AspFor="Password", Icon=@"\img\visibility_off.png"})
+
+                        </div>
+                    </div>
+                    <div class="card__footer">
+                        <button class="btn btn-primary" style="width:100%">Зарегестрироваться</button>
+                    </div>
+                </div>
+
+
+            </form>
+
+        </div>
+
+    </body>
+
+</body>
+</html>

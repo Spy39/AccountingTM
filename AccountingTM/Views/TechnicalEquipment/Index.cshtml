@@ -1,0 +1,168 @@
+﻿@using Accounting.Models;
+@model IEnumerable<TechnicalEquipment>
+
+@{
+    ViewData["Title"] = "TechnicalEquipment";
+	Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+<link rel="stylesheet" href="/css/Components/table.css" />
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#create">Добавить</button>
+<table class ="table">
+	<thead>
+	<tr>
+		<th>Номер</th>
+		<th>Наименование</th>
+		<th>Модель</th>
+		<th>Серийный номер</th>
+		<th>Статус</th>
+		<th>Ответственный</th>
+		<th>Местоположение</th>
+		<th>Место для кнопок</th>
+	</tr>
+	</thead>
+	@{
+		int number = 1;
+		foreach(var technicalEquipment in Model)
+	{
+	<tbody>
+	<tr>
+		<td>@number</td>
+		<td>@technicalEquipment.Name</td>
+		<td>@technicalEquipment.Model</td>
+		<td>@technicalEquipment.SerialNumber</td>
+		<td>@technicalEquipment.Status</td>
+		<td>@technicalEquipment.Responsible</td>
+		<td>@technicalEquipment.Location</td>
+		<th>
+		<a class="btn btn-primary" style="width:50%" asp-action="Delete" asp-controller="TechnicalEquipment" asp-route-id="@technicalEquipment.Id">
+		Удалить
+		</a>
+		</th>
+	</tr>
+			</tbody>
+			number++;
+		}
+	}
+</table>
+<style>
+	.modal {
+		font-size: 30px;
+		position: relative;
+	}
+
+		.modal input {
+		border: none;
+		-webkit-appearance: none;
+		-ms-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+		background: #f2f2f2;
+		padding: 12px;
+		border-radius: 3px;
+		width: 400px;
+		font-size: 14px;
+	}
+
+		.modal select {
+			border: none;
+			-webkit-appearance: none;
+			-ms-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			background: #f2f2f2;
+			padding: 12px;
+			border-radius: 3px;
+			width: 400px;
+			font-size: 14px;
+		}
+
+		.modal .placeholder {
+		position: absolute;
+		left: 12px;
+		bottom: 50%;
+		top: 22px;
+		transform: translateY(-50%);
+		width: calc(100% - 24px);
+		color: #aaa;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+	}
+</style>
+<div class="modal" tabindex="-1" id="create">
+	<div class="modal-dialog">
+		<form method="post" asp-controller="TechnicalEquipment" asp-action="Create">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Добавление технического средства</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-75">
+							<input type="text"
+								   id="name"
+								   name="name"
+								   placeholder="Введите наименование ТС" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-75">
+							<input type="text"
+								   id="model"
+								   name="model"
+								   placeholder="Введите модель ТС" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-75">
+							<input type="text"
+								   id="serial_number"
+								   name="serialNumber"
+								   placeholder="Введите серийный номер" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-75">
+							<select name="status" >
+								<option value="0">
+									В ремонте
+								</option>
+								<option value="1">
+									Исправно
+								</option>
+								<option value="2">
+									Неисправно
+								</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-75">
+							<input type="text"
+								   id="responsible"
+								   name="responsible"
+								   placeholder="Введите ФИО ответственного" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-75">
+							<input type="text"
+								   id="location"
+								   name="location"
+								   placeholder="Введите местоположение ТС" />
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+					<button type="submit" class="btn btn-primary">Добавить</button>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</div>
+<button class="btn btn-primary" data-bs-toggle="modal" asp-action="Logout" asp-controller="Account">
+	Выйти
+</button>

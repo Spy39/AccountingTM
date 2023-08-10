@@ -1,0 +1,25 @@
+﻿*,
+*::before,
+*::after {
+    -webkit-box-sizing: inherit;
+    box-sizing: border-box;
+}
+*{
+    font-family: Roboto;
+}
+html{
+    min-height: 100vh;
+}
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #eef0f4;
+}
+.card{
+    width: 480px;
+}
+input{
+    border: none;
+}

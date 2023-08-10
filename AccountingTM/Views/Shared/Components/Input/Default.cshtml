@@ -1,0 +1,23 @@
+﻿@using AccountingTM.Views.Shared.Components.Input;
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model InputViewModel 
+
+@section Styles{
+@*	//<link rel="stylesheet" href="/css/Components/Input/Default.css" />*@
+}
+
+<div class="input">
+	<label for="label1" class="input__label">@Model.Label</label>
+	<div class="input__content">
+		<input type="@Model.Type" placeholder="@Model.Placeholder" name="@Model.AspFor" />
+		@if (!string.IsNullOrEmpty(Model.Icon))
+		{
+			<img class="input__img" src="@Model.Icon" />
+		}
+		
+	</div>
+</div>
