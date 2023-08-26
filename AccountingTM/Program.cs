@@ -11,7 +11,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddDbContext<DataContext>();
+var connectionString = builder.Configuration.GetConnectionString("Default");
+builder.Services.AddDbContext<DataContext>(x => x.UseNpgsql(connectionString));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = new PathString());
 
 var app = builder.Build();

@@ -24,7 +24,7 @@ namespace Accounting.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=SPY-PC\\SQLEXPRESS;Database=tmdb;Trusted_Connection=True;");
+            optionsBuilder.UseUseNpgsql("User ID=postgres;Password=123qwe;Host=localhost;Port=5435;Database=accountingtm;Pooling=true;");
         }
     }
 }
