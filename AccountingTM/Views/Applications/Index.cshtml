@@ -1,0 +1,141 @@
+﻿@* @using AccountingTM.ViewModels.Application
+@model ApplicationViewModel
+ *@
+@{
+    ViewData["Title"] = "Applications";
+    Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+
+@section Scripts{
+	<script src="~/views/applications/index.js"></script>
+}
+
+@section LeftNavbar {
+	<ol class="breadcrumb float-sm-right m-0 bg-white">
+		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item active">Applications</li>
+	</ol>
+}
+<section class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1>Заявки</h1>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+	<div class="row">
+		<div class="col-9">
+			<!-- SEARCH FORM -->
+			<form class="form-inline">
+				<div class="input-group input-group-sm">
+					@*<input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">*@
+					<input type="search" class="form-control form-control-sm" placeholder="Поиск" aria-controls="example1">
+					<div class="input-group-append">
+						<button class="btn btn-navbar" type="submit">
+							<i class="fas fa-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="col-3">
+			<div class="float-sm-right">
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#ApplicationModal">Новая заявка</button>
+				<button class="btn btn-default" type="button">Фильтр</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<table id="applicationsTable" class="table table-striped table-hover" style="width:100%">
+    <thead>
+        <tr>
+            <th>Номер заявки</th>
+            <th>Дата создания</th>
+            <th>Дата изменения</th>
+            <th>Категория</th>
+			<th>Тема</th>
+			<th>Статус</th>
+			<th>Автор</th>
+			<th>Помещение</th>
+			<th>Приоритет</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="ApplicationModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+	<div class="modal-dialog modal-xl">
+		<form method="post" asp-controller="Applications" asp-action="Create">
+
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Создание новой заявки</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body mb-3">
+					<div class="dropdown">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+							Категория заявки
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							<li><a class="dropdown-item" href="#">1</a></li>
+							<li><a class="dropdown-item" href="#">2</a></li>
+							<li><a class="dropdown-item" href="#">3</a></li>
+						</ul>
+					</div>
+
+					<div class="mb-3">
+						<label for="exampleFormControlInput1" class="form-label">Тема</label>
+						<input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Тема заявки...">
+					</div>
+					<div class="mb-3">
+						<label for="exampleFormControlTextarea1" class="form-label">Описание неисправности</label>
+						<textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+					</div>
+					<div class="mb-3">
+						<label for="exampleFormControlInput1" class="form-label">Автор</label>
+						<input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Иванов И.П.">
+					</div>
+					<div class="dropdown mb-3">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+							Помещение
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							<li><a class="dropdown-item" href="#">201 кабинет</a></li>
+							<li><a class="dropdown-item" href="#">205 кабинет</a></li>
+							<li><a class="dropdown-item" href="#">314 кабинет</a></li>
+						</ul>
+					</div>
+					<div class="dropdown ">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+							Приоритет
+						</button>
+						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+							<li><a class="dropdown-item" href="#">Критический</a></li>
+							<li><a class="dropdown-item" href="#">Высокий</a></li>
+							<li><a class="dropdown-item" href="#">Нормальный</a></li>
+							<li><a class="dropdown-item" href="#">Низкий</a></li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+					<button type="submit" class="btn btn-primary">Добавить</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

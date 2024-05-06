@@ -1,6 +1,11 @@
 ﻿using Accounting.Data;
 using Accounting.Models;
+using AccountingTM.Dto.Common;
+using AccountingTM.Dto.TechnicalEquipment;
+using AccountingTM.Exceptions;
+using AccountingTM.ViewModels.TechnicalEquipment;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace Accounting.Controllers
 {
@@ -13,6 +18,22 @@ namespace Accounting.Controllers
             _context = context;
         }
 
+        [HttpGet("[controller]/[action]")]
+        public IActionResult GetAll([FromQuery] GetAllTechnicalDto input)
+        {
+            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment;
+            if (!string.IsNullOrWhiteSpace(input.SearchQuery))
+            {
+                var keyword = input.SearchQuery.ToLower();
+                //query = query.Where(x => x.Name.ToLower().Contains(keyword) || x.Model.ToLower().Contains(keyword) ||
+                //    x.SerialNumber.ToLower().Contains(keyword));
+            }
+            var clients = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
+            return Ok(new PagedResultDto<TechnicalEquipment>(query.Count(), clients));
+        }
+
+
         [HttpGet]
         public IActionResult Index()
         {
@@ -20,39 +41,59 @@ namespace Accounting.Controllers
             return View(technicalEquipments);
         }
 
+
         [HttpPost]
-        public IActionResult Create(TechnicalEquipment input)
+        public IActionResult Create([FromBody] TechnicalEquipment input)
         {
-            var technicalEquipment = _context.TechnicalEquipment.FirstOrDefault(x => x.Name == input.Name);
-            if (technicalEquipment != null)
+            if(!string.IsNullOrWhiteSpace(input.InventoryNumber))
             {
-                return BadRequest();
-            }
+				if (_context.TechnicalEquipment.Any(x => x.InventoryNumber == input.InventoryNumber))
+				{
+                    throw new UserFriendlyException("Техническое средство с таким инвентарным номером уже существует!");
+				}
+			}
             _context.TechnicalEquipment.Add(input);
             _context.SaveChanges();
-			return RedirectToAction("Index");
+            return RedirectToAction("Index");
 		}
 
-        [HttpGet]
+        [HttpDelete]
         public IActionResult Delete(int id)
         {
-            var technicalEquipment = _context.TechnicalEquipment.Find(id);
+            var entity = _context.TechnicalEquipment.Find(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
 
-            _context.TechnicalEquipment.Remove(technicalEquipment);
+            _context.TechnicalEquipment.Remove(entity);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return Ok();
         }
 
+        [Route("[controller]/{id:int}")]
         [HttpGet]
-        public IActionResult Find()
+        public IActionResult Info(int id)
         {
-            return Ok("Ok");
+            TechnicalEquipment technicalEquipment = _context.TechnicalEquipment.Find(id);
+            var model = new InfoViewModel
+            {
+                TechnicalId = id,
+                //SerialNumber = technicalEquipment.SerialNumber,
+                //InventoryNumber = technicalEquipment.InventoryNumber,
+                //EmployeeFio = technicalEquipment.Employee,
+                //LocationName = technicalEquipment.Location,
+                //Date = technicalEquipment.Date,
+                //DateStart = technicalEquipment.DateStart,
+                //DateEnd = technicalEquipment.DateEnd,
+                //DateGarant = technicalEquipment.DateGarant
+            };
+            return View(model);
         }
 
-        [HttpPatch]
-        public IActionResult Update()
-        {
-            return Ok("Ok");
-        }
-    }
+        public IActionResult Set()
+		{
+			return View();
+		}
+	}
 }

@@ -1,4 +1,6 @@
-﻿using AccountingTM.Domain.Models;
+﻿using AccountingTM.Domain;
+using AccountingTM.Domain.Models;
+using AccountingTM.Domain.Models.Directory;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Accounting.Models
@@ -15,12 +17,12 @@ namespace Accounting.Models
         public int ConveyedId { get; set; }
 
         [ForeignKey("ConveyedId")]
-        public Staff Conveyed { get; set; }
+        public Employee Conveyed { get; set; }
         
         public int NewRespId { get; set; }
 
         [ForeignKey("NewRespId")]
-        public Staff NewResp { get; set; }
+        public Employee NewResp { get; set; }
 
         public int TechnicalEquipmentId { get; set; }
         

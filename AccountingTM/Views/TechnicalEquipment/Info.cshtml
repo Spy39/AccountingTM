@@ -1,0 +1,361 @@
+﻿@using AccountingTM.ViewModels.TechnicalEquipment
+@model InfoViewModel
+
+@{
+    ViewData["Title"] = "TechnicalEquipment";
+    Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+
+@section Scripts{
+    <script src="~/views/technicalEquipment/index.js"></script>
+}
+
+@section LeftNavbar {
+	<ol class="breadcrumb float-sm-right m-0 bg-white">
+		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item"><a href="#">TechnicalEquipment</a></li>
+		<li class="breadcrumb-item active">Info</li>
+	</ol>
+}
+<section class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1>Инфо о ТС</h1>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+	<div class="row">
+		<div class="col-1">
+			<button class="btn btn-default" type="button">Назад</button>
+		</div>
+		<div class="col-3">
+			<div class="row">
+				Название
+			</div>
+			<div class="row">
+				<div class="col-6">
+					Дата
+				</div>
+				<div class="col-6">
+					Исправно
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+		</div>
+		<div class="col-2">
+			<div class="row">
+				Номер
+			</div>
+			<div class="row">
+				Изменено
+			</div>
+		</div>
+
+		<div class="col-2">
+			<div class="float-sm-right">
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+					<i class="fa-solid fa-plus"></i>
+				</button>
+				<button type="button" class="btn btn-default">
+					<i class="fa-solid fa-download"></i>
+				</button>
+				<button type="button" class="btn btn-default">
+					<i class="fa-solid fa-print"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="container col-12">
+	<div class="row">
+		<div class="col-3 p-3">
+			<div class="row btn-light">
+				<h4>Основная информация</h4>
+				<img src="~/img/technical-support.png" class="img-fluid" alt="...">
+			</div>
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="@(Model.SerialNumber ?? string.Empty)" readonly>
+				<label for="floatingInputValue">Серийный номер</label>
+			</form>
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="@Model.InventoryNumber" readonly>
+				<label for="floatingInputValue">Инвентарный номер</label>
+			</form>
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="@Model.EmployeeFio" readonly>
+				<label for="floatingInputValue">Ответственный</label>
+			</form>
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="@Model.LocationName" readonly>
+				<label for="floatingInputValue">Местоположение</label>
+			</form>
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="@Model.Date.ToString("dd.MM.yyyy")" readonly>
+				<label for="floatingInputValue">Дата изготовления</label>
+			</form>
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="@Model.DateStart.ToString("dd.MM.yyyy")" readonly>
+				<label for="floatingInputValue">Ввод в эксплуатацию</label>
+			</form>
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="@(Model.DateEnd?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
+				<label for="floatingInputValue">Средний срок работы</label>
+			</form>
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="@(Model.DateGarant?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
+				<label for="floatingInputValue">Гарантийный срок работы</label>
+			</form>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
+				<button class="btn btn-default" type="button">Изменить</button>
+			</div>
+
+				<div class="row">
+					<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+						<div class="row">
+							<div class="col-9">
+								<h5>Характеристики</h5>
+							</div>
+							<div class="col-3">
+								<div class="float-sm-right">
+									<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+										<i class="fa-solid fa-plus"></i>
+									</button>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+								<thead class="table">
+									<tr>
+										<td>Показатель</td>
+										<td>Ед. измерения</td>
+										<td>Значение</td>
+										<td></td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				</div>
+
+
+
+
+
+		<div class="col-9 p-3">
+
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-9">
+							<h5>Учёт выполненных работ</h5>
+						</div>
+						<div class="col-3">
+							<div class="float-sm-right">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+									<i class="fa-solid fa-plus"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+							<thead class="table">
+								<tr>
+									<td>Дата</td>
+									<td>Номер заявки</td>
+									<td>Наименование работ и их причина</td>
+									<td>Фамилия выполнившего работу</td>
+									<td>Примечание</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+				<div class="row">
+					<div class="col-9">
+						<h5>Прием и передача изделия</h5>
+					</div>
+					<div class="col-3">
+						<div class="float-sm-right">
+							<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+								<i class="fa-solid fa-plus"></i>
+							</button>
+						</div>
+					</div>
+				</div>
+					<div class="row">
+						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+							<thead class="table">
+                                <tr>
+                                    <td>Дата</td>
+                                    <td>Состояние изделия</td>
+                                    <td>Основание (наименование, номер и дата документа)</td>
+                                    <td>Предприятие и ФИО сдавшего</td>
+                                    <td>Предприятие и ФИО принявшего</td>
+                                    <td>Примечание</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-9">
+							<h5>Ремонт</h5>
+						</div>
+						<div class="col-3">
+							<div class="float-sm-right">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+									<i class="fa-solid fa-plus"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+							<thead class="table">
+								<tr>
+									<td>Дата</td>
+									<td>Предприятие</td>
+									<td>Наработка с начала эксплуатации</td>
+									<td>Наработка после последнего ремонта</td>
+									<td>Причина послупления в ремонт</td>
+									<td>Сведения о производственном ремонте</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-9">
+							<h5>Хранение</h5>
+						</div>
+						<div class="col-3">
+							<div class="float-sm-right">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+									<i class="fa-solid fa-plus"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+							<thead class="table">
+								<tr>
+									<td colspan="2">Дата</td>
+									<td rowspan="2">Условия хранения</td>
+									<td rowspan="2">Вид хранения</td>
+									<td rowspan="2">Примечание</td>
+								</tr>
+								<tr>
+									<td>приемки на хранение</td>
+									<td>снятия с хранения</td>
+								</tr>
+							</thead>
+
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-9">
+							<h5>Консервация</h5>
+						</div>
+						<div class="col-3">
+							<div class="float-sm-right">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+									<i class="fa-solid fa-plus"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+							<thead class="table">
+								<tr>
+									<td>Дата</td>
+									<td>Наименование работ</td>
+									<td>Срок действия</td>
+									<td>Должность</td>
+									<td>Фамилия и инициалы</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-9">
+							<h5>Сведения об утилизации</h5>
+						</div>
+						<div class="col-3">
+							<div class="float-sm-right">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+									<i class="fa-solid fa-plus"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+							<thead class="table">
+								<tr>
+									<td>Дата</td>
+									<td>Описание</td>
+									<td>Примечание</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>

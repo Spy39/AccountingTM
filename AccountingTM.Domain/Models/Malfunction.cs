@@ -1,4 +1,4 @@
-﻿using AccountingTM.Domain.Models;
+﻿using AccountingTM.Domain;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Accounting.Models

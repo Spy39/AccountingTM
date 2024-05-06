@@ -1,4 +1,4 @@
-﻿<link rel="stylesheet" href="/css/Components/menu_left_side.css"/>
+﻿@* <link rel="stylesheet" href="/css/Components/menu_left_side.css"/>
 
 	<div class="sidebar">
 		<!--profile image & text-->
@@ -9,38 +9,25 @@
 		</div>
 		<ul>
 			<li>
-				<a href="#" class="active">
-					<span class="icon"
-						><img src="/img/auto_stories.png"/></span>
-					<span class="item">Учет ТС</span>
-				</a>
+				<span class="icon"><img src="/img/auto_stories.png"/></span>
+				<a class="nav-link" asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Учет ТС</a>
 			</li>
 			<li>
-				<a href="#">
-					<span class="icon"
-						><img src="/img/edit.png"/></span>
-					<span class="item">Заявки</span>
-				</a>
+			<span class="icon"><img src="/img/edit.png" /></span>
+				<a class="nav-link" asp-area="" asp-controller="Applications" asp-action="Index">Заявки</a>
 			</li>
 			<li>
-				<a href="#">
-					<span class="icon"
-						><img src="/img/account_circle.png"/></span>
-					<span class="item">Учетные записи</span>
-				</a>
+			<span class="icon"><img src="/img/account_circle.png" /></span>
+				<a class="nav-link" asp-area="" asp-controller="Statistics" asp-action="Index">Статистика</a>
 			</li>
 			<li>
-				<a href="#">
-					<span class="icon"
-						><img src="/img/group.png"/></span>
-					<span class="item">Сотрудники</span>
-				</a>
+			<span class="icon"><img src="/img/group.png" /></span>
+				<a class="nav-link" asp-area="" asp-controller="Directory" asp-action="Index">Справочники</a>
 			</li>
 			<li>
-				<a href="#">
-						<img src="/img/delete.png"/>
-					<span class="item">Корзина</span>
-				</a>
+			<span class="icon"><img src="/img/account_circle.png" /></span>
+				<a class="nav-link" asp-area="" asp-controller="Administration" asp-action="Index">Администрирование</a>
 			</li>
 		</ul>
 </div>
+ *@

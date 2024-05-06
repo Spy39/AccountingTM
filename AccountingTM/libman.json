@@ -1,0 +1,60 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "air-datepicker@2.2.3",
+      "destination": "wwwroot/lib/air-datepicker/"
+    },
+    {
+      "library": "bootstrap@5.3.2",
+      "destination": "wwwroot/lib/bootstrap/"
+    },
+    {
+      "library": "toastr.js@2.1.4",
+      "destination": "wwwroot/lib/toastr.js/"
+    },
+    {
+      "library": "axios@1.5.1",
+      "destination": "wwwroot/lib/axios/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "datatables.net-bs5@1.13.6",
+      "destination": "wwwroot/lib/datatables.net-bs5/"
+    },
+    {
+      "library": "jquery@3.7.0",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "datatables.net@1.13.6",
+      "destination": "wwwroot/lib/datatables.net/"
+    },
+    {
+      "library": "moment.js@2.29.4",
+      "destination": "wwwroot/lib/moment.js/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "admin-lte@3.1.0",
+      "destination": "wwwroot/lib/admin-lte/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "Chart.js@4.4.1",
+      "destination": "wwwroot/lib/Chart.js/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "sweetalert2@11.1.9",
+      "destination": "wwwroot/lib/sweetalert2/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "select2@4.0.13",
+      "destination": "wwwroot/lib/select2/"
+    }
+  ]
+}

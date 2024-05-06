@@ -1,4 +1,5 @@
-﻿using AccountingTM.Domain.Models;
+﻿using AccountingTM.Domain;
+using Microsoft.EntityFrameworkCore;
 
 namespace Accounting.Models
 {
@@ -16,5 +17,7 @@ namespace Accounting.Models
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string FatherName { get; set; }
+        public string Role { get; set; }
+        public string Name { get; set; }
     }
 }

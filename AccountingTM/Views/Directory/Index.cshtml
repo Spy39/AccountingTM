@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Directory";
+    Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+
+@section LeftNavbar {
+	<ol class="breadcrumb float-sm-right m-0 bg-white">
+		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item active">Directory</li>
+	</ol>
+}
+
+<section class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1>Справочники</h1>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+	<div class="row">
+		<div class="col-6">
+			<!-- SEARCH FORM -->
+			<form class="form-inline">
+				<div class="input-group input-group-sm">
+					@*<input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">*@
+					<input type="search" class="form-control form-control-sm" placeholder="Поиск" aria-controls="example1">
+					<div class="input-group-append">
+						<button class="btn btn-navbar" type="submit">
+							<i class="fas fa-search"></i>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="col-6">
+			<div class="float-sm-right">
+
+				<button type="button" class="btn btn-default">
+					<i class="fa-solid fa-download"></i>
+				</button>
+				<button type="button" class="btn btn-default">
+					<i class="fa-solid fa-print"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-3">
+			<nav class="sidebar-sticky shadow-sm bg-body-tertiary rounded navbar-expand-md" id="nav-page">
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto flex-column">
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-url="Directory/TypeEquipment">
+								<p>
+									Тип технического средства
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-url="Directory/Brand">
+								<p>
+									Бренд технического средства
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-url="Directory/Location">
+								<p>
+									Местоположение
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-url="Directory/Employee">
+								<p>
+									Сотрудник
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-url="Directory/Indicators">
+								<p>
+									Показатель
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-url="Directory/Units">
+								<p>
+									Единица измерения
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-url="Directory/Category">
+								<p>
+									Категория заявки
+								</p>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		
+		<div class="col-9" id="page-content">
+			@await Html.PartialAsync("_TypeEquipment.cshtml")
+		</div>
+	</div>
+</div>
+
+@section Scripts {
+	<script src="~/views/directory/index.js"></script>
+}

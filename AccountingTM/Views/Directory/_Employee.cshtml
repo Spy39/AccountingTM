@@ -1,0 +1,83 @@
+﻿	<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+		<div class="row">
+			<div class="col-9">
+				<h5>Сотрудники (ответственные)</h5>
+			</div>
+			<div class="col-3">
+				<div class="float-sm-right">
+					<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createEmployee" type="submit">
+						<i class="fa-solid fa-plus"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+				<thead class="table">
+					<tr>
+						<td>Фамилия</td>
+						<td>Имя</td>
+						<td>Отчество</td>
+						<td>Должность</td>
+						<td></td>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+<div class="modal fade" tabindex="-1" id="createEmployee">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Добавление сотрудника</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="form-floating  mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="location"
+						   name="location"
+						   placeholder="Фамилия" />
+					<label for="floatingInput">Фамилия</label>
+				</div>
+
+				<div class="form-floating  mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="location"
+						   name="location"
+						   placeholder="Имя" />
+					<label for="floatingInput">Имя</label>
+				</div>
+
+				<div class="form-floating  mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="location"
+						   name="location"
+						   placeholder="Отчество" />
+					<label for="floatingInput">Отчество</label>
+				</div>
+
+				<div class="form-floating  mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="location"
+						   name="location"
+						   placeholder="Должность" />
+					<label for="floatingInput">Должность</label>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="create-btn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -8,6 +8,6 @@ namespace AccountingTM.ViewModels.Account
         public string Login { get; set; }
         public string Password { get; set; }
         public string RepeatPassword { get; set; }
-        public Role Role { get; set; }
+        public string Role { get; set; }
     }
 }
