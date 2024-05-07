@@ -21,7 +21,7 @@ namespace Accounting.Data
         public DbSet<Brand> Brands { get; set; }
 		public DbSet<Category> Categories { get; set; }
 		public DbSet<Employee> Employees { get; set; }
-		public DbSet<Indicators> Indicators { get; set; }
+		public DbSet<Indicator> Indicators { get; set; }
 		public DbSet<Location> Locations { get; set; }
 		public DbSet<TypeEquipment> TypeEquipments { get; set; }
 		public DbSet<Unit> Units { get; set; }
@@ -33,7 +33,7 @@ namespace Accounting.Data
 		public DbSet<Repair> Repairs { get; set; }
 		public DbSet<Storage> Storages { get; set; }
 		//Основные таблицы
-		public DbSet<Applications> Applications { get; set; }
+		public DbSet<Application> Applications { get; set; }
 		public DbSet<Characteristics> Characteristics { get; set; }
 		public DbSet<DocumentType> DocumentType { get; set; }
         public DbSet<Malfunction> Malfunction { get; set; }

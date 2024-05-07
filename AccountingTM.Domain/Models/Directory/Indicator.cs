@@ -9,7 +9,7 @@ namespace AccountingTM.Domain.Models.Directory
 	/// <summary>
 	/// Показатели
 	/// </summary>
-	public class Indicators : Entity
+	public class Indicator : Entity
 	{
 		public string Name { get; set; }
 	}

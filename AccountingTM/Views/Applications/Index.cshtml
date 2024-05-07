@@ -6,9 +6,6 @@
     Layout = "~/Views/Shared/Layout/_Layout.cshtml";
 }
 
-@section Scripts{
-	<script src="~/views/applications/index.js"></script>
-}
 
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
@@ -77,23 +74,15 @@
 
 <div class="modal fade" id="ApplicationModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
 	<div class="modal-dialog modal-xl">
-		<form method="post" asp-controller="Applications" asp-action="Create">
-
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">Создание новой заявки</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body mb-3">
-					<div class="dropdown">
-						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-							Категория заявки
-						</button>
-						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-							<li><a class="dropdown-item" href="#">1</a></li>
-							<li><a class="dropdown-item" href="#">2</a></li>
-							<li><a class="dropdown-item" href="#">3</a></li>
-						</ul>
+					<div class="form-floating  mb-2">
+						<select id="category"></select>
+						<label for="floatingInput">Категория</label>
 					</div>
 
 					<div class="mb-3">
@@ -108,15 +97,9 @@
 						<label for="exampleFormControlInput1" class="form-label">Автор</label>
 						<input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Иванов И.П.">
 					</div>
-					<div class="dropdown mb-3">
-						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-							Помещение
-						</button>
-						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-							<li><a class="dropdown-item" href="#">201 кабинет</a></li>
-							<li><a class="dropdown-item" href="#">205 кабинет</a></li>
-							<li><a class="dropdown-item" href="#">314 кабинет</a></li>
-						</ul>
+					<div class="form-floating  mb-2">
+						<select id="location"></select>
+						<label for="floatingInput">Местоположение</label>
 					</div>
 					<div class="dropdown ">
 						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
@@ -136,6 +119,9 @@
 					<button type="submit" class="btn btn-primary">Добавить</button>
 				</div>
 			</div>
-		</form>
 	</div>
 </div>
+
+@section Scripts {
+	<script src="~/views/applications/index.js"></script>
+}

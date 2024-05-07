@@ -144,4 +144,66 @@
     $("#search-btn").click(function () {
         tableClients.ajax.reload()
     })
+
+    $("#category").select2({
+        width: '100%',
+        allowClear: true,
+        placeholder: 'Категория',
+        ajax: {
+            transport: (data, success, failure) => {
+                let params = data.data;
+                let maxResultCount = 30;
+
+                params.page = params.page || 1;
+
+                let filter = {};
+                filter.maxResultCount = maxResultCount;
+                filter.skipCount = (params.page - 1) * maxResultCount;
+                filter.keyword = params.term
+                axios.get("Category/GetAll", { params: filter }).then(function (result) {
+
+                    success({
+                        results: result.data.items,
+                        pagination: {
+                            more: (params.page * maxResultCount) < result.data.totalCount
+                        }
+                    });
+                });
+            },
+            cache: true
+        },
+        templateResult: (data) => data.name,
+        templateSelection: (data) => data.name
+    })
+
+    $("#location").select2({
+        width: '100%',
+        allowClear: true,
+        placeholder: 'Помещение',
+        ajax: {
+            transport: (data, success, failure) => {
+                let params = data.data;
+                let maxResultCount = 30;
+
+                params.page = params.page || 1;
+
+                let filter = {};
+                filter.maxResultCount = maxResultCount;
+                filter.skipCount = (params.page - 1) * maxResultCount;
+                filter.keyword = params.term
+                axios.get("Location/GetAll", { params: filter }).then(function (result) {
+
+                    success({
+                        results: result.data.items,
+                        pagination: {
+                            more: (params.page * maxResultCount) < result.data.totalCount
+                        }
+                    });
+                });
+            },
+            cache: true
+        },
+        templateResult: (data) => data.name,
+        templateSelection: (data) => data.name
+    })
 })

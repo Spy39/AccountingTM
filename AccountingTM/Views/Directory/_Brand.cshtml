@@ -1,31 +1,42 @@
-﻿
-	<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-		<div class="row">
-			<div class="col-9">
-				<h5>Бренд технического средства</h5>
-			</div>
-			<div class="col-3">
-				<div class="float-sm-right">
+﻿@using AccountingTM.ViewModels.Directory;
+@model BrandViewModel[]
 
-					<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createBrand" type="submit">
-						<i class="fa-solid fa-plus"></i>
-					</button>
-				</div>
-			</div>
+
+<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+	<div class="row">
+		<div class="col-9">
+			<h5>Бренд технического средства</h5>
 		</div>
-		<div class="row">
-			<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
-				<thead class="table">
-					<tr>
-						<td>Наименование</td>
-						<td></td>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
+		<div class="col-3">
+			<div class="float-sm-right">
+
+				<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createBrand" type="submit">
+					<i class="fa-solid fa-plus"></i>
+				</button>
+			</div>
 		</div>
 	</div>
+	<div class="row">
+		<table id="brands" class="table table-bordered align-middle table-hover" style="width:100%">
+			<thead class="table">
+				<tr>
+					<td>Наименование</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+						<td rowspan="2"><button class="btn btn-danger deleteRecipe" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button></td>
+                    </tr>
+                }
+
+			</tbody>
+		</table>
+	</div>
+</div>
 
 
 <div class="modal fade" tabindex="-1" id="createBrand">

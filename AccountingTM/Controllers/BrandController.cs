@@ -4,6 +4,7 @@ using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers
 {
@@ -30,6 +31,12 @@ namespace AccountingTM.Controllers
 			return Ok(new PagedResultDto<Brand>(query.Count(), entities));
 		}
 
+		public async Task<IActionResult> Index()
+		{
+			return View(await _context.Brands.ToListAsync());
+		}
+
+
 		[HttpPost]
 		public IActionResult Create([FromBody] Brand input)
 		{
@@ -41,6 +48,19 @@ namespace AccountingTM.Controllers
 				}
 			}
 			_context.Brands.Add(input);
+			_context.SaveChanges();
+			return Ok();
+		}
+
+		[HttpGet]
+		public IActionResult Delete(int id)
+		{
+			Brand list = _context.Brands.Find(id);
+			if (list == null)
+			{
+				return NotFound();
+			}
+			_context.Brands.Remove(list);
 			_context.SaveChanges();
 			return Ok();
 		}

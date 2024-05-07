@@ -13,11 +13,11 @@ namespace AccountingTM.Domain.Models.Tables
     /// </summary>
     public class Characteristics : Entity
     {
-        public int IndicatorsId { get; set; }
-        [ForeignKey(nameof(IndicatorsId))]
-        public Indicators Indicator { get; set; }
-        public int UnitsId { get; set; }
-        [ForeignKey(nameof(UnitsId))]
+        public int IndicatorId { get; set; }
+        [ForeignKey(nameof(IndicatorId))]
+        public Indicator Indicator { get; set; }
+        public int UnitId { get; set; }
+        [ForeignKey(nameof(UnitId))]
         public Unit Unit { get; set; }
         public string Meaning { get; set; }
     }

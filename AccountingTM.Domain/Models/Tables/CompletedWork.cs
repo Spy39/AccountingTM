@@ -20,7 +20,7 @@ namespace AccountingTM.Domain.Models.Tables
 		public TechnicalEquipment? TechnicalEquipment { get; set; }
 		public int ApplicationsId { get; set; }
 		[ForeignKey(nameof(ApplicationsId))]
-		public Applications Applications { get; set; }
+		public Application Applications { get; set; }
 		public DateTime Date { get; set; }
 		/// <summary>
 		/// Наименование работ и их причина

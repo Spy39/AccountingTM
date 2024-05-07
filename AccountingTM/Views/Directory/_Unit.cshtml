@@ -2,11 +2,11 @@
 	<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 		<div class="row">
 			<div class="col-9">
-				<h5>Показатель</h5>
+				<h5>Единица измерения</h5>
 			</div>
 			<div class="col-3">
 				<div class="float-sm-right">
-					<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createIndicators" type="submit">
+					<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createUnits" type="submit">
 						<i class="fa-solid fa-plus"></i>
 					</button>
 				</div>
@@ -26,11 +26,11 @@
 		</div>
 	</div>
 
-<div class="modal fade" tabindex="-1" id="createIndicators">
+<div class="modal fade" tabindex="-1" id="createUnits">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Добавление показателя характеристики технического средства</h5>
+				<h5 class="modal-title">Добавление единицы измерения для показателя технического средства</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -38,16 +38,15 @@
 				<div class="form-floating  mb-2">
 					<input type="text"
 						   class="form-control"
-						   id="location"
-						   name="location"
-						   placeholder="Наменование показателя" />
-					<label for="floatingInput">Наменование показателя</label>
+						   id="unit"
+						   placeholder="Наменование единицы измерения" />
+					<label for="floatingInput">Наменование единицы измерения</label>
 				</div>
 
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-				<button id="create-btn" class="btn btn-primary">Добавить</button>
+				<button id="createUnitBtn" class="btn btn-primary">Добавить</button>
 			</div>
 		</div>
 	</div>

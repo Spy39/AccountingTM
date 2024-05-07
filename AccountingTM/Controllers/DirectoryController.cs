@@ -24,21 +24,17 @@ namespace AccountingTM.Controllers
         {
 			return PartialView("_Employee");
 		}
-        public IActionResult Indicators()
+        public IActionResult Indicator()
         {
-			return PartialView("_Indicators");
+			return PartialView("_Indicator");
 		}
         public IActionResult Location()
         {
 			return PartialView("_Location");
 		}
-        public IActionResult Roles()
+        public IActionResult Unit()
         {
-			return PartialView("_Roles");
-		}
-        public IActionResult Units()
-        {
-			return PartialView("_Units");
+			return PartialView("_Unit");
 		}
     }
 }

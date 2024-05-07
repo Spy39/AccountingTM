@@ -3,6 +3,7 @@ using System;
 using Accounting.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AccountingTM.Domain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240507081535_Tables-07.05.24-2")]
+    partial class Tables0705242
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,7 +201,7 @@ namespace AccountingTM.Domain.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AccountingTM.Domain.Models.Application", b =>
+            modelBuilder.Entity("AccountingTM.Domain.Models.Applications", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -766,7 +768,7 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("AccountingTM.Domain.Models.Application", b =>
+            modelBuilder.Entity("AccountingTM.Domain.Models.Applications", b =>
                 {
                     b.HasOne("AccountingTM.Domain.Models.Directory.Category", "Category")
                         .WithMany()
@@ -806,7 +808,7 @@ namespace AccountingTM.Domain.Migrations
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.CompletedWork", b =>
                 {
-                    b.HasOne("AccountingTM.Domain.Models.Application", "Applications")
+                    b.HasOne("AccountingTM.Domain.Models.Applications", "Applications")
                         .WithMany()
                         .HasForeignKey("ApplicationsId")
                         .OnDelete(DeleteBehavior.Cascade)

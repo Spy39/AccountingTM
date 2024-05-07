@@ -13,7 +13,7 @@ namespace AccountingTM.Domain.Models
     /// <summary>
     /// Учет заявок
     /// </summary>
-    public class Applications : Entity
+    public class Application : Entity
 	{
 		public int LocationId { get; set; }
 		[ForeignKey(nameof(LocationId))]

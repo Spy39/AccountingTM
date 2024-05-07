@@ -3,6 +3,7 @@ using System;
 using Accounting.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AccountingTM.Domain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240507075537_Tables-07.05.24")]
+    partial class Tables070524
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,7 +201,7 @@ namespace AccountingTM.Domain.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AccountingTM.Domain.Models.Application", b =>
+            modelBuilder.Entity("AccountingTM.Domain.Models.Applications", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -452,21 +454,21 @@ namespace AccountingTM.Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("IndicatorId")
+                    b.Property<int>("IndicatorsId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Meaning")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("UnitId")
+                    b.Property<int>("UnitsId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IndicatorId");
+                    b.HasIndex("IndicatorsId");
 
-                    b.HasIndex("UnitId");
+                    b.HasIndex("UnitsId");
 
                     b.ToTable("Characteristics");
                 });
@@ -766,7 +768,7 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("Type");
                 });
 
-            modelBuilder.Entity("AccountingTM.Domain.Models.Application", b =>
+            modelBuilder.Entity("AccountingTM.Domain.Models.Applications", b =>
                 {
                     b.HasOne("AccountingTM.Domain.Models.Directory.Category", "Category")
                         .WithMany()
@@ -789,13 +791,13 @@ namespace AccountingTM.Domain.Migrations
                 {
                     b.HasOne("AccountingTM.Domain.Models.Directory.Indicator", "Indicator")
                         .WithMany()
-                        .HasForeignKey("IndicatorId")
+                        .HasForeignKey("IndicatorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("AccountingTM.Domain.Models.Directory.Unit", "Unit")
                         .WithMany()
-                        .HasForeignKey("UnitId")
+                        .HasForeignKey("UnitsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -806,7 +808,7 @@ namespace AccountingTM.Domain.Migrations
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.CompletedWork", b =>
                 {
-                    b.HasOne("AccountingTM.Domain.Models.Application", "Applications")
+                    b.HasOne("AccountingTM.Domain.Models.Applications", "Applications")
                         .WithMany()
                         .HasForeignKey("ApplicationsId")
                         .OnDelete(DeleteBehavior.Cascade)

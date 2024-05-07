@@ -23,7 +23,7 @@ namespace AccountingTM.Controllers
 		[HttpGet("[controller]/[action]")]
 		public IActionResult GetAll([FromQuery] GetAllTechnicalDto input)
 		{
-			IQueryable<Applications> query = _context.Applications;
+			IQueryable<Application> query = _context.Applications;
 			if (!string.IsNullOrWhiteSpace(input.SearchQuery))
 			{
 				var keyword = input.SearchQuery.ToLower();
@@ -32,27 +32,32 @@ namespace AccountingTM.Controllers
 			}
 			var clients = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
-			return Ok(new PagedResultDto<Applications>(query.Count(), clients));
+			return Ok(new PagedResultDto<Application>(query.Count(), clients));
 		}
 
 		[HttpGet]
 		public IActionResult Index()
 		{
-			var applications = _context.TechnicalEquipment.ToList();
+			var applications = _context.Applications.ToList();
 			return View(applications);
 		}
 
-		[HttpPost]
-		public IActionResult Create(TechnicalEquipment input)
-		{
-			if (!string.IsNullOrWhiteSpace(input.InventoryNumber))
-			{
 
-			}
-			_context.TechnicalEquipment.Add(input);
+		[HttpPost]
+		public IActionResult Create([FromBody] Application input)
+		{
+			//if (!string.IsNullOrWhiteSpace(input.Author))
+			//{
+			//	if (_context.Applications.Any(x => x.InventoryNumber == input.InventoryNumber))
+			//	{
+			//		throw new UserFriendlyException("Техническое средство с таким инвентарным номером уже существует!");
+			//	}
+			//}
+			_context.Applications.Add(input);
 			_context.SaveChanges();
 			return RedirectToAction("Index");
 		}
+
 
 		[HttpDelete]
 		public IActionResult Delete(int id)

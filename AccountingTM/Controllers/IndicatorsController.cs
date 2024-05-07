@@ -18,7 +18,7 @@ namespace AccountingTM.Controllers
 		[HttpGet]
 		public IActionResult GetAll([FromQuery] SearchPagedRequestDto input)
 		{
-			IQueryable<Indicators> query = _context.Indicators;
+			IQueryable<Indicator> query = _context.Indicators;
 			if (!string.IsNullOrWhiteSpace(input.SearchQuery))
 			{
 				var keyword = input.SearchQuery.ToLower();
@@ -26,11 +26,11 @@ namespace AccountingTM.Controllers
 			}
 
 			var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
-			return Ok(new PagedResultDto<Indicators>(query.Count(), entities));
+			return Ok(new PagedResultDto<Indicator>(query.Count(), entities));
 		}
 
 		[HttpPost]
-		public IActionResult Create([FromBody] Indicators input)
+		public IActionResult Create([FromBody] Indicator input)
 		{
 			if (!string.IsNullOrWhiteSpace(input.Name))
 			{
