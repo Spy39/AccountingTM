@@ -1,12 +1,12 @@
 ﻿<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 	<div class="row">
 		<div class="col-8">
-			<h5>Тип технического средства</h5>
+			<h5>Тип расходного материала</h5>
 		</div>
 
 		<div class="col-1">
 			<div class="float-sm-right">
-				<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createType" type="submit">
+				<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createTypeConsumable" type="submit">
 					<i class="fa-solid fa-plus"></i>
 				</button>
 			</div>
@@ -21,7 +21,7 @@
 	</div>
 
 	<div class="row">
-		<table id="types" class="table table-bordered align-middle table-hover table-striped" style="width:100%">
+		<table id="typeConsumables" class="table table-bordered align-middle table-hover table-striped" style="width:100%">
 			<thead class="table">
 				<tr>
 					<td>Наименование</td>
@@ -29,7 +29,6 @@
 				</tr>
 			</thead>
 			<tbody>
-
 			</tbody>
 		</table>
 	</div>
@@ -37,11 +36,11 @@
 </div>
 
 
-<div class="modal fade" tabindex="-1" id="createType">
+<div class="modal fade" tabindex="-1" id="createTypeConsumable">
 	<div class="modal-dialog modal-dialog-centered">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Добавление типа технического средства</h5>
+				<h5 class="modal-title">Добавление типа расходного материала</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -49,15 +48,15 @@
 				<div class="form-floating  mb-2">
 					<input type="text"
 						   class="form-control"
-						   id="typeEquipment"
-						   placeholder="Наменование типа технического средства" />
-					<label for="floatingInput">Наменование типа технического средства</label>
+						   id="typeConsumable"
+						   placeholder="Наменование типа расходного материала" />
+					<label for="floatingInput">Наменование типа расходного материала</label>
 				</div>
 
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-				<button id="createTypeEquipmentBtn" class="btn btn-primary">Добавить</button>
+				<button id="createTypeConsumableBtn" class="btn btn-primary">Добавить</button>
 			</div>
 		</div>
 	</div>

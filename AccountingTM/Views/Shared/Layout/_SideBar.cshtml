@@ -15,7 +15,7 @@
                 <i class="fa-solid fa-user img-circle elevation-2"></i>
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block">@User.Identity.Name</a>
             </div>
         </div>
 
@@ -24,63 +24,43 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-@*                 <li class="nav-item menu-open">
+                <li class="nav-item menu-close">
                     <a href="#" class="nav-link active">
                         <i class="fa-solid fa-folder-open"></i>
                         <p>
-                            Учет ТС
+                            Учет
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-@*                        <li class="nav-item">
-                            <a href="#" class="nav-link active">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Active Page</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Inactive Page</p>
-                            </a>
-                        </li>
                         <li>
                             <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">
-                                <i class="nav-icon far fa-circle"></i>
+                                <i class="nav-icon fa-solid fa-computer"></i>
                                 <p>
-                                    Все ТС
-                                </p>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">
-                                <i class="nav-icon far fa-circle"></i>
-                                <p>
-                                    По помещениям
+                                    Технические средства
                                 </p>
                             </a>
                         </li>
                         <li>
                             <a class="nav-link" asp-area="" asp-controller="" asp-action="Set">
-                                <i class="nav-icon far fa-circle"></i>
+                                <i class="nav-icon fa-solid fa-toolbox"></i>
                                 <p>
-                                    По комплектам
+                                    Комплекты
+                                </p>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="nav-link" asp-area="" asp-controller="" asp-action="Consumable">
+                                <i class="nav-icon fa-solid fa-battery-three-quarters"></i>
+                                <p>
+                                    Расходные материалы
                                 </p>
                             </a>
                         </li>
                     </ul>
-                </li> *@
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">
-                        <i class="nav-icon fas fa-folder-open"></i>
-                        <p>
-                            Учет ТС
-                        </p>
-                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Applications" asp-action="Index">
+                    <a class="nav-link" asp-area="" asp-controller="Application" asp-action="Index">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Заявки
@@ -88,7 +68,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Statistics" asp-action="Index">
+                    <a class="nav-link" asp-area="" asp-controller="Statistic" asp-action="Index">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Статистика
@@ -97,7 +77,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Directory" asp-action="Index">
-                        <i class="nav-icon fas fa-file"></i>
+                        <i class="nav-icon fa-solid fa-folder-tree"></i>
                         <p>
                             Справочники
                         </p>
@@ -105,7 +85,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Administration" asp-action="Index">
-                        <i class="nav-icon fa-solid fa-toolbox"></i>
+                        <i class="nav-icon fa-solid fa-user-tie"></i>
                         <p>
                             Администрирование
                         </p>

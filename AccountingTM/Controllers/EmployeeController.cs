@@ -2,11 +2,13 @@
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingTM.Controllers
 {
-	public class EmployeeController : Controller
+    [Authorize]
+    public class EmployeeController : Controller
 	{
 		private readonly DataContext _context;
 
@@ -42,6 +44,20 @@ namespace AccountingTM.Controllers
 				}
 			}
 			_context.Employees.Add(input);
+			_context.SaveChanges();
+			return Ok();
+		}
+
+		[HttpDelete]
+		public IActionResult Delete(int id)
+		{
+			var entity = _context.Employees.Find(id);
+			if (entity == null)
+			{
+				return NotFound();
+			}
+
+			_context.Employees.Remove(entity);
 			_context.SaveChanges();
 			return Ok();
 		}

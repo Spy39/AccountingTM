@@ -11,21 +11,13 @@ namespace AccountingTM.Domain.Enums
     /// </summary>
     public enum ConditionEquipment
     {
-        /// <summary>
-        /// Исправно
-        /// </summary>
+    /// <summary>Исправно</summary>
         Serviceable,
-        /// <summary>
-        /// Неисправно
-        /// </summary>
+    /// <summary>Неисправно</summary>
         Faulty,
-        /// <summary>
-        /// Работоспособно
-        /// </summary>
+    /// <summary>Работоспособно</summary>
         Efficient,
-        /// <summary>
-        /// Неработоспособно
-        /// </summary>
+    /// <summary>Неработоспособно</summary>
         Inoperative
     }
 }

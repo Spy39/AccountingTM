@@ -19,6 +19,7 @@ namespace AccountingTM.Domain.Models.Tables
         public int UnitId { get; set; }
         [ForeignKey(nameof(UnitId))]
         public Unit Unit { get; set; }
+        /// <summary>Значение</summary>
         public string Meaning { get; set; }
     }
 }

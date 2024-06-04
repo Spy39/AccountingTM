@@ -1,17 +1,18 @@
 ﻿using Accounting.Data;
-using AccountingTM.Domain.Migrations;
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingTM.Controllers
 {
-	public class UnitsController : Controller
+    [Authorize]
+    public class SetController : Controller
 	{
 		private readonly DataContext _context;
 
-		public UnitsController(DataContext context)
+		public SetController(DataContext context)
 		{
 			_context = context;
 		}
@@ -19,7 +20,7 @@ namespace AccountingTM.Controllers
 		[HttpGet]
 		public IActionResult GetAll([FromQuery] SearchPagedRequestDto input)
 		{
-			IQueryable<Unit> query = _context.Units;
+			IQueryable<Set> query = _context.Sets;
 			if (!string.IsNullOrWhiteSpace(input.SearchQuery))
 			{
 				var keyword = input.SearchQuery.ToLower();
@@ -27,20 +28,34 @@ namespace AccountingTM.Controllers
 			}
 
 			var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
-			return Ok(new PagedResultDto<Unit>(query.Count(), entities));
+			return Ok(new PagedResultDto<Set>(query.Count(), entities));
 		}
 
 		[HttpPost]
-		public IActionResult Create([FromBody] Unit input)
+		public IActionResult Create([FromBody] Set input)
 		{
 			if (!string.IsNullOrWhiteSpace(input.Name))
 			{
-				if (_context.Units.Any(x => x.Name == input.Name))
+				if (_context.Sets.Any(x => x.Name == input.Name))
 				{
-					throw new UserFriendlyException("Единица измерения с таким названием уже существует!");
+					throw new UserFriendlyException("Комплект с таким названием уже существует!");
 				}
 			}
-			_context.Units.Add(input);
+			_context.Sets.Add(input);
+			_context.SaveChanges();
+			return Ok();
+		}
+
+		[HttpDelete]
+		public IActionResult Delete(int id)
+		{
+			var entity = _context.Sets.Find(id);
+			if (entity == null)
+			{
+				return NotFound();
+			}
+
+			_context.Sets.Remove(entity);
 			_context.SaveChanges();
 			return Ok();
 		}

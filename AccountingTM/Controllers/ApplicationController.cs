@@ -4,17 +4,19 @@ using AccountingTM.Domain.Models;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers
 {
-    public class ApplicationsController : Controller
+    [Authorize]
+    public class ApplicationController : Controller
 	{
 		private readonly DataContext _context;
 
-		public ApplicationsController(DataContext context)
+		public ApplicationController(DataContext context)
 		{
 			_context = context;
 		}
@@ -23,7 +25,7 @@ namespace AccountingTM.Controllers
 		[HttpGet("[controller]/[action]")]
 		public IActionResult GetAll([FromQuery] GetAllTechnicalDto input)
 		{
-			IQueryable<Application> query = _context.Applications;
+			IQueryable<Application> query = _context.Applications.Include(x => x.Location).Include(x => x.Category);
 			if (!string.IsNullOrWhiteSpace(input.SearchQuery))
 			{
 				var keyword = input.SearchQuery.ToLower();
@@ -46,9 +48,9 @@ namespace AccountingTM.Controllers
 		[HttpPost]
 		public IActionResult Create([FromBody] Application input)
 		{
-			//if (!string.IsNullOrWhiteSpace(input.Author))
+			//if (!string.IsNullOrWhiteSpace(input.))
 			//{
-			//	if (_context.Applications.Any(x => x.InventoryNumber == input.InventoryNumber))
+			//	if (_context.TechnicalEquipment.Any(x => x.InventoryNumber == input.InventoryNumber))
 			//	{
 			//		throw new UserFriendlyException("Техническое средство с таким инвентарным номером уже существует!");
 			//	}

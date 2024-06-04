@@ -11,21 +11,13 @@ namespace AccountingTM.Domain.Enums
 	/// </summary>
 	public enum Priority
 	{
-		/// <summary>
-		/// Критический
-		/// </summary>
+	/// <summary>Критический</summary>
 		Critical,
-		/// <summary>
-		/// Высокий
-		/// </summary>
+	/// <summary>Высокий</summary>
 		High,
-		/// <summary>
-		/// Нормальный
-		/// </summary>
+	/// <summary>Нормальный</summary>
 		Normal,
-		/// <summary>
-		/// Низкий
-		/// </summary>
+	/// <summary>Низкий</summary>
 		Low
 	}
 }

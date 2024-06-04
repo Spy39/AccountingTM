@@ -1,0 +1,88 @@
+﻿@{
+    ViewData["Title"] = "Application";
+    Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+
+
+@section LeftNavbar {
+	<ol class="breadcrumb float-sm-right m-0 bg-white">
+		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item active">Applications</li>
+	</ol>
+}
+<section class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1>Заявки</h1>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+	<div class="row">
+		<div class="col-6">
+			<!-- SEARCH FORM -->
+			<form class="form-inline">
+				<div class="col-3">
+					<div class="input-group">
+						<input type="search" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
+
+
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<div class="dropdown col-3">
+			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				Сортировать по
+			</button>
+			<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+				<li><a class="dropdown-item" href="#">Приоритету</a></li>
+				<li><a class="dropdown-item" href="#">Дате</a></li>
+				<li><a class="dropdown-item" href="#">Обновлению</a></li>
+				<li><a class="dropdown-item" href="#">Категории</a></li>
+				<li><a class="dropdown-item" href="#">Теме</a></li>
+				<li><a class="dropdown-item" href="#">Статусу</a></li>
+			</ul>
+		</div>
+		<div class="col-3">
+			<div class="float-sm-right">
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#ApplicationModal">Новая заявка</button>
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#FilterModal">Фильтр</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<table id="applicationsTable" class="table table-striped table-hover" style="width:100%">
+    <thead>
+        <tr>
+            <th>Номер заявки</th>
+            <th>Дата создания</th>
+            <th>Дата изменения</th>
+            <th>Категория</th>
+			<th>Тема</th>
+			<th>Статус</th>
+			<th>Автор</th>
+			<th>Помещение</th>
+			<th>Приоритет</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+
+@await Html.PartialAsync("_AddIndexModal.cshtml")
+
+@section Scripts {
+	<script src="~/views/application/index.js"></script>
+}

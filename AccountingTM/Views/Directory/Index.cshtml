@@ -20,14 +20,14 @@
 	</div>
 </section>
 
-<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+@* <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 	<div class="row">
 		<div class="col-6">
 			<!-- SEARCH FORM -->
 			<form class="form-inline">
 				<div class="input-group input-group-sm">
 					@*<input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">*@
-					<input type="search" class="form-control form-control-sm" placeholder="Поиск" aria-controls="example1">
+@* 					<input type="search" class="form-control form-control-sm" placeholder="Поиск" aria-controls="example1">
 					<div class="input-group-append">
 						<button class="btn btn-navbar" type="submit">
 							<i class="fas fa-search"></i>
@@ -49,60 +49,74 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> *@
 
 <div class="container-fluid">
 	<div class="row">
-		<div class="col-3">
+		<div class="col-2">
 			<nav class="sidebar-sticky shadow-sm bg-body-tertiary rounded navbar-expand-md" id="nav-page">
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
 					<ul class="navbar-nav mr-auto flex-column">
 						<li class="nav-item">
 							<a class="nav-link" href="#" data-url="Directory/TypeEquipment">
 								<p>
-									Тип технического средства
+									Типы технических средств
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-url="Directory/TypeConsumable">
+								<p>
+									Типы расходных материалов
 								</p>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#" data-url="Directory/Brand">
 								<p>
-									Бренд технического средства
+									Бренды
+								</p>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" data-url="Directory/Set">
+								<p>
+									Обозначения комплектов
 								</p>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#" data-url="Directory/Location">
 								<p>
-									Местоположение
+									Помещения
 								</p>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#" data-url="Directory/Employee">
 								<p>
-									Сотрудник
+									Сотрудники
 								</p>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#" data-url="Directory/Indicator">
 								<p>
-									Показатель
+									Показатели
 								</p>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#" data-url="Directory/Unit">
 								<p>
-									Единица измерения
+									Единицы измерения
 								</p>
 							</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#" data-url="Directory/Category">
 								<p>
-									Категория заявки
+									Категории заявок
 								</p>
 							</a>
 						</li>
@@ -111,8 +125,8 @@
 			</nav>
 		</div>
 		
-		<div class="col-9" id="page-content">
-			@await Html.PartialAsync("_TypeEquipment.cshtml")
+		<div class="col-10" id="page-content">
+
 		</div>
 	</div>
 </div>

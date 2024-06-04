@@ -27,13 +27,21 @@ namespace Accounting.Controllers
             return Ok("Ok");
         }
 
-        [HttpDelete]
-        public IActionResult Delete()
-        {
-            return Ok("Ok");
-        }
+		[HttpDelete]
+		public IActionResult Delete(int id)
+		{
+			var entity = _context.Users.Find(id);
+			if (entity == null)
+			{
+				return NotFound();
+			}
 
-        [HttpGet]
+			_context.Users.Remove(entity);
+			_context.SaveChanges();
+			return Ok();
+		}
+
+		[HttpGet]
         public IActionResult Find()
         {
             return Ok("Ok");

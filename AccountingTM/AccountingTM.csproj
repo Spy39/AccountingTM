@@ -8,8 +8,9 @@
 
   <ItemGroup>
     <Content Remove="Views\Shared\Layout\_Header.LeftNavbar.cshtml" />
-    <Content Remove="wwwroot\views\applications\index.js" />
+    <Content Remove="wwwroot\views\application\index.js" />
     <Content Remove="wwwroot\views\directory\index.js" />
+    <Content Remove="wwwroot\views\technicalEquipment\consumable.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,8 +36,9 @@
 
   <ItemGroup>
     <None Include="Views\Shared\Layout\_Header.LeftNavbar.cshtml" />
-    <None Include="wwwroot\views\applications\index.js" />
+    <None Include="wwwroot\views\application\index.js" />
     <None Include="wwwroot\views\directory\index.js" />
+    <None Include="wwwroot\views\technicalEquipment\consumable.js" />
     <None Include="wwwroot\views\technicalEquipment\index.js" />
   </ItemGroup>
 

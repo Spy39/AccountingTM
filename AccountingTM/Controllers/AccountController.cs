@@ -30,7 +30,7 @@ namespace AccountingTM.Controllers
             if (user != null) 
             {
                 Authenticate(user.Login);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "TechnicalEquipment");
             }
 
             return View();

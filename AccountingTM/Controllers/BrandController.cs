@@ -3,12 +3,14 @@ using Accounting.Models;
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers
 {
-	public class BrandController : Controller
+    [Authorize]
+    public class BrandController : Controller
 	{
 		private readonly DataContext _context;
 

@@ -6,9 +6,6 @@
     Layout = "~/Views/Shared/Layout/_Layout.cshtml";
 }
 
-@section Scripts{
-    <script src="~/views/technicalEquipment/index.js"></script>
-}
 
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
@@ -34,14 +31,14 @@
 		</div>
 		<div class="col-3">
 			<div class="row">
-				Название
+				@* @Model.Brand @Model.Model *@
 			</div>
 			<div class="row">
 				<div class="col-6">
 					Дата
 				</div>
 				<div class="col-6">
-					Исправно
+					@(Model.Status)
 				</div>
 			</div>
 		</div>
@@ -58,8 +55,8 @@
 
 		<div class="col-2">
 			<div class="float-sm-right">
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#create" type="submit">
-					<i class="fa-solid fa-plus"></i>
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editInfo1" type="submit">
+					<i class="fa-solid fa-pen"></i>
 				</button>
 				<button type="button" class="btn btn-default">
 					<i class="fa-solid fa-download"></i>
@@ -97,11 +94,11 @@
 				<label for="floatingInputValue">Местоположение</label>
 			</form>
 			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="floatingInputValue" value="@Model.Date.ToString("dd.MM.yyyy")" readonly>
+				<input type="text" class="form-control" id="floatingInputValue" value="@(Model.Date?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
 				<label for="floatingInputValue">Дата изготовления</label>
 			</form>
 			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="floatingInputValue" value="@Model.DateStart.ToString("dd.MM.yyyy")" readonly>
+				<input type="text" class="form-control" id="floatingInputValue" value="@(Model.DateStart?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
 				<label for="floatingInputValue">Ввод в эксплуатацию</label>
 			</form>
 			<form class="form-floating mb-2">
@@ -113,7 +110,7 @@
 				<label for="floatingInputValue">Гарантийный срок работы</label>
 			</form>
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-				<button class="btn btn-default" type="button">Изменить</button>
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editInfo2" type="submit">Изменить</button>
 			</div>
 
 				<div class="row">
@@ -124,7 +121,7 @@
 							</div>
 							<div class="col-3">
 								<div class="float-sm-right">
-									<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createCharacteristic" type="submit">
 										<i class="fa-solid fa-plus"></i>
 									</button>
 								</div>
@@ -146,7 +143,9 @@
 						</div>
 					</div>
 				</div>
-				</div>
+			</div>
+
+
 
 
 
@@ -359,3 +358,9 @@
 		</div>
 	</div>
 </div>
+
+@await Html.PartialAsync("_AddInfoModal.cshtml")
+
+@section Scripts {
+	<script src="~/views/technicalEquipment/index.js"></script>
+}

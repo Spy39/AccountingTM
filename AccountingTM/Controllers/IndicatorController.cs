@@ -2,15 +2,17 @@
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingTM.Controllers
 {
-	public class IndicatorsController : Controller
+    [Authorize]
+    public class IndicatorController : Controller
 	{
 		private readonly DataContext _context;
 
-		public IndicatorsController(DataContext context)
+		public IndicatorController(DataContext context)
 		{
 			_context = context;
 		}
@@ -40,6 +42,20 @@ namespace AccountingTM.Controllers
 				}
 			}
 			_context.Indicators.Add(input);
+			_context.SaveChanges();
+			return Ok();
+		}
+
+		[HttpDelete]
+		public IActionResult Delete(int id)
+		{
+			var entity = _context.Indicators.Find(id);
+			if (entity == null)
+			{
+				return NotFound();
+			}
+
+			_context.Indicators.Remove(entity);
 			_context.SaveChanges();
 			return Ok();
 		}

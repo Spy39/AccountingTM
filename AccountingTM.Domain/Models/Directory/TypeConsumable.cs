@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,9 +8,9 @@ using System.Threading.Tasks;
 namespace AccountingTM.Domain.Models.Directory
 {
 	/// <summary>
-	/// Единица измерения
+	/// Тип расходного материала
 	/// </summary>
-	public class Unit : Entity
+	public class TypeConsumable : Entity
 	{
 		public string Name { get; set; }
 	}

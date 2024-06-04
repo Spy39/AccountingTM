@@ -25,6 +25,8 @@ namespace Accounting.Data
 		public DbSet<Location> Locations { get; set; }
 		public DbSet<TypeEquipment> TypeEquipments { get; set; }
 		public DbSet<Unit> Units { get; set; }
+		public DbSet<Set> Sets { get; set; }
+		public DbSet<TypeConsumable> TypeConsumables { get; set; }
 		//Таблицы ТС
 		public DbSet<CompletedWork> CompletedWorks { get; set; }
 		public DbSet<Conservation> Conservations { get; set; }
@@ -35,6 +37,7 @@ namespace Accounting.Data
 		//Основные таблицы
 		public DbSet<Application> Applications { get; set; }
 		public DbSet<Characteristics> Characteristics { get; set; }
+		public DbSet<Consumable> Consumables { get; set; }
 		public DbSet<DocumentType> DocumentType { get; set; }
         public DbSet<Malfunction> Malfunction { get; set; }
 		public DbSet<Moving> Moving { get; set; }
@@ -42,5 +45,6 @@ namespace Accounting.Data
 		public DbSet<Roles> Roles { get; set; }
 		public DbSet<TechnicalEquipment> TechnicalEquipment { get; set; }
 		public DbSet<User> Users { get; set; }
+		
 	}
 }

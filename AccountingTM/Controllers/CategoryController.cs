@@ -2,11 +2,13 @@
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingTM.Controllers
 {
-	public class CategoryController : Controller
+    [Authorize]
+    public class CategoryController : Controller
 	{
 		private readonly DataContext _context;
 
@@ -40,6 +42,20 @@ namespace AccountingTM.Controllers
 				}
 			}
 			_context.Categories.Add(input);
+			_context.SaveChanges();
+			return Ok();
+		}
+
+		[HttpDelete]
+		public IActionResult Delete(int id)
+		{
+			var entity = _context.Categories.Find(id);
+			if (entity == null)
+			{
+				return NotFound();
+			}
+
+			_context.Categories.Remove(entity);
 			_context.SaveChanges();
 			return Ok();
 		}

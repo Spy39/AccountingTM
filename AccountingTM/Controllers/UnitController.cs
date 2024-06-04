@@ -1,4 +1,5 @@
 ﻿using Accounting.Data;
+using AccountingTM.Domain.Migrations;
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
@@ -8,11 +9,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace AccountingTM.Controllers
 {
     [Authorize]
-    public class TypeEquipmentController : Controller
+    public class UnitController : Controller
 	{
 		private readonly DataContext _context;
 
-		public TypeEquipmentController(DataContext context)
+		public UnitController(DataContext context)
 		{
 			_context = context;
 		}
@@ -20,7 +21,7 @@ namespace AccountingTM.Controllers
 		[HttpGet]
 		public IActionResult GetAll([FromQuery] SearchPagedRequestDto input)
 		{
-			IQueryable<TypeEquipment> query = _context.TypeEquipments;
+			IQueryable<Unit> query = _context.Units;
 			if (!string.IsNullOrWhiteSpace(input.SearchQuery))
 			{
 				var keyword = input.SearchQuery.ToLower();
@@ -28,20 +29,20 @@ namespace AccountingTM.Controllers
 			}
 
 			var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
-			return Ok(new PagedResultDto<TypeEquipment>(query.Count(), entities));
+			return Ok(new PagedResultDto<Unit>(query.Count(), entities));
 		}
 
 		[HttpPost]
-		public IActionResult Create([FromBody] TypeEquipment input)
+		public IActionResult Create([FromBody] Unit input)
 		{
 			if (!string.IsNullOrWhiteSpace(input.Name))
 			{
-				if (_context.TypeEquipments.Any(x => x.Name == input.Name))
+				if (_context.Units.Any(x => x.Name == input.Name))
 				{
-					throw new UserFriendlyException("Тип технического средства с таким названием уже существует!");
+					throw new UserFriendlyException("Единица измерения с таким названием уже существует!");
 				}
 			}
-			_context.TypeEquipments.Add(input);
+			_context.Units.Add(input);
 			_context.SaveChanges();
 			return Ok();
 		}
@@ -49,16 +50,15 @@ namespace AccountingTM.Controllers
 		[HttpDelete]
 		public IActionResult Delete(int id)
 		{
-			var entity = _context.TypeEquipments.Find(id);
+			var entity = _context.Units.Find(id);
 			if (entity == null)
 			{
 				return NotFound();
 			}
 
-			_context.TypeEquipments.Remove(entity);
+			_context.Units.Remove(entity);
 			_context.SaveChanges();
 			return Ok();
 		}
-
 	}
 }

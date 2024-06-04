@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace AccountingTM.Domain.Models.Directory
 {
-    /// <summary>
-    /// Помещения
-    /// </summary>
-    public class Location : Entity
-    {
-        public string Name { get; set; }
-    }
+	/// <summary>
+	/// Обозначение комплекта
+	/// </summary>
+	public class Set : Entity
+	{
+		public string Name { get; set; }
+	}
 }

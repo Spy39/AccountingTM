@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingTM.Controllers
 {
+    [Authorize]
     public class DirectoryController : Controller
     {
         public IActionResult Index()
@@ -12,6 +14,10 @@ namespace AccountingTM.Controllers
         {
             return PartialView("_TypeEquipment");
         }
+		public IActionResult TypeConsumable()
+		{
+			return PartialView("_TypeConsumable");
+		}
 		public IActionResult Brand()
 		{
 			return PartialView("_Brand");
@@ -20,7 +26,11 @@ namespace AccountingTM.Controllers
         {
 			return PartialView("_Category");
 		}
-        public IActionResult Employee()
+		public IActionResult Set()
+		{
+			return PartialView("_Set");
+		}
+		public IActionResult Employee()
         {
 			return PartialView("_Employee");
 		}

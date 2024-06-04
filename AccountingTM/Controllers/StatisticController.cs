@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace AccountingTM.Controllers
 {
     [Authorize]
-    public class CalendarController : Controller
+    public class StatisticController : Controller
     {
         public IActionResult Index()
         {

@@ -1,22 +1,20 @@
-﻿@using Accounting.Models;
-@model IEnumerable<TechnicalEquipment>
-
-@{
-    ViewData["Title"] = "TechnicalEquipment";
+﻿@{
+	ViewData["Title"] = "Consumable";
 	Layout = "~/Views/Shared/Layout/_Layout.cshtml";
 }
+
 
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
 		<li class="breadcrumb-item"><a href="#">Home</a></li>
-		<li class="breadcrumb-item active">TechnicalEquipment</li>
+		<li class="breadcrumb-item active">Consumable</li>
 	</ol>
 }
 <section class="content-header">
 	<div class="container-fluid">
 		<div class="row mb-2">
 			<div class="col-sm-6">
-				<h1>Учет технических средств</h1>
+				<h1>Расходные материалы</h1>
 			</div>
 		</div>
 	</div>
@@ -52,26 +50,27 @@
 	</div>
 </div>
 
-<table id="technicalEquipmentTable" class="table table-striped table-hover" style="width:100%">
+<table id="consumableTable" class="table table-striped table-hover" style="width:100%">
 	<thead>
-	<tr>
-		<th>Тип</th>
-		<th>Бренд</th>
-		<th>Модель</th>
-		<th>Серийный номер</th>
-		<th>Состояние</th>
-		<th>Ответственный</th>
-		<th>Местоположение</th>
-		<th>Место для кнопок</th>
-	</tr>
+		<tr>
+			<th>Тип</th>
+			<th>Бренд</th>
+			<th>Модель</th>
+			<th>Серийный номер</th>
+			<th>Ответственный</th>
+			<th>Местоположение</th>
+			<th>Единица измерения</th>
+			<th>Количество</th>
+			<th></th>
+		</tr>
 	</thead>
 
 	<tbody>
 	</tbody>
 </table>
 
-@await Html.PartialAsync("_AddIndexModal.cshtml")
+@await Html.PartialAsync("_AddConsumableModal.cshtml")
 
 @section Scripts {
-	<script src="~/views/technicalEquipment/index.js"></script>
+	<script src="~/views/technicalEquipment/consumable.js"></script>
 }

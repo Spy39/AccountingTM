@@ -4,11 +4,14 @@ using AccountingTM.Dto.Common;
 using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.Exceptions;
 using AccountingTM.ViewModels.TechnicalEquipment;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 
 namespace Accounting.Controllers
 {
+    [Authorize]
     public class TechnicalEquipmentController : Controller
     {
         private readonly DataContext _context;
@@ -21,7 +24,7 @@ namespace Accounting.Controllers
         [HttpGet("[controller]/[action]")]
         public IActionResult GetAll([FromQuery] GetAllTechnicalDto input)
         {
-            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment;
+            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Location).Include(x => x.Employee);
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
@@ -75,18 +78,18 @@ namespace Accounting.Controllers
         [HttpGet]
         public IActionResult Info(int id)
         {
-            TechnicalEquipment technicalEquipment = _context.TechnicalEquipment.Find(id);
+            TechnicalEquipment technicalEquipment = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Location).Include(x => x.Employee).First(x => x.Id == id);
             var model = new InfoViewModel
             {
                 TechnicalId = id,
-                //SerialNumber = technicalEquipment.SerialNumber,
-                //InventoryNumber = technicalEquipment.InventoryNumber,
-                //EmployeeFio = technicalEquipment.Employee,
-                //LocationName = technicalEquipment.Location,
-                //Date = technicalEquipment.Date,
-                //DateStart = technicalEquipment.DateStart,
-                //DateEnd = technicalEquipment.DateEnd,
-                //DateGarant = technicalEquipment.DateGarant
+                SerialNumber = technicalEquipment.SerialNumber,
+                InventoryNumber = technicalEquipment.InventoryNumber,
+                EmployeeFio = technicalEquipment.Employee.FullName,
+                LocationName = technicalEquipment.Location.Name,
+                Date = technicalEquipment.Date,
+                DateStart = technicalEquipment.DateStart,
+                DateEnd = technicalEquipment.DateEnd,
+                DateGarant = technicalEquipment.DateGarant
             };
             return View(model);
         }
@@ -95,5 +98,10 @@ namespace Accounting.Controllers
 		{
 			return View();
 		}
+
+        public IActionResult Consumable()
+        {
+            return View();
+        }
 	}
 }

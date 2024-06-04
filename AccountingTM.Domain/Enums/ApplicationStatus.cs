@@ -8,33 +8,19 @@ namespace AccountingTM.Domain.Enums
 {
     public enum ApplicationStatus
     {
-        /// <summary>
-        /// Новая
-        /// </summary>
+    ///<summary>Новая</summary>
         New,
-        /// <summary>
-        /// Получен комментарий
-        /// </summary>
+    /// <summary>Получен комментарий</summary>
         CommentReceived,
-        /// <summary>
-        /// Комментарий отправлен
-        /// </summary>
+    /// <summary>Комментарий отправлен </summary>
         CommentSent,
-        /// <summary>
-        /// В работе
-        /// </summary>
+    /// <summary>В работе</summary>
         InProgress,
-        /// <summary>
-        /// Приостановлена
-        /// </summary>
+    /// <summary>Приостановлена</summary>
         Suspended,
-        /// <summary>
-        /// Передана
-        /// </summary>
+    /// <summary>Передана</summary>
         Transferred,
-        /// <summary>
-        /// Решена
-        /// </summary>
+    /// <summary>Решена</summary>
         Solved
     }
 }

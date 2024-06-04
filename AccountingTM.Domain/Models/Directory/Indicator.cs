@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace AccountingTM.Domain.Models.Directory
 {
 	/// <summary>
-	/// Показатели
+	/// Показатель
 	/// </summary>
 	public class Indicator : Entity
 	{

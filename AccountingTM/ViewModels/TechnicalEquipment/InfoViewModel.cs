@@ -8,6 +8,7 @@ namespace AccountingTM.ViewModels.TechnicalEquipment
 	public class InfoViewModel
 	{
 		public int TechnicalId { get; set; }
+		public string Brand { get; set; }
 		public string Model { get; set; }
 		public string? SerialNumber { get; set; }
 		public string InventoryNumber { get; set; }
@@ -16,11 +17,11 @@ namespace AccountingTM.ViewModels.TechnicalEquipment
 		/// <summary>
 		/// Дата изготовления
 		/// </summary>
-		public DateTime Date { get; set; }
+		public DateTime? Date { get; set; }
 		/// <summary>
 		/// Дата ввода в эксплуатацию
 		/// </summary>
-		public DateTime DateStart { get; set; }
+		public DateTime? DateStart { get; set; }
 		/// <summary>
 		/// Средний срок работы
 		/// </summary>
@@ -29,7 +30,7 @@ namespace AccountingTM.ViewModels.TechnicalEquipment
 		/// Дата действия гарантии
 		/// </summary>
 		public DateTime? DateGarant { get; set; }
-		public TechnicalStatus Status { get; set; }
+		public ConditionEquipment Status { get; set; }
 		public bool IsDeleted { get; set; }
 		public DateTime? DeletedDate { get; set; }
 	}

@@ -16,10 +16,10 @@ namespace Accounting.Models
         public TypeEquipment? Type { get; set; } //Тип технического средства												 
 		public int BrandId { get; set; }
 		[ForeignKey(nameof(BrandId))]
-		public Brand? Brand { get; set; } //Бренд технического средства										 
+		public Brand? Brand { get; set; } //Бренд										 
 		public int EmployeeId { get; set; }
 		[ForeignKey(nameof(EmployeeId))]
-		public Employee? Employee { get; set; } //Ответственный за техническое средство											   
+		public Employee? Employee { get; set; } //Ответственный											   
 		public int LocationId { get; set; }
 		[ForeignKey(nameof(LocationId))]
 		public Location? Location { get; set; } //Местоположение технического средства

@@ -7,7 +7,7 @@
     $('#AddOrderDate').datepicker({ container: '#AddOrderModal .modal-body', dateFormat: "dd.mm.yyyy" });
 
     //Вывод данных о техничесих средствах в таблицу
-    let tableClients = new DataTable('#technicalEquipmentTable', {
+    let tableConsumables = new DataTable('#consumableTable', {
         paging: true,
         serverSide: true,
         ajax: function (data, callback, settings) {
@@ -15,7 +15,7 @@
             filter.searchQuery = $("#search-input").val()
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
-            axios.get('/TechnicalEquipment/GetAll', {
+            axios.get('/Consumable/GetAll', {
                 params: filter
             })
                 .then(function (result) {
@@ -55,30 +55,25 @@
             },
             {
                 targets: 4,
-                data: 'state',
-                render: (data, type, row, meta) => {
-                    switch (data) {
-                        case 0: return "Исправно";
-                        case 1: return "Неисправно";
-                        case 2: return "Работоспособно";
-                        case 3: return "Неработоспособно";
-                    }
-                }
-
-            },
-            {
-                targets: 5,
                 data: 'employee',
                 render: (data, type, row, meta) => {
                     return `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`;
                 }
             },
             {
-                targets: 6,
+                targets: 5,
                 data: 'location.name',
             },
             {
+                targets: 6,
+                data: 'unit.name',
+            },
+            {
                 targets: 7,
+                data: 'quantity',
+            },
+            {
+                targets: 8,
                 data: null,
                 render: (data, type, row, meta) => {
                     return `<a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС"><i class="fa-regular fa-address-card"></i></a>
@@ -90,29 +85,32 @@
         tableClients.ajax.reload()
     })
 
-    //Добавление нового технического средства
+    //Добавление
     $("#create-btn").click(function () {
-        axios.post("TechnicalEquipment/Create", {
-            typeId: +$("#typeEquipment").val(),
+        axios.post("Consumable/Create", {
+            typeId: +$("#typeConsumable").val(),
             brandId: +$("#brand").val(),
             model: $("#model").val(),
             serialNumber: $("#serialNumber").val(),
-            inventoryNumber: $("#inventoryNumber").val(),
-            state: +$("#state").val(),
             employeeId: +$("#employee").val(),
             locationId: +$("#location").val(),
+            unit: +$("#unit").val(),
+            quantity: $("#quantity").val(),
+            
+            
+            
             isDeleted: false
         }).then(function () {
             location.reload()
         })
     })
 
-    //Удаление технического средства
+    //Удаление
     $(document).on("click", ".delete", function () {
         let name = this.dataset.name;
         Swal.fire({
             title: "Вы уверены?",
-            text: `ТС ${name} будет удален!`,
+            text: `Расходный материал ${name} будет удален!`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -122,10 +120,10 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 let id = this.dataset.id;
-                axios.delete("TechnicalEquipment/Delete?id=" + id).then(function () {
+                axios.delete("Consumable/Delete?id=" + id).then(function () {
                     tableClients.draw(false)
                     $(".tooltip").removeClass("show")
-                    toastr.success('ТС успешно удален!')
+                    toastr.success('Расходный материал успешно удален!')
                 })
             }
         });
@@ -133,8 +131,8 @@
 
     //Вывод Select
 
-    //Тип технического средства
-        $("#typeEquipment").select2({
+    //Тип расходного материала
+        $("#typeConsumable").select2({
             width: '100%',
             allowClear: true,
             placeholder: 'Наименование типа',
@@ -149,7 +147,7 @@
                     filter.maxResultCount = maxResultCount;
                     filter.skipCount = (params.page - 1) * maxResultCount;
                     filter.keyword = params.term
-                    axios.get("TypeEquipment/GetAll", { params: filter }).then(function (result) {
+                    axios.get("TypeConsumable/GetAll", { params: filter }).then(function (result) {
 
                         success({
                             results: result.data.items,
@@ -260,38 +258,6 @@
         templateResult: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
         templateSelection: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
 
-    })
-
-    //Показатель
-    $("#indicator").select2({
-        width: '100%',
-        allowClear: true,
-        placeholder: 'Показатель',
-        ajax: {
-            transport: (data, success, failure) => {
-                let params = data.data;
-                let maxResultCount = 30;
-
-                params.page = params.page || 1;
-
-                let filter = {};
-                filter.maxResultCount = maxResultCount;
-                filter.skipCount = (params.page - 1) * maxResultCount;
-                filter.keyword = params.term
-                axios.get("Indicator/GetAll", { params: filter }).then(function (result) {
-
-                    success({
-                        results: result.data.items,
-                        pagination: {
-                            more: (params.page * maxResultCount) < result.data.totalCount
-                        }
-                    });
-                });
-            },
-            cache: true
-        },
-        templateResult: (data) => data.name,
-        templateSelection: (data) => data.name
     })
 
     //Единица измерения

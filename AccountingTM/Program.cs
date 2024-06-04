@@ -17,7 +17,7 @@ builder.Services.AddControllersWithViews(x =>
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddDbContext<DataContext>(x => x.UseNpgsql(connectionString));
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = new PathString());
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Account/Login");
 
 var app = builder.Build();
 
