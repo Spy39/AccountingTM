@@ -4,6 +4,8 @@ using AccountingTM.Domain.Models;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.Exceptions;
+using AccountingTM.ViewModels.Application;
+using AccountingTM.ViewModels.TechnicalEquipment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -48,6 +50,9 @@ namespace AccountingTM.Controllers
 		[HttpPost]
 		public IActionResult Create([FromBody] Application input)
 		{
+			//Генерирование номера заявки
+			input.ApplicationNumber = new Guid().ToString();
+
 			//if (!string.IsNullOrWhiteSpace(input.))
 			//{
 			//	if (_context.TechnicalEquipment.Any(x => x.InventoryNumber == input.InventoryNumber))
@@ -79,7 +84,25 @@ namespace AccountingTM.Controllers
 		[HttpGet]
 		public IActionResult Info(int id)
 		{
-			return View();
+			Application application = _context.Applications.Include(x => x.Location).Include(x => x.Category).First(x => x.Id == id);
+			var model = new ApplicationViewModel
+			{
+				ApplicationId = id,
+				Location = application.Location.Name,
+				Category = application.Category.Name,
+				ApplicationNumber = application.ApplicationNumber,
+				DateOfCreation = application.DateOfCreation,
+				DateOfChange = application.DateOfChange,
+				ExpirationDate = application.ExpirationDate,
+				Subject = application.Subject,
+				Description = application.Description,
+				Status = application.GetApplicationStatus(),
+				Author = application.Author,
+				Executor = application.Executor,
+				LastReply = application.LastReply,
+				Priority = application.GetApplicationPrioity(),
+			};
+			return View(model);
 		}
 	}
 }

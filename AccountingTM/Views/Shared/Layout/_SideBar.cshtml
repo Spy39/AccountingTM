@@ -24,41 +24,31 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-                <li class="nav-item menu-close">
-                    <a href="#" class="nav-link active">
-                        <i class="fa-solid fa-folder-open"></i>
+                <li>
+                    <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">
+                        <i class="nav-icon fa-solid fa-computer"></i>
                         <p>
-                            Учет
-                            <i class="right fas fa-angle-left"></i>
+                            Технические средства
                         </p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li>
-                            <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">
-                                <i class="nav-icon fa-solid fa-computer"></i>
-                                <p>
-                                    Технические средства
-                                </p>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" asp-area="" asp-controller="" asp-action="Set">
-                                <i class="nav-icon fa-solid fa-toolbox"></i>
-                                <p>
-                                    Комплекты
-                                </p>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="nav-link" asp-area="" asp-controller="" asp-action="Consumable">
-                                <i class="nav-icon fa-solid fa-battery-three-quarters"></i>
-                                <p>
-                                    Расходные материалы
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
+                <li>
+                    <a class="nav-link" asp-area="" asp-controller="" asp-action="Consumable">
+                        <i class="nav-icon fa-solid fa-battery-three-quarters"></i>
+                        <p>
+                            Расходные материалы
+                        </p>
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" asp-area="" asp-controller="" asp-action="Set">
+                        <i class="nav-icon fa-solid fa-toolbox"></i>
+                        <p>
+                            Комплекты
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-line"></li>
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Application" asp-action="Index">
                         <i class="nav-icon fas fa-edit"></i>
@@ -67,11 +57,21 @@
                         </p>
                     </a>
                 </li>
+                <li class="nav-line"></li>
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Statistic" asp-action="Index">
                         <i class="nav-icon fas fa-chart-pie"></i>
                         <p>
                             Статистика
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-line"></li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="" asp-controller="Administration" asp-action="Index">
+                        <i class="nav-icon fa-solid fa-user-tie"></i>
+                        <p>
+                            Администрирование
                         </p>
                     </a>
                 </li>
@@ -83,14 +83,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Administration" asp-action="Index">
-                        <i class="nav-icon fa-solid fa-user-tie"></i>
-                        <p>
-                            Администрирование
-                        </p>
-                    </a>
-                </li>
+                <li class="nav-line"></li>
                 <li class="nav-item">
                     <a class="nav-link" asp-area="" asp-controller="Calendar" asp-action="Index">
                         <i class="nav-icon far fa-calendar-alt"></i>

@@ -43,5 +43,45 @@ namespace AccountingTM.Domain.Models
 		public string? LastReply { get; set; }
 		public Priority Priority { get; set; }
 
+
+		public string GetApplicationStatus()
+		{
+			switch (Status)
+			{
+				case ApplicationStatus.New:
+					return "Новая";
+				case ApplicationStatus.CommentReceived:
+					return "Получен комментарий";
+				case ApplicationStatus.CommentSent:
+					return "Комментарий отправлен";
+				case ApplicationStatus.InProgress:
+					return "В работе";
+				case ApplicationStatus.Suspended:
+					return "Приостановлена";
+				case ApplicationStatus.Transferred:
+					return "Передана";
+				case ApplicationStatus.Solved:
+					return "Решена";
+				default: return "";
+
+			}
+		}
+
+		public string GetApplicationPrioity()
+		{
+			switch (Priority)
+			{
+				case Priority.Critical:
+					return "Критический";
+				case Priority.High:
+					return "Высокий";
+				case Priority.Normal:
+					return "Нормальный";
+				case Priority.Low:
+					return "Низкий";
+				default: return "";
+
+			}
+		}
 	}
 }

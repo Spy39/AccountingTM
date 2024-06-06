@@ -31,7 +31,7 @@
 		</div>
 		<div class="col-3">
 			<div class="row">
-				@* @Model.Brand @Model.Model *@
+				@Model.TypeEquipment @Model.Brand @Model.Model
 			</div>
 			<div class="row">
 				<div class="col-6">
@@ -86,11 +86,11 @@
 				<label for="floatingInputValue">Инвентарный номер</label>
 			</form>
 			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="floatingInputValue" value="@Model.EmployeeFio" readonly>
+				<input type="text" class="form-control" id="floatingInputValue" value="@(Model.Employee?.FullName ?? string.Empty)" readonly>
 				<label for="floatingInputValue">Ответственный</label>
 			</form>
 			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="floatingInputValue" value="@Model.LocationName" readonly>
+				<input type="text" class="form-control" id="floatingInputValue" value="@Model.Location.Name" readonly>
 				<label for="floatingInputValue">Местоположение</label>
 			</form>
 			<form class="form-floating mb-2">
@@ -362,5 +362,5 @@
 @await Html.PartialAsync("_AddInfoModal.cshtml")
 
 @section Scripts {
-	<script src="~/views/technicalEquipment/index.js"></script>
+	<script src="~/views/technicalEquipment/info.js"></script>
 }

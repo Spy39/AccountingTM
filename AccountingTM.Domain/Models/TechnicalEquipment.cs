@@ -49,5 +49,25 @@ namespace Accounting.Models
         public bool IsDeleted { get; set; } 
         public DateTime? DeletedDate { get; set; }
 
+		public string GetStatus()
+		{
+			switch (State)
+			{
+				case ConditionEquipment.Serviceable:
+					return "Исправно";
+                case ConditionEquipment.Faulty:
+                    return "Неисправно";
+                case ConditionEquipment.Efficient:
+                    return "Работоспособно";
+                case ConditionEquipment.Inoperative:
+                    return "Неработоспособно";
+				default: return "";
+
+            }
+		}
     }
+
+
+
+
 }

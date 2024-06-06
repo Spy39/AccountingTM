@@ -37,13 +37,8 @@
         initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
         columnDefs: [
             {
-                searchable: false,
-                orderable: false,
                 targets: 0,
-                data: null,
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
+                data: 'applicationNumber',
             },
             {
                 targets: 1,
@@ -63,13 +58,16 @@
             },
             {
                 targets: 5,
-                data: 'priority',
+                data: 'status',
                 render: (data, type, row, meta) => {
                     switch (data) {
-                        case 0: return "Критический";
-                        case 1: return "Высокий";
-                        case 2: return "Нормальный";
-                        case 3: return "Низкий";
+                        case 0: return "Новая";
+                        case 1: return "Получен комментарий";
+                        case 2: return "Комментарий отправлен";
+                        case 3: return "В работе";
+                        case 4: return "Приостановлена";
+                        case 5: return "Передана";
+                        case 6: return "Решена";
                     }
                 }
             },
@@ -84,6 +82,14 @@
             {
                 targets: 8,
                 data: 'priority',
+                render: (data, type, row, meta) => {
+                    switch (data) {
+                        case 0: return "Критический";
+                        case 1: return "Высокий";
+                        case 2: return "Нормальный";
+                        case 3: return "Низкий";
+                    }
+                }
             },
             {
                 targets: 9,

@@ -82,14 +82,18 @@ namespace Accounting.Controllers
             var model = new InfoViewModel
             {
                 TechnicalId = id,
+                Brand = technicalEquipment.Brand.Name,
+                Model = technicalEquipment.Model,
+                TypeEquipment = technicalEquipment.Type.Name,
                 SerialNumber = technicalEquipment.SerialNumber,
                 InventoryNumber = technicalEquipment.InventoryNumber,
-                EmployeeFio = technicalEquipment.Employee.FullName,
-                LocationName = technicalEquipment.Location.Name,
+                Employee = technicalEquipment.Employee,
+                Location = technicalEquipment.Location,
                 Date = technicalEquipment.Date,
                 DateStart = technicalEquipment.DateStart,
                 DateEnd = technicalEquipment.DateEnd,
-                DateGarant = technicalEquipment.DateGarant
+                DateGarant = technicalEquipment.DateGarant,
+                Status = technicalEquipment.GetStatus(),
             };
             return View(model);
         }

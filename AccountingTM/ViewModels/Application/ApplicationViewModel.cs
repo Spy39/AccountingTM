@@ -6,7 +6,7 @@ namespace AccountingTM.ViewModels.Application
 {
 	public class ApplicationViewModel
 	{
-
+		public int ApplicationId { get; set; }
 		/// <summary>Номер заявки</summary>
 		public string ApplicationNumber { get; set; }
 		/// <summary>Дата создания</summary>
@@ -20,15 +20,15 @@ namespace AccountingTM.ViewModels.Application
 		///<summary>Описание</summary>
 		public string Description { get; set; }
 		/// <summary>Статус</summary>
-		public ApplicationStatus Status { get; set; }
-		public Location Location { get; set; } //Местоположение
-		public Category Category { get; set; } // Категория
+		public string Status { get; set; }
+		public string Location { get; set; } //Местоположение
+		public string Category { get; set; } // Категория
 		/// <summary>Автор</summary>
 		public string Author { get; set; }
 		/// <summary>Исполнитель</summary>
 		public string? Executor { get; set; }
 		/// <summary>Последний ответивший</summary>
 		public string? LastReply { get; set; }
-		public Priority Priority { get; set; }
+		public string Priority { get; set; }
 	}
 }
