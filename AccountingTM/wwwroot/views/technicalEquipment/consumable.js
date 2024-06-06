@@ -39,7 +39,7 @@
         columnDefs: [
             {
                 targets: 0,
-                data: 'type.name',
+                data: 'typeConsumable.name',
             },
             {
                 targets: 1,
@@ -82,19 +82,19 @@
             }]
     });
     $("#search-btn").click(function () {
-        tableClients.ajax.reload()
+        tableConsumables.ajax.reload()
     })
 
     //Добавление
     $("#create-btn").click(function () {
         axios.post("Consumable/Create", {
-            typeId: +$("#typeConsumable").val(),
+            typeConsumableId: +$("#typeConsumable").val(),
             brandId: +$("#brand").val(),
             model: $("#model").val(),
             serialNumber: $("#serialNumber").val(),
             employeeId: +$("#employee").val(),
             locationId: +$("#location").val(),
-            unit: +$("#unit").val(),
+            unitId: +$("#unit").val(),
             quantity: $("#quantity").val(),
             
             
@@ -147,7 +147,7 @@
                     filter.maxResultCount = maxResultCount;
                     filter.skipCount = (params.page - 1) * maxResultCount;
                     filter.keyword = params.term
-                    axios.get("TypeConsumable/GetAll", { params: filter }).then(function (result) {
+                    axios.get("/TypeConsumable/GetAll", { params: filter }).then(function (result) {
 
                         success({
                             results: result.data.items,
@@ -179,7 +179,7 @@
                     filter.maxResultCount = maxResultCount;
                     filter.skipCount = (params.page - 1) * maxResultCount;
                     filter.keyword = params.term
-                    axios.get("Brand/GetAll", { params: filter }).then(function (result) {
+                    axios.get("/Brand/GetAll", { params: filter }).then(function (result) {
 
                         success({
                             results: result.data.items,
@@ -211,7 +211,7 @@
                 filter.maxResultCount = maxResultCount;
                 filter.skipCount = (params.page - 1) * maxResultCount;
                 filter.keyword = params.term
-                axios.get("Location/GetAll", { params: filter }).then(function (result) {
+                axios.get("/Location/GetAll", { params: filter }).then(function (result) {
 
                     success({
                         results: result.data.items,
@@ -243,7 +243,7 @@
                 filter.maxResultCount = maxResultCount;
                 filter.skipCount = (params.page - 1) * maxResultCount;
                 filter.keyword = params.term
-                axios.get("Employee/GetAll", { params: filter }).then(function (result) {
+                axios.get("/Employee/GetAll", { params: filter }).then(function (result) {
 
                     success({
                         results: result.data.items,
@@ -276,7 +276,7 @@
                 filter.maxResultCount = maxResultCount;
                 filter.skipCount = (params.page - 1) * maxResultCount;
                 filter.keyword = params.term
-                axios.get("Unit/GetAll", { params: filter }).then(function (result) {
+                axios.get("/Unit/GetAll", { params: filter }).then(function (result) {
 
                     success({
                         results: result.data.items,

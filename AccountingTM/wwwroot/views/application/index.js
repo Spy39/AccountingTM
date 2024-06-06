@@ -95,7 +95,7 @@
                 targets: 9,
                 data: null,
                 render: (data, type, row, meta) => {
-                    return `<a href="applications/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о заявке"><i class="fa-regular fa-address-card"></i></a>
+                    return `<a href="application/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о заявке"><i class="fa-regular fa-address-card"></i></a>
                             <button class="btn btn-danger delete" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
                 }
             }]

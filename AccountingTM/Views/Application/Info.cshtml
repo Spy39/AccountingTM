@@ -1,16 +1,17 @@
-﻿@{
-	ViewData["Title"] = "TechnicalEquipment";
+﻿@using AccountingTM.ViewModels.Application
+@model ApplicationViewModel
+
+@{
+	ViewData["Title"] = "Application";
 	Layout = "~/Views/Shared/Layout/_Layout.cshtml";
 }
 
-@section Scripts {
-	<script src="~/views/technicalEquipment/index.js"></script>
-}
+
 
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
 		<li class="breadcrumb-item"><a href="#">Home</a></li>
-		<li class="breadcrumb-item"><a href="#">TechnicalEquipment</a></li>
+		<li class="breadcrumb-item"><a href="#">Application</a></li>
 		<li class="breadcrumb-item active">Info</li>
 	</ol>
 }
@@ -18,7 +19,7 @@
 	<div class="container-fluid">
 		<div class="row mb-2">
 			<div class="col-sm-6">
-				<h1>Инфо о ТС</h1>
+				<h1>Информация о заявке</h1>
 			</div>
 		</div>
 	</div>
@@ -53,3 +54,78 @@
 		</div>
 	</div>
 </div>
+
+<div class="container col-11">
+	<div class="row">
+		<div class="col-3 p-3">
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-9">
+							<p>Статус заявки:</p>
+                            <p>Категория:</p>
+                            <p>Приоритет:</p>
+                            <p>Исполнитель:</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-9">
+							<h5>Информация</h5>
+							<p>Номер заявки:</p>
+							<p>Дата создания:</p>
+							<p>Последнее обновление:</p>
+							<p>Последний ответивший:</p>
+							<p>Срок исполнения:</p>
+							<p></p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-9">
+							<h5>История изменений</h5>
+						</div>
+				</div>
+			</div>
+			</div>
+		</div>
+
+		<div class="col-8 p-3">
+
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<h5>Название</h5>
+						<p>Автор:</p>
+						<p>Помещение:</p>
+						<p>Краткое описание:</p>
+						<button>Добавить примечание</button>
+					</div>
+				</div>
+			</div>
+		
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<h5>Комментарии</h5>
+						<p>Форма для сообщения:</p>
+						<p>....:</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
+
+
+
+@section Scripts {
+	<script src="~/views/technicalEquipment/index.js"></script>
+}

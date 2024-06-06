@@ -1,0 +1,32 @@
+﻿@* Добавление значения характеристик *@
+<div class="modal fade" tabindex="-1" id="createCharacteristic">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Добавление технического средства</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Показатель</label>
+					<select id="indicator"></select>
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Единица измерения</label>
+					<select id="unit"></select>
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Значение</label>
+					<input type="text" class="form-control" id="meaning" name="meaning" placeholder="Значение" />
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="create-btn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>

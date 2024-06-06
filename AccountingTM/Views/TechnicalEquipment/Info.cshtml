@@ -29,27 +29,17 @@
 		<div class="col-1">
 			<button class="btn btn-default" type="button">Назад</button>
 		</div>
-		<div class="col-3">
+		<div class="col-7">
 			<div class="row">
-				@Model.TypeEquipment @Model.Brand @Model.Model
+                <h3>@Model.TypeEquipment @Model.Brand @Model.Model</h3>
 			</div>
-			<div class="row">
-				<div class="col-6">
-					Дата
-				</div>
-				<div class="col-6">
-					@(Model.Status)
-				</div>
-			</div>
-		</div>
-		<div class="col-4">
 		</div>
 		<div class="col-2">
 			<div class="row">
-				Номер
+				Статус: @Model.Status
 			</div>
 			<div class="row">
-				Изменено
+				Изменено:
 			</div>
 		</div>
 
@@ -128,7 +118,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+							<table id="characteristicTable" class="table table-bordered align-middle table-hover" style="width:100%">
 								<thead class="table">
 									<tr>
 										<td>Показатель</td>
@@ -360,6 +350,7 @@
 </div>
 
 @await Html.PartialAsync("_AddInfoModal.cshtml")
+@await Html.PartialAsync("_AddCharacteristicModal.cshtml")
 
 @section Scripts {
 	<script src="~/views/technicalEquipment/info.js"></script>
