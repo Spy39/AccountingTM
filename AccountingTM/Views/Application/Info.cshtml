@@ -62,10 +62,10 @@
 				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 					<div class="row">
 						<div class="col-9">
-							<p>Статус заявки:</p>
-                            <p>Категория:</p>
-                            <p>Приоритет:</p>
-                            <p>Исполнитель:</p>
+							<p>Статус заявки: @Model.Status</p>
+							<p>Категория: @Model.Category</p>
+							<p>Приоритет: @Model.Priority</p>
+							<p>Исполнитель: @Model.Executor</p>
 						</div>
 					</div>
 				</div>
@@ -75,11 +75,11 @@
 					<div class="row">
 						<div class="col-9">
 							<h5>Информация</h5>
-							<p>Номер заявки:</p>
-							<p>Дата создания:</p>
-							<p>Последнее обновление:</p>
-							<p>Последний ответивший:</p>
-							<p>Срок исполнения:</p>
+							<p>Номер заявки: @Model.ApplicationNumber</p>
+							<p>Дата создания: @Model.DateOfCreation</p>
+							<p>Последнее обновление: @Model.DateOfChange</p>
+							<p>Последний ответивший: @Model.LastReply</p>
+							<p>Срок исполнения: @Model.ExpirationDate</p>
 							<p></p>
 						</div>
 					</div>
@@ -101,10 +101,10 @@
 			<div class="row">
 				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 					<div class="row">
-						<h5>Название</h5>
-						<p>Автор:</p>
-						<p>Помещение:</p>
-						<p>Краткое описание:</p>
+						<h5>@Model.Subject</h5>
+						<p>Автор: @Model.Author</p>
+						<p>Помещение: @Model.Location</p>
+						<p>Краткое описание: @Model.Description</p>
 						<button>Добавить примечание</button>
 					</div>
 				</div>

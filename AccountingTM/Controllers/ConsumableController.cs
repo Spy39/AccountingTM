@@ -4,6 +4,7 @@ using AccountingTM.Dto.Common;
 using AccountingTM.Dto.TechnicalEquipment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers
 {
@@ -20,7 +21,7 @@ namespace AccountingTM.Controllers
 		[HttpGet("[controller]/[action]")]
 		public IActionResult GetAll([FromQuery] GetAllTechnicalDto input)
 		{
-			IQueryable<Consumable> query = _context.Consumables;
+			IQueryable<Consumable> query = _context.Consumables.Include(x => x.TypeConsumable).Include(x => x.Brand).Include(x => x.Location).Include(x => x.Unit).Include(x => x.Employee);
 			if (!string.IsNullOrWhiteSpace(input.SearchQuery))
 			{
 				var keyword = input.SearchQuery.ToLower();
