@@ -9,6 +9,19 @@
     let tableClients = new DataTable('#applicationsTable', {
         paging: true,
         serverSide: true,
+        bAutoWidth: false,
+        aoColumns: [
+            { sWidth: '11%' },
+            { sWidth: '10%' },
+            { sWidth: '10%' },
+            { sWidth: '9%' },
+            { sWidth: '16%' },
+            { sWidth: '8%' },
+            { sWidth: '11%' },
+            { sWidth: '9%' },
+            { sWidth: '9%' },
+            { sWidth: '7%' },
+        ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.searchQuery = $("#search-input").val()
@@ -62,12 +75,10 @@
                 render: (data, type, row, meta) => {
                     switch (data) {
                         case 0: return "Новая";
-                        case 1: return "Получен комментарий";
-                        case 2: return "Комментарий отправлен";
-                        case 3: return "В работе";
-                        case 4: return "Приостановлена";
-                        case 5: return "Передана";
-                        case 6: return "Решена";
+                        case 1: return "В работе";
+                        case 2: return "Приостановлена";
+                        case 3: return "Передана";
+                        case 4: return "Решена";
                     }
                 }
             },
@@ -95,7 +106,7 @@
                 targets: 9,
                 data: null,
                 render: (data, type, row, meta) => {
-                    return `<a href="application/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о заявке"><i class="fa-regular fa-address-card"></i></a>
+                    return `<a href="application/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о заявке"><i class="fa-solid fa-circle-info"></i></a>
                             <button class="btn btn-danger delete" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
                 }
             }]

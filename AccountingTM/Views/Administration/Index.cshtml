@@ -5,7 +5,7 @@
 
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
-		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
 		<li class="breadcrumb-item active">Administration</li>
 	</ol>
 }
@@ -21,14 +21,14 @@
 
 <div class="row">
 
-	<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded col-8">
+	<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded col-12">
 		<div class="row">
 			<div class="col-8">
 				<h5>Пользователи</h5>
 			</div>
 			<div class="col-1">
 				<div class="float-sm-right">
-					<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createEmployee" type="submit">
+					<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createUser" type="submit">
 						<i class="fa-solid fa-plus"></i>
 					</button>
 				</div>
@@ -41,40 +41,14 @@
 			</div>
 		</div>
 		<div class="row">
-			<table id="reciepts" class="table table-bordered align-middle table-hover table-striped" style="width:100%">
+			<table id="administrationTable" class="table table-bordered align-middle table-hover table-striped" style="width:100%">
 				<thead class="table">
 					<tr>
 						<td>Фамилия, имя, отчество</td>
 						<td>Логин</td>
 						<td>Пароль</td>
 						<td>Права</td>
-						<td></td>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-	</div>
-
-	<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded col-4">
-		<div class="row">
-			<div class="col-11 mb-3">
-				<h5>Права пользователей</h5>
-			</div>
-			<div class="col-1">
-				<div class="float-sm-right">
-					<button class="btn btn-default mb-3" data-bs-toggle="modal" data-bs-target="#createEmployee" type="submit">
-						<i class="fa-solid fa-plus"></i>
-					</button>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<table id="reciepts" class="table table-bordered align-middle table-hover table-striped" style="width:100%">
-				<thead class="table">
-					<tr>
-						<td>Наименование</td>
+						<td>Сотрудник</td>
 						<td></td>
 					</tr>
 				</thead>
@@ -86,3 +60,4 @@
 
 </div>
 
+@await Html.PartialAsync("_AddUserModal.cshtml")

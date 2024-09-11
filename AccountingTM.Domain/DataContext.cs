@@ -2,6 +2,7 @@
 using AccountingTM.Domain.Models;
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Domain.Models.Tables;
+using AccountingTM.Domain.Permissions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Accounting.Data
@@ -36,15 +37,24 @@ namespace Accounting.Data
 		public DbSet<Storage> Storages { get; set; }
 		//Основные таблицы
 		public DbSet<Application> Applications { get; set; }
-		public DbSet<Characteristics> Characteristics { get; set; }
+		public DbSet<Characteristic> Characteristics { get; set; }
 		public DbSet<Consumable> Consumables { get; set; }
 		public DbSet<DocumentType> DocumentType { get; set; }
         public DbSet<Malfunction> Malfunction { get; set; }
 		public DbSet<Moving> Moving { get; set; }
-		public DbSet<Rights> Rights { get; set; }
-		public DbSet<Roles> Roles { get; set; }
+		public DbSet<Permission> Permissions { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<UserPermission> UserPermissions { get; set; }
+		public DbSet<UserRole> UserRoles { get; set; }
+        public DbSet<Role> Roles { get; set; }
 		public DbSet<TechnicalEquipment> TechnicalEquipment { get; set; }
 		public DbSet<User> Users { get; set; }
-		
-	}
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+			modelBuilder.Entity<UserRole>().HasKey(x => new { x.RoleId, x.UserId });
+			modelBuilder.Entity<UserRole>().HasOne(x => x.Role).WithMany(x => x.UserRoles).HasForeignKey(x => x.RoleId);
+            modelBuilder.Entity<UserRole>().HasOne(x => x.User).WithMany(x => x.UserRoles).HasForeignKey(x => x.UserId);
+        }
+    }
 }

@@ -1,0 +1,45 @@
+﻿@{
+	ViewData["Title"] = "UserPage";
+	Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+
+@section LeftNavbar {
+	<ol class="breadcrumb float-sm-right m-0 bg-white">
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
+		<li class="breadcrumb-item active">User page</li>
+	</ol>
+}
+
+<div class="container col-6 mb-1">
+	<div class="row">
+		<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+			<div class="row">
+                <form class="form-floating mb-2">
+                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
+                    <label for="floatingInputValue">Фамилия, имя, отчество</label>
+                </form>
+                <form class="form-floating mb-2">
+                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
+                    <label for="floatingInputValue">Логин</label>
+                </form>
+                <form class="form-floating mb-2">
+                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
+                    <label for="floatingInputValue">Пароль</label>
+                </form>
+                <form class="form-floating mb-2">
+                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
+                    <label for="floatingInputValue">Должность</label>
+                </form>
+                <form class="form-floating mb-2">
+                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
+                    <label for="floatingInputValue">Права</label>
+                </form>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
+                    <button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editUserPage" type="submit">Изменить</button>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+@await Html.PartialAsync("_EditUserPageModal.cshtml")

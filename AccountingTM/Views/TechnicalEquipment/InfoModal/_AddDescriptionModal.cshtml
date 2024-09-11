@@ -1,0 +1,23 @@
+﻿@using AccountingTM.ViewModels.TechnicalEquipment
+@model InfoViewModel
+
+@* Добавление описания *@
+<div class="modal fade" tabindex="-1" id="addDescriptionModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Добавление описания</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="addDescriptionBtn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>

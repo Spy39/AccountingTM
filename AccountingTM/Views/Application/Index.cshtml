@@ -3,10 +3,9 @@
     Layout = "~/Views/Shared/Layout/_Layout.cshtml";
 }
 
-
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
-		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
 		<li class="breadcrumb-item active">Applications</li>
 	</ol>
 }
@@ -37,17 +36,7 @@
 		</div>
 
 		<div class="dropdown col-3">
-			<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-				Сортировать по
-			</button>
-			<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-				<li><a class="dropdown-item" href="#">Приоритету</a></li>
-				<li><a class="dropdown-item" href="#">Дате</a></li>
-				<li><a class="dropdown-item" href="#">Обновлению</a></li>
-				<li><a class="dropdown-item" href="#">Категории</a></li>
-				<li><a class="dropdown-item" href="#">Теме</a></li>
-				<li><a class="dropdown-item" href="#">Статусу</a></li>
-			</ul>
+
 		</div>
 		<div class="col-3">
 			<div class="float-sm-right">
@@ -81,7 +70,8 @@
 </table>
 
 
-@await Html.PartialAsync("_AddIndexModal.cshtml")
+@await Html.PartialAsync("_AddApplicationModal.cshtml")
+@await Html.PartialAsync("_UseFilterModal.cshtml")
 
 @section Scripts {
 	<script src="~/views/application/index.js"></script>

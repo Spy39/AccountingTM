@@ -2,16 +2,14 @@
 @model ApplicationViewModel
 
 @{
-	ViewData["Title"] = "Application";
+	ViewData["Title"] = "ApplicationInfo";
 	Layout = "~/Views/Shared/Layout/_Layout.cshtml";
 }
 
-
-
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
-		<li class="breadcrumb-item"><a href="#">Home</a></li>
-		<li class="breadcrumb-item"><a href="#">Application</a></li>
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="Application" asp-action="Index">Application</a></li>
 		<li class="breadcrumb-item active">Info</li>
 	</ol>
 }
@@ -28,7 +26,7 @@
 <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 	<div class="row">
 		<div class="col-1">
-			<button class="btn btn-default" type="button">Назад</button>
+			<a class="btn btn-default" asp-area="" asp-controller="Application" asp-action="Index">Назад</a>
 		</div>
 		<div class="col-3">
 	
@@ -41,9 +39,7 @@
 
 		<div class="col-2">
 			<div class="float-sm-right">
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#create" type="submit">
-					<i class="fa-solid fa-plus"></i>
-				</button>
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#AddTechnicalEquipmentModal">Добавить к ТС</button>
 				<button type="button" class="btn btn-default">
 					<i class="fa-solid fa-download"></i>
 				</button>
@@ -55,17 +51,40 @@
 	</div>
 </div>
 
-<div class="container col-11">
+<div class="container col-12">
 	<div class="row">
 		<div class="col-3 p-3">
 			<div class="row">
 				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 					<div class="row">
 						<div class="col-9">
-							<p>Статус заявки: @Model.Status</p>
-							<p>Категория: @Model.Category</p>
-							<p>Приоритет: @Model.Priority</p>
+                            <p>Статус заявки: @Model.Status
+								<select class="custom-select form-control-border" id="exampleSelectBorderWidth2">
+									<option>Value 1</option>
+									<option>Value 2</option>
+									<option>Value 3</option>
+								</select>
+							</p>
+							<p class="nav-line"></p>
+							<p>Категория: @Model.Category
+								<select class="custom-select form-control-border" id="exampleSelectBorderWidth2">
+									<option>Value 1</option>
+									<option>Value 2</option>
+									<option>Value 3</option>
+								</select>
+							</p>
+							<p class="nav-line"></p>
+							<p>Приоритет: @Model.Priority
+								<select class="custom-select form-control-border" id="exampleSelectBorderWidth2">
+									<option>Value 1</option>
+									<option>Value 2</option>
+									<option>Value 3</option>
+								</select>
+							</p>
+							<p class="nav-line"></p>
 							<p>Исполнитель: @Model.Executor</p>
+							<button type="button" class="btn btn-link">Назначить себе</button>
+							<button type="button" class="btn btn-link">Решена</button>
 						</div>
 					</div>
 				</div>
@@ -96,7 +115,7 @@
 			</div>
 		</div>
 
-		<div class="col-8 p-3">
+		<div class="col-9 p-3">
 
 			<div class="row">
 				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
@@ -105,7 +124,6 @@
 						<p>Автор: @Model.Author</p>
 						<p>Помещение: @Model.Location</p>
 						<p>Краткое описание: @Model.Description</p>
-						<button>Добавить примечание</button>
 					</div>
 				</div>
 			</div>
@@ -114,8 +132,39 @@
 				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 					<div class="row">
 						<h5>Комментарии</h5>
-						<p>Форма для сообщения:</p>
-						<p>....:</p>
+						<div class="form-group">
+							<label>Textarea</label>
+							<textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
+						</div>
+
+						<div class="custom-file  mb-1">
+							<input type="file" class="custom-file-input" id="customFile">
+							<label class="custom-file-label" for="customFile">Choose file</label>
+						</div>
+
+						<div>
+							<div class="row mb-1">
+								<div class="col-sm-6">
+
+									<div class="form-group">
+
+										<div class="custom-control custom-checkbox">
+											<input class="custom-control-input" type="checkbox" id="customCheckbox2" checked="">
+											<label for="customCheckbox2" class="custom-control-label">Назначить заявку себе</label>
+										</div>
+
+										<div class="custom-control custom-checkbox">
+											<input class="custom-control-input" type="checkbox" id="customCheckbox1" value="option1">
+											<label for="customCheckbox1" class="custom-control-label">Изменить приоритет</label>
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
+						<div>
+							<button type="submit" class="btn btn-primary">Добавить ответ</button>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -124,8 +173,8 @@
 	</div>
 </div>
 
-
+@await Html.PartialAsync("_AddTechnicalEquipmentModal.cshtml")
 
 @section Scripts {
-	<script src="~/views/technicalEquipment/index.js"></script>
+	<script src="~/views/application/info.js"></script>
 }

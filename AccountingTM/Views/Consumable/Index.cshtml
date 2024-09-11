@@ -6,7 +6,7 @@
 
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
-		<li class="breadcrumb-item"><a href="#">Home</a></li>
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
 		<li class="breadcrumb-item active">Consumable</li>
 	</ol>
 }
@@ -56,8 +56,6 @@
 			<th>Тип</th>
 			<th>Бренд</th>
 			<th>Модель</th>
-			<th>Серийный номер</th>
-			<th>Ответственный</th>
 			<th>Местоположение</th>
 			<th>Единица измерения</th>
 			<th>Количество</th>
@@ -72,5 +70,5 @@
 @await Html.PartialAsync("_AddConsumableModal.cshtml")
 
 @section Scripts {
-	<script src="~/views/technicalEquipment/consumable.js"></script>
+	<script src="~/views/consumable/index.js"></script>
 }

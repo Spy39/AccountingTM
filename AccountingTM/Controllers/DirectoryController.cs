@@ -14,37 +14,33 @@ namespace AccountingTM.Controllers
         {
             return PartialView("_TypeEquipment");
         }
-		public IActionResult TypeConsumable()
-		{
-			return PartialView("_TypeConsumable");
-		}
-		public IActionResult Brand()
-		{
-			return PartialView("_Brand");
-		}
-		public IActionResult Category()
+        public IActionResult TypeConsumable()
         {
-			return PartialView("_Category");
-		}
-		public IActionResult Set()
-		{
-			return PartialView("_Set");
-		}
-		public IActionResult Employee()
+            return PartialView("_TypeConsumable");
+        }
+        public IActionResult Brand()
         {
-			return PartialView("_Employee");
-		}
+            return PartialView("_Brand");
+        }
+        public IActionResult Category()
+        {
+            return PartialView("_Category");
+        }
+        public IActionResult Employee()
+        {
+            return PartialView("_Employee");
+        }
         public IActionResult Indicator()
         {
-			return PartialView("_Indicator");
-		}
+            return PartialView("_Indicator");
+        }
         public IActionResult Location()
         {
-			return PartialView("_Location");
-		}
+            return PartialView("_Location");
+        }
         public IActionResult Unit()
         {
-			return PartialView("_Unit");
-		}
+            return PartialView("_Unit");
+        }
     }
 }

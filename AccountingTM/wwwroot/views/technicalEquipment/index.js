@@ -10,6 +10,17 @@
     let tableClients = new DataTable('#technicalEquipmentTable', {
         paging: true,
         serverSide: true,
+        bAutoWidth: false,
+        aoColumns: [
+            { sWidth: '14%' },
+            { sWidth: '14%' },
+            { sWidth: '14%' },
+            { sWidth: '14%' },
+            { sWidth: '10%' },
+            { sWidth: '17%' },
+            { sWidth: '10%' },
+            { sWidth: '7%' }
+        ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.searchQuery = $("#search-input").val()
@@ -32,7 +43,7 @@
             {
                 name: 'refresh',
                 text: '<i class="fas fa-redo-alt"></i>',
-                action: () => _$rolesTable.draw(false)
+                action: () => tableClients.draw(false)
             }
         ],
         initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
@@ -81,8 +92,8 @@
                 targets: 7,
                 data: null,
                 render: (data, type, row, meta) => {
-                    return `<a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС"><i class="fa-regular fa-address-card"></i></a>
-                            <button class="btn btn-danger delete" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
+                    return `<a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС"><i class="fa-solid fa-circle-info"></i></a>
+                            <button class="btn btn-danger delete technicalEquipment" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
                 }
             }]
     });
@@ -108,11 +119,11 @@
     })
 
     //Удаление технического средства
-    $(document).on("click", ".delete", function () {
+    $(document).on("click", ".delete.technicalEquipment", function () {
         let name = this.dataset.name;
         Swal.fire({
             title: "Вы уверены?",
-            text: `ТС ${name} будет удален!`,
+            text: `ТС ${name} будет удалено!`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -125,7 +136,7 @@
                 axios.delete("TechnicalEquipment/Delete?id=" + id).then(function () {
                     tableClients.draw(false)
                     $(".tooltip").removeClass("show")
-                    toastr.success('ТС успешно удален!')
+                    toastr.success(`ТС ${name} успешно удалено!`)
                 })
             }
         });

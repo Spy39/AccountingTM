@@ -7,13 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Account\UserPage.cshtml" />
     <Content Remove="Views\Shared\Layout\_Header.LeftNavbar.cshtml" />
+    <Content Remove="wwwroot\views\administration\index.js" />
     <Content Remove="wwwroot\views\application\index.js" />
+    <Content Remove="wwwroot\views\application\info.js" />
+    <Content Remove="wwwroot\views\directory\brand.js" />
+    <Content Remove="wwwroot\views\directory\category.js" />
+    <Content Remove="wwwroot\views\directory\employee.js" />
     <Content Remove="wwwroot\views\directory\index.js" />
+    <Content Remove="wwwroot\views\directory\indicator.js" />
+    <Content Remove="wwwroot\views\directory\location.js" />
+    <Content Remove="wwwroot\views\directory\typeConsumable.js" />
+    <Content Remove="wwwroot\views\directory\typeEquipment.js" />
+    <Content Remove="wwwroot\views\directory\unit.js" />
+    <Content Remove="wwwroot\views\set\index.js" />
     <Content Remove="wwwroot\views\technicalEquipment\consumable.js" />
+    <Content Remove="wwwroot\views\technicalEquipment\info\info.js" />
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="Views\Account\UserPage.cshtml" />
     <_ContentIncludedByDefault Remove="wwwroot\css\Style.css" />
   </ItemGroup>
 
@@ -39,11 +53,35 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Views\Account\UserPage.cshtml" />
     <None Include="Views\Shared\Layout\_Header.LeftNavbar.cshtml" />
+    <None Include="wwwroot\views\administration\index.js" />
+    <None Include="wwwroot\views\application\info.js" />
     <None Include="wwwroot\views\application\index.js" />
+    <None Include="wwwroot\views\directory\category.js" />
+    <None Include="wwwroot\views\directory\typeConsumable.js" />
+    <None Include="wwwroot\views\directory\typeEquipment.js" />
+    <None Include="wwwroot\views\directory\unit.js" />
+    <None Include="wwwroot\views\directory\brand.js" />
+    <None Include="wwwroot\views\directory\employee.js" />
+    <None Include="wwwroot\views\directory\indicator.js" />
+    <None Include="wwwroot\views\directory\location.js" />
     <None Include="wwwroot\views\directory\index.js" />
-    <None Include="wwwroot\views\technicalEquipment\consumable.js" />
+    <None Include="wwwroot\views\consumable\index.js" />
+    <None Include="wwwroot\views\set\index.js" />
     <None Include="wwwroot\views\technicalEquipment\index.js" />
+    <None Include="wwwroot\views\technicalEquipment\info.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Views\Account\UserPage.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Consumable\Info.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

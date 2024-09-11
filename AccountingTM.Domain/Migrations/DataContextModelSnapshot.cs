@@ -166,6 +166,9 @@ namespace AccountingTM.Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("FatherName")
                         .IsRequired()
                         .HasColumnType("text");
@@ -182,19 +185,13 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Users");
                 });
@@ -228,8 +225,8 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Executor")
-                        .HasColumnType("text");
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("timestamp without time zone");
@@ -254,6 +251,8 @@ namespace AccountingTM.Domain.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("EmployeeId");
+
                     b.HasIndex("LocationId");
 
                     b.ToTable("Applications");
@@ -270,9 +269,6 @@ namespace AccountingTM.Domain.Migrations
                     b.Property<int>("BrandId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("LocationId")
                         .HasColumnType("integer");
 
@@ -284,9 +280,6 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("SerialNumber")
-                        .HasColumnType("text");
-
                     b.Property<int>("TypeConsumableId")
                         .HasColumnType("integer");
 
@@ -296,8 +289,6 @@ namespace AccountingTM.Domain.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
-
-                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("LocationId");
 
@@ -489,28 +480,7 @@ namespace AccountingTM.Domain.Migrations
                     b.ToTable("DocumentType");
                 });
 
-            modelBuilder.Entity("AccountingTM.Domain.Models.Rights", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Connection")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Rights");
-                });
-
-            modelBuilder.Entity("AccountingTM.Domain.Models.Roles", b =>
+            modelBuilder.Entity("AccountingTM.Domain.Models.Role", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -527,7 +497,7 @@ namespace AccountingTM.Domain.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.Characteristics", b =>
+            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.Characteristic", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -542,12 +512,17 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("TechnicalEquipmentId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("UnitId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IndicatorId");
+
+                    b.HasIndex("TechnicalEquipmentId");
 
                     b.HasIndex("UnitId");
 
@@ -574,9 +549,6 @@ namespace AccountingTM.Domain.Migrations
 
                     b.Property<string>("NameAndReason")
                         .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Note")
                         .HasColumnType("text");
 
                     b.Property<int>("TechnicalEquipmentId")
@@ -707,14 +679,6 @@ namespace AccountingTM.Domain.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("HoursAfterRepair")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("InitialOperatingTime")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("ReasonForRepair")
                         .IsRequired()
                         .HasColumnType("text");
@@ -744,9 +708,6 @@ namespace AccountingTM.Domain.Migrations
                     b.Property<DateTime>("Acceptance")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("Removal")
                         .HasColumnType("timestamp without time zone");
 
@@ -766,6 +727,75 @@ namespace AccountingTM.Domain.Migrations
                     b.HasIndex("TechnicalEquipmentId");
 
                     b.ToTable("Storages");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Models.UserRole", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("RoleId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Permissions.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsGranted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permission");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Permission");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Permissions.RolePermission", b =>
+                {
+                    b.HasBaseType("AccountingTM.Domain.Permissions.Permission");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Permission");
+
+                    b.HasDiscriminator().HasValue("RolePermission");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Permissions.UserPermission", b =>
+                {
+                    b.HasBaseType("AccountingTM.Domain.Permissions.Permission");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Permission");
+
+                    b.HasDiscriminator().HasValue("UserPermission");
                 });
 
             modelBuilder.Entity("Accounting.Models.Malfunction", b =>
@@ -849,6 +879,15 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("Type");
                 });
 
+            modelBuilder.Entity("Accounting.Models.User", b =>
+                {
+                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("AccountingTM.Domain.Models.Application", b =>
                 {
                     b.HasOne("AccountingTM.Domain.Models.Directory.Category", "Category")
@@ -856,6 +895,10 @@ namespace AccountingTM.Domain.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
 
                     b.HasOne("AccountingTM.Domain.Models.Directory.Location", "Location")
                         .WithMany()
@@ -865,6 +908,8 @@ namespace AccountingTM.Domain.Migrations
 
                     b.Navigation("Category");
 
+                    b.Navigation("Employee");
+
                     b.Navigation("Location");
                 });
 
@@ -873,12 +918,6 @@ namespace AccountingTM.Domain.Migrations
                     b.HasOne("AccountingTM.Domain.Models.Directory.Brand", "Brand")
                         .WithMany()
                         .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -902,8 +941,6 @@ namespace AccountingTM.Domain.Migrations
 
                     b.Navigation("Brand");
 
-                    b.Navigation("Employee");
-
                     b.Navigation("Location");
 
                     b.Navigation("TypeConsumable");
@@ -911,11 +948,17 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("Unit");
                 });
 
-            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.Characteristics", b =>
+            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.Characteristic", b =>
                 {
                     b.HasOne("AccountingTM.Domain.Models.Directory.Indicator", "Indicator")
                         .WithMany()
                         .HasForeignKey("IndicatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
+                        .WithMany()
+                        .HasForeignKey("TechnicalEquipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -926,6 +969,8 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired();
 
                     b.Navigation("Indicator");
+
+                    b.Navigation("TechnicalEquipment");
 
                     b.Navigation("Unit");
                 });
@@ -1010,6 +1055,57 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired();
 
                     b.Navigation("TechnicalEquipment");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Models.UserRole", b =>
+                {
+                    b.HasOne("AccountingTM.Domain.Models.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Accounting.Models.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Permissions.RolePermission", b =>
+                {
+                    b.HasOne("AccountingTM.Domain.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Permissions.UserPermission", b =>
+                {
+                    b.HasOne("Accounting.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Accounting.Models.User", b =>
+                {
+                    b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Models.Role", b =>
+                {
+                    b.Navigation("UserRoles");
                 });
 #pragma warning restore 612, 618
         }

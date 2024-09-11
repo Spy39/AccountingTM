@@ -2,15 +2,14 @@
 @model InfoViewModel
 
 @{
-    ViewData["Title"] = "TechnicalEquipment";
+    ViewData["Title"] = "TechnicalEquipmentInfo";
     Layout = "~/Views/Shared/Layout/_Layout.cshtml";
 }
 
-
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
-		<li class="breadcrumb-item"><a href="#">Home</a></li>
-		<li class="breadcrumb-item"><a href="#">TechnicalEquipment</a></li>
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">TechnicalEquipment</a></li>
 		<li class="breadcrumb-item active">Info</li>
 	</ol>
 }
@@ -19,6 +18,7 @@
 		<div class="row mb-2">
 			<div class="col-sm-6">
 				<h1>Инфо о ТС</h1>
+				<input type="text" id="technicalEquipmentId" value="@(Model.TechnicalId)" hidden>
 			</div>
 		</div>
 	</div>
@@ -27,7 +27,7 @@
 <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 	<div class="row">
 		<div class="col-1">
-			<button class="btn btn-default" type="button">Назад</button>
+			<a class="btn btn-default" asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Назад</a>
 		</div>
 		<div class="col-7">
 			<div class="row">
@@ -45,7 +45,7 @@
 
 		<div class="col-2">
 			<div class="float-sm-right">
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editInfo1" type="submit">
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editBasicModal" type="submit">
 					<i class="fa-solid fa-pen"></i>
 				</button>
 				<button type="button" class="btn btn-default">
@@ -100,49 +100,35 @@
 				<label for="floatingInputValue">Гарантийный срок работы</label>
 			</form>
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editInfo2" type="submit">Изменить</button>
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editAdditionalModal" type="submit">Изменить</button>
 			</div>
 
-				<div class="row">
-					<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-						<div class="row">
-							<div class="col-9">
-								<h5>Характеристики</h5>
-							</div>
-							<div class="col-3">
-								<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createCharacteristic" type="submit">
-										<i class="fa-solid fa-plus"></i>
-									</button>
-								</div>
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-8">
+							<h5>Описание</h5>
+						</div>
+						<div class="col-4">
+							<div class="float-sm-right">
+								<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editDescriptionModal" type="submit">
+									<i class="fa-solid fa-pen"></i>
+								</button>
+								<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#addDescriptionModal" type="submit">
+									<i class="fa-solid fa-plus"></i>
+								</button>
 							</div>
 						</div>
-						<div class="row">
-							<table id="characteristicTable" class="table table-bordered align-middle table-hover" style="width:100%">
-								<thead class="table">
-									<tr>
-										<td>Показатель</td>
-										<td>Ед. измерения</td>
-										<td>Значение</td>
-										<td></td>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
+					</div>
+					<div class="row">
+						ввв
 					</div>
 				</div>
 			</div>
-
-
-
-
-
+		</div>
 
 
 		<div class="col-9 p-3">
-
 			<div class="row">
 				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 					<div class="row">
@@ -151,21 +137,21 @@
 						</div>
 						<div class="col-3">
 							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addCompletedWorkModal" type="submit">
 									<i class="fa-solid fa-plus"></i>
 								</button>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+						<table id="completedWorkTable" class="table table-bordered align-middle table-hover" style="width:100%">
 							<thead class="table">
 								<tr>
 									<td>Дата</td>
 									<td>Номер заявки</td>
-									<td>Наименование работ и их причина</td>
+									<td>Наименование</td>
 									<td>Фамилия выполнившего работу</td>
-									<td>Примечание</td>
+									<td>Статус</td>
 									<td></td>
 								</tr>
 							</thead>
@@ -184,14 +170,14 @@
 					</div>
 					<div class="col-3">
 						<div class="float-sm-right">
-							<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addReceptionAndTransmissionModal" type="submit">
 								<i class="fa-solid fa-plus"></i>
 							</button>
 						</div>
 					</div>
 				</div>
 					<div class="row">
-						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+						<table id="receptionAndTransmissionTable" class="table table-bordered align-middle table-hover" style="width:100%">
 							<thead class="table">
                                 <tr>
                                     <td>Дата</td>
@@ -219,21 +205,19 @@
 						</div>
 						<div class="col-3">
 							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addRepairModal" type="submit">
 									<i class="fa-solid fa-plus"></i>
 								</button>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+						<table id="repairTable" class="table table-bordered align-middle table-hover" style="width:100%">
 							<thead class="table">
 								<tr>
 									<td>Дата</td>
 									<td>Предприятие</td>
-									<td>Наработка с начала эксплуатации</td>
-									<td>Наработка после последнего ремонта</td>
-									<td>Причина послупления в ремонт</td>
+									<td>Причина поступления в ремонт</td>
 									<td>Сведения о производственном ремонте</td>
 									<td></td>
 								</tr>
@@ -253,27 +237,24 @@
 						</div>
 						<div class="col-3">
 							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addStorageModal" type="submit">
 									<i class="fa-solid fa-plus"></i>
 								</button>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+						<table id="storageTable" class="table table-bordered align-middle table-hover" style="width:100%">
 							<thead class="table">
-								<tr>
-									<td colspan="2">Дата</td>
-									<td rowspan="2">Условия хранения</td>
-									<td rowspan="2">Вид хранения</td>
-									<td rowspan="2">Примечание</td>
-								</tr>
-								<tr>
-									<td>приемки на хранение</td>
-									<td>снятия с хранения</td>
-								</tr>
+                                <tr>
+                                    <td>Дата приемки на хранение</td>
+                                    <td>Дата снятия с хранения</td>
+                                    <td>Условия хранения</td>
+                                    <td>Вид хранения</td>
+                                    <td>Примечание</td>
+                                    <td></td>
+                                </tr>
 							</thead>
-
 							<tbody>
 							</tbody>
 						</table>
@@ -289,20 +270,19 @@
 						</div>
 						<div class="col-3">
 							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addConservationModal" type="submit">
 									<i class="fa-solid fa-plus"></i>
 								</button>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+						<table id="conservationTable" class="table table-bordered align-middle table-hover" style="width:100%">
 							<thead class="table">
 								<tr>
 									<td>Дата</td>
 									<td>Наименование работ</td>
 									<td>Срок действия</td>
-									<td>Должность</td>
 									<td>Фамилия и инициалы</td>
 									<td></td>
 								</tr>
@@ -322,14 +302,14 @@
 						</div>
 						<div class="col-3">
 							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#create" type="submit">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addDisposalInformationModal" type="submit">
 									<i class="fa-solid fa-plus"></i>
 								</button>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<table id="reciepts" class="table table-bordered align-middle table-hover" style="width:100%">
+						<table id="disposalInformationTable" class="table table-bordered align-middle table-hover" style="width:100%">
 							<thead class="table">
 								<tr>
 									<td>Дата</td>
@@ -339,19 +319,66 @@
 								</tr>
 							</thead>
 							<tbody>
+
 							</tbody>
 						</table>
 					</div>
 				</div>
 			</div>
 
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+						<div class="col-9">
+							<h5>Характеристики</h5>
+						</div>
+						<div class="col-3">
+							<div class="float-sm-right">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createCharacteristicModal" type="submit">
+									<i class="fa-solid fa-plus"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<table id="characteristic" class="table table-bordered align-middle table-hover" style="width:100%">
+							<thead class="table">
+								<tr>
+									<td>Показатель</td>
+									<td>Ед. измерения</td>
+									<td>Значение</td>
+									<td></td>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
 
-@await Html.PartialAsync("_AddInfoModal.cshtml")
-@await Html.PartialAsync("_AddCharacteristicModal.cshtml")
+@await Html.PartialAsync("InfoModal/_AddCharacteristicModal.cshtml")
+@await Html.PartialAsync("InfoModal/_AddCompletedWorkModal.cshtml")
+@await Html.PartialAsync("InfoModal/_AddConservationModal.cshtml")
+@await Html.PartialAsync("InfoModal/_AddDescriptionModal.cshtml")
+@await Html.PartialAsync("InfoModal/_AddDisposalInformationModal.cshtml")
+@await Html.PartialAsync("InfoModal/_AddReceptionAndTransmissionModal.cshtml")
+@await Html.PartialAsync("InfoModal/_AddRepairModal.cshtml")
+@await Html.PartialAsync("InfoModal/_AddStorageModal.cshtml")
+@await Html.PartialAsync("InfoModal/_EditAdditionalModal.cshtml")
+@await Html.PartialAsync("InfoModal/_EditBasicModal.cshtml")
+@await Html.PartialAsync("InfoModal/_EditDescriptionModal.cshtml")
 
 @section Scripts {
 	<script src="~/views/technicalEquipment/info.js"></script>
+	<script src="~/views/technicalEquipment/info/characteristics.js"></script>
+	<script src="~/views/technicalEquipment/info/completedWork.js"></script>
+	<script src="~/views/technicalEquipment/info/conservation.js"></script>
+	<script src="~/views/technicalEquipment/info/disposalInformation.js"></script>
+	<script src="~/views/technicalEquipment/info/receptionAndTransmission.js"></script>
+	<script src="~/views/technicalEquipment/info/repair.js"></script>
+	<script src="~/views/technicalEquipment/info/storage.js"></script>
 }

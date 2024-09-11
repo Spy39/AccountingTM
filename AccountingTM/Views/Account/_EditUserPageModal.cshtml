@@ -1,0 +1,46 @@
+﻿@* @using AccountingTM.ViewModels.TechnicalEquipment
+@model InfoViewModel *@
+
+@* Изменение основной информации *@
+<div class="modal fade" tabindex="-1" id="editUserPage">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Редактирование личной информации</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Фамилия</label>
+					<input type="text" class="form-control" id="model" name="model" placeholder="Фамилия" />
+				</div>
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Имя</label>
+					<input type="text" class="form-control" id="model" name="model" placeholder="Имя" />
+				</div>
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Отчество</label>
+					<input type="text" class="form-control" id="model" name="model" placeholder="Отчество" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Логин</label>
+					<input type="text" class="form-control" id="model" name="model" placeholder="Логин" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Пароль</label>
+					<input type="text" class="form-control" id="model" name="model" placeholder="Пароль" />
+				</div>
+
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="create-btn" class="btn btn-primary">Изменить</button>
+			</div>
+		</div>
+	</div>
+</div>

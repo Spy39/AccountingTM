@@ -55,9 +55,9 @@ namespace AccountingTM.Controllers
                 _context.Users.Add(new User 
                 { 
                     Login = model.Login,
-                    Name = model.Name,
+                    //Name = model.Name,
                     Password = model.Password,
-                    Role = model.Role
+                    //Role = model.Role
                 });
                 _context.SaveChanges();
                 return Ok();
@@ -80,7 +80,13 @@ namespace AccountingTM.Controllers
         public IActionResult Logout()
         {
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
-            return RedirectToAction("Index", "Login");
+            return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        public IActionResult UserPage()
+        {
+            return View();
         }
     }
 }

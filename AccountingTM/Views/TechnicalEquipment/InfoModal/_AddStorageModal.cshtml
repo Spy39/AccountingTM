@@ -1,0 +1,46 @@
+﻿@using AccountingTM.ViewModels.TechnicalEquipment
+@model InfoViewModel
+
+@* Хранение *@
+<div class="modal fade" tabindex="-1" id="addStorageModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Добавление сведений о хранении</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="mb-1">
+					<label for="floatingInput">Дата приемки на хранение</label>
+					<input type="text" id="dateAcceptance" class="form-control" name="dateAcceptance" placeholder="Дата" />
+				</div>
+
+				<div class="mb-1">
+					<label for="floatingInput">Дата снятия с хранения</label>
+					<input value="" type="text" id="dateRemoval" class="form-control" name="dateRemoval" placeholder="Дата" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Условия хранения</label>
+					<input type="text" class="form-control" id="storageConditions " name="storageConditions " placeholder="Условия хранения" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Вид хранения</label>
+					<input type="text" class="form-control" id="type " name="type " placeholder="Условия хранения" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Примечание</label>
+					<input type="text" class="form-control" id="note" name="note" placeholder="Примечание" />
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="createStorageBtn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>

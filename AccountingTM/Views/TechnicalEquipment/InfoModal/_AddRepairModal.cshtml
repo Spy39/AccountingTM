@@ -1,0 +1,41 @@
+﻿@using AccountingTM.ViewModels.TechnicalEquipment
+@model InfoViewModel
+
+@* Ремонт *@
+<div class="modal fade" tabindex="-1" id="addRepairModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Добавление сведений о ремонте</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="mb-1">
+					<label for="floatingInput">Дата</label>
+					<input type="text" id="dateRepair" class="form-control" name="dateRepair" placeholder="Дата" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Предприятие</label>
+					<input type="text" class="form-control" id="company" name="company" placeholder="Предприятие" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Причина поступления в ремонт</label>
+					<input type="text" class="form-control" id="reasonForRepair" name="reasonForRepair" placeholder="Причина поступления в ремонт" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Сведения о производственном ремонте</label>
+					<input type="text" class="form-control" id="repairInformation" name="repairInformation" placeholder="Сведения о производственном ремонте" />
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="createRepairBtn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>

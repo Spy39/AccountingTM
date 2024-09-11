@@ -1,0 +1,54 @@
+﻿@using AccountingTM.ViewModels.TechnicalEquipment
+@model InfoViewModel
+
+@* Изменение основной информации *@
+<div class="modal fade" tabindex="-1" id="editBasicModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Редактирование информации о техническом средстве</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Наименование типа</label>
+					<select id="typeEquipment"></select>
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Наименование бренда</label>
+					<select id="brand"></select>
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Наименование модели</label>
+					<input type="text" class="form-control" id="model" name="model" placeholder="Наименование модели" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Выберите состояние</label>
+					<select id="state" class="form-select mb-1" aria-label="Пример выбора по умолчанию">
+						<option value="0">
+							Исправно
+						</option>
+						<option value="1">
+							Неисправно
+						</option>
+						<option value="2">
+							Работоспособно
+						</option>
+						<option value="3">
+							Неработоспособно
+						</option>
+					</select>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="editBasicBtn" class="btn btn-primary">Изменить</button>
+			</div>
+		</div>
+	</div>
+</div>

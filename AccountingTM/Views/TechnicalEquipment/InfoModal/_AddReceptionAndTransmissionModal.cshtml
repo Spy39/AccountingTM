@@ -1,0 +1,64 @@
+﻿@using AccountingTM.ViewModels.TechnicalEquipment
+@model InfoViewModel
+
+@* Прием и передача изделия *@
+<div class="modal fade" tabindex="-1" id="addReceptionAndTransmissionModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Добавление сведений о приеме и передаче изделия</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="mb-1">
+					<label for="floatingInput">Дата</label>
+					<input type="text" id="dateReceptionAndTransmission" class="form-control" name="dateReceptionAndTransmission" placeholder="Дата" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Выберите состояние</label>
+					<select id="state" class="form-select mb-1" aria-label="Пример выбора по умолчанию">
+						<option value="0">
+							Исправно
+						</option>
+						<option value="1">
+							Неисправно
+						</option>
+						<option value="2">
+							Работоспособно
+						</option>
+						<option value="3">
+							Неработоспособно
+						</option>
+					</select>
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Основание (наименование, номер и дата документа)</label>
+					<input type="text" class="form-control" id="base" name="base" placeholder="Основание (наименование, номер и дата документа)" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Предприятие и ФИО сдавшего</label>
+					<input type="text" class="form-control" id="passed" name="passed" placeholder="Предприятие и ФИО сдавшего" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Предприятие и ФИО принявшего</label>
+					<input type="text" class="form-control" id="accepted" name="accepted" placeholder="Предприятие и ФИО принявшего" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Примечание</label>
+					<input type="text" class="form-control" id="note" name="note" placeholder="Примечание" />
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="createReceptionAndTransmissionBtn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>

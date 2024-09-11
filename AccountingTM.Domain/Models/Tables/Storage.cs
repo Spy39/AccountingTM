@@ -32,9 +32,5 @@ namespace AccountingTM.Domain.Models.Tables
 		/// Вид хранения
 		/// </summary>
 		public string TypeOfStorage { get; set; }
-		/// <summary>
-		/// Примечание
-		/// </summary>
-		public string? Note {  get; set; }
 	}
 }

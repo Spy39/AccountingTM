@@ -21,8 +21,10 @@ namespace AccountingTM.Domain.Models
 		public int CategoryId { get; set; }
 		[ForeignKey(nameof(CategoryId))]
 		public Category Category { get; set; } // Категория
-		/// <summary>Номер заявки</summary>
-		public string ApplicationNumber { get; set; }
+        public int? EmployeeId { get; set; }
+        public Employee Employee { get; set; } // Исполнитель
+        /// <summary>Номер заявки</summary>
+        public string ApplicationNumber { get; set; }
 		/// <summary>Дата создания</summary>
 		public DateTime DateOfCreation { get; set; }
 		/// <summary>Дата изменения</summary>
@@ -37,8 +39,6 @@ namespace AccountingTM.Domain.Models
 		public ApplicationStatus Status { get; set; }
 		/// <summary>Автор</summary>
 		public string Author { get; set; }
-		/// <summary>Исполнитель</summary>
-		public string? Executor { get; set; }
 		/// <summary>Последний ответивший</summary>
 		public string? LastReply { get; set; }
 		public Priority Priority { get; set; }

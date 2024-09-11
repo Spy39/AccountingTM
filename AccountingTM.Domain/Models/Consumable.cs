@@ -26,14 +26,10 @@ namespace AccountingTM.Domain.Models
 		public int UnitId { get; set; }
 		[ForeignKey(nameof(UnitId))]
 		public Unit Unit { get; set; } // Единица измерения
-		public int EmployeeId { get; set; }
-		[ForeignKey(nameof(EmployeeId))]
-		public Employee? Employee { get; set; } //Ответственный		
 		/// <summary>
 		/// Модель расходного материала
 		/// </summary>
 		public string Model { get; set; }
-		public string? SerialNumber { get; set; }
 		/// <summary>Количество</summary>
 		public string Quantity { get; set; }
 	}

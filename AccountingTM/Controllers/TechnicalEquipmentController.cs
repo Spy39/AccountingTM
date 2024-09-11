@@ -12,6 +12,7 @@ using Microsoft.VisualBasic;
 
 namespace Accounting.Controllers
 {
+    //Учет технических средств
     [Authorize]
     public class TechnicalEquipmentController : Controller
     {
@@ -103,35 +104,6 @@ namespace Accounting.Controllers
             return View(model);
         }
 
-       
-        //Характеристики технического средства
-		[HttpGet("[controller]/[action]")]
-		public IActionResult GetAllCharacteristic([FromQuery] GetAllTechnicalDto input)
-		{
-			IQueryable<Characteristics> query = _context.Characteristics.Include(x => x.Indicator).Include(x => x.Unit);
-			if (!string.IsNullOrWhiteSpace(input.SearchQuery))
-			{
-				var keyword = input.SearchQuery.ToLower();
-				//query = query.Where(x => x.Name.ToLower().Contains(keyword) || x.Model.ToLower().Contains(keyword) ||
-				//	x.SerialNumber.ToLower().Contains(keyword));
-			}
-			var clients = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
-			return Ok(new PagedResultDto<Characteristics>(query.Count(), clients));
-		}
-
-        //
-  //      public IActionResult Consumable()
-  //      {
-		//	var consumable = _context.Consumables.ToList();
-		//	return View(consumable);
-		//}
-
-		public IActionResult Set()
-		{
-			return View();
-		}
-
-
-	}
+    }
 }

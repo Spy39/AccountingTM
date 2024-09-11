@@ -1,0 +1,48 @@
+﻿@using AccountingTM.ViewModels.TechnicalEquipment
+@model InfoViewModel
+
+@* Консервация *@
+<div class="modal fade" tabindex="-1" id="addConservationModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Добавление сведений о консервации</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="mb-1">
+					<label for="floatingInput">Дата</label>
+					<input type="text" id="dateConservation" class="form-control" name="dateConservation" placeholder="Дата" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Наименование работ</label>
+					<input type="text" class="form-control" id="nameOfWork" name="nameOfWork" placeholder="Наименование работ" />
+				</div>
+
+				<div class="mb-1">
+					<label for="floatingInput">Срок действия</label>
+					<input type="text" id="datePeriod" class="form-control" name="datePeriod" placeholder="Срок действия" />
+				</div>
+
+				<div class="mb-1">
+					<label for="floatingInput">Фамилия и инициалы</label>
+					<select id="employee">
+@* 						@if (Model.Employee != null)
+						{
+							<option value="@Model.Employee.Id" selected>
+								@Model.Employee.FullName
+							</option>
+						} *@
+					</select>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="createConservationBtn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>

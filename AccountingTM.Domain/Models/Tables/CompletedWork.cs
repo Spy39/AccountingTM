@@ -30,10 +30,5 @@ namespace AccountingTM.Domain.Models.Tables
 		/// Фамилия выполнившего работу
 		/// </summary>
 		public string Completed {  get; set; }
-		/// <summary>
-		/// Примечание
-		/// </summary>
-		public string? Note {  get; set; }
-
 	}
 }
