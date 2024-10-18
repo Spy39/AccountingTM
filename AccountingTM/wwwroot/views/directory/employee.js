@@ -65,7 +65,7 @@ const initTableEmployees = () => {
     });
 
 //Добавление
-    $(document).on("click", "#createEmployeeBtn", function () {
+    $("#createEmployeeBtn").click(function () {
 
         axios.post("Employee/Create", {
             lastName: $("#lastName").val(),

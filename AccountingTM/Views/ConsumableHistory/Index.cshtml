@@ -1,0 +1,158 @@
+﻿@using AccountingTM.ViewModels.Consumable
+@model ConsumableViewModel
+
+@{
+	ViewData["Title"] = "ConsumableInfo";
+	Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+
+@section LeftNavbar {
+	<ol class="breadcrumb float-sm-right m-0 bg-white">
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
+		<li class="breadcrumb-item"><a asp-area="" asp-controller="Consumable" asp-action="Index">Consumable</a></li>
+		<li class="breadcrumb-item active">Info</li>
+	</ol>
+}
+<section class="content-header">
+	<div class="container-fluid">
+		<div class="row mb-2">
+			<div class="col-sm-6">
+				<h1>Информация о расходном материале</h1>
+				<input type="text" id="consumableId" value="@(Model.ConsumableId)" hidden>
+				<input type="text" id="typeConsumableId" value="@(Model.TypeConsumableId)" hidden>
+				<input type="text" id="brandId" value="@(Model.BrandId)" hidden>
+				<input type="text" id="locationId" value="@(Model.LocationId)" hidden>
+				<input type="text" id="unitId" value="@(Model.UnitId)" hidden>
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+	<div class="row">
+		<div class="col-1">
+			<a class="btn btn-default" asp-area="" asp-controller="Consumable" asp-action="Index">Назад</a>
+		</div>
+		<div class="col-8">
+			<div class="row">
+				<h3>@Model.TypeConsumable @Model.Brand @Model.Model</h3>
+			</div>
+		</div>
+
+
+
+		<div class="col-3">
+			<div class="float-sm-right">
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#EditConsumableModal" type="submit">
+					<i class="fa-solid fa-pen"></i>
+				</button>
+				<button type="button" class="btn btn-default">
+					<i class="fa-solid fa-download"></i>
+				</button>
+				<button type="button" class="btn btn-default">
+					<i class="fa-solid fa-print"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container col-12">
+	<div class="row">
+		<div class="p-1">
+			<div class="row">
+				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+					<div class="row">
+
+						<div class="col-3">
+							<form class="form-floating mb-2">
+								<input type="text" class="form-control" id="floatingInputValue" value="@Model.DateLatestAddition" readonly>
+								<label for="floatingInputValue">Последнее пополнение</label>
+							</form>
+						</div>
+
+						<div class="col-3">
+							<form class="form-floating mb-2">
+								<input type="text" class="form-control" id="floatingInputValue" value="@Model.Quantity @Model.Unit" readonly>
+								<label for="floatingInputValue">Количество</label>
+							</form>
+						</div>
+
+						<div class="col-3">
+							<form class="form-floating mb-2">
+								<input type="text" class="form-control" id="floatingInputValue" value="@Model.Status" readonly>
+								<label for="floatingInputValue">Статус</label>
+							</form>
+						</div>
+
+						<div class="col-3">
+							<form class="form-floating mb-2">
+								<input type="text" class="form-control" id="floatingInputValue" value="@Model.Location" readonly>
+								<label for="floatingInputValue">Местоположение</label>
+							</form>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="container col-12 p-1">
+	<div class="row">
+		<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+			<div class="row">
+				<div class="col-8">
+					<h5>История операций</h5>
+				</div>
+				<div class="col-4">
+					<div class="float-sm-right">
+						<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#SupplyConsumableModal">Добавить</button>
+						<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#WriteOffConsumableModal">Списать</button>
+						<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+@* 							<button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+								Фильтр
+							</button>
+							<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+								<li><a class="dropdown-item" href="#">Пополнение</a></li>
+								<li><a class="dropdown-item" href="#">Списание</a></li>
+							</ul> *@
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" >
+							<label class="btn btn-default" for="btnradio1">Пополнение</label>
+
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+							<label class="btn btn-default" for="btnradio2">Списание</label>
+
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<table id="transactionHistoryTable" class="table table-bordered align-middle table-hover" style="width:100%">
+					<thead class="table">
+						<tr>
+							<td>Дата</td>
+							<td>Тип операции</td>
+							<td>Количество</td>
+							<td>ФИО</td>
+							<td>Комментарий</td>
+							<td></td>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+
+@await Html.PartialAsync("_EditConsumableModal.cshtml")
+@await Html.PartialAsync("_SupplyConsumableModal.cshtml")
+@await Html.PartialAsync("_WriteOffConsumableModal.cshtml")
+
+@section Scripts {
+	<script src="~/views/consumable/info.js"></script>
+}

@@ -63,24 +63,21 @@
         tableClients.ajax.reload()
     })
 
-    //Добавление нового технического средства
+    //Добавление
     $("#createConservationBtn").click(function () {
-        axios.post("TechnicalEquipmentInfo/CreateConservation", {
-            typeId: +$("#typeEquipment").val(),
-            brandId: +$("#brand").val(),
-            model: $("#model").val(),
-            serialNumber: $("#serialNumber").val(),
-            inventoryNumber: $("#inventoryNumber").val(),
-            state: +$("#state").val(),
-            employeeId: +$("#employee").val(),
-            locationId: +$("#location").val(),
+        axios.post("/TechnicalEquipmentInfo/CreateConservation", {
+            technicalEquipmentId: +$("#technicalEquipmentId").val(),
+            date: moment($("#dateConservation").val(), 'DD.MM.YYYY').toDate(),
+            validity: moment($("#datePeriod").val(), 'DD.MM.YYYY').toDate(),
+            nameOfWorks: $("#nameOfWork").val(),
+            employee: $("#employee").val(),
             isDeleted: false
         }).then(function () {
             location.reload()
         })
     })
 
-    //Удаление технического средства
+    //Удаление
     $(document).on("click", ".delete.conservation", function () {
         let name = this.dataset.name;
         Swal.fire({
@@ -96,7 +93,7 @@
             if (result.isConfirmed) {
                 let id = this.dataset.id;
                 axios.delete("TechnicalEquipmentInfo/DeleteConservation?id=" + id).then(function () {
-                    tableClients.draw(false)
+                    tableConservations.draw(false)
                     $(".tooltip").removeClass("show")
                     toastr.success('ТС успешно удален!')
                 })

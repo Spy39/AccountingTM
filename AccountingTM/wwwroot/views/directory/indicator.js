@@ -50,7 +50,7 @@ const initTableIndicators = () => {
     });
 
 //Добавление
-    $(document).on("click", "#createIndicatorBtn", function () {
+    $("#createIndicatorBtn").click(function () {
 
         axios.post("Indicator/Create", {
             name: $("#indicator").val(),

@@ -31,6 +31,24 @@ namespace AccountingTM.Domain.Models
 		/// </summary>
 		public string Model { get; set; }
 		/// <summary>Количество</summary>
-		public string Quantity { get; set; }
+		public double Quantity { get; set; }
+		/// <summary>Дата последнего пополнения</summary>///
+		public DateTime? DateLatestAddition { get; set; }
+		public double SmallStockValue { get; set; }
+
+		/// <summary>Статус</summary>/// 
+		public string GetStatus()
+		{
+			if(Quantity == 0)
+			{
+				return "Отсутствует";
+			}
+            else if(Quantity <= SmallStockValue)
+            {
+				return "Малый запас";
+			}
+			return "В наличии";
+
+		}
 	}
 }

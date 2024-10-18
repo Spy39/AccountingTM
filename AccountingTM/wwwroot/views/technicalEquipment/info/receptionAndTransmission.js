@@ -79,15 +79,14 @@
 
     //Добавление нового технического средства
     $("#createReceptionAndTransmissionBtn").click(function () {
-        axios.post("TechnicalEquipmentInfo/CreateReceptionAndTransmission", {
-            typeId: +$("#typeEquipment").val(),
-            brandId: +$("#brand").val(),
-            model: $("#model").val(),
-            serialNumber: $("#serialNumber").val(),
-            inventoryNumber: $("#inventoryNumber").val(),
-            state: +$("#state").val(),
-            employeeId: +$("#employee").val(),
-            locationId: +$("#location").val(),
+        axios.post("/TechnicalEquipmentInfo/CreateReceptionAndTransmission", {
+            technicalEquipmentId: +$("#technicalEquipmentId").val(),
+            date: moment($("#dateReceptionAndTransmission").val(), 'DD.MM.YYYY').toDate(),
+            productCondition: $("#state").val(),
+            base: $("#base").val(),
+            passed: $("#passed").val(),
+            accepted: $("#accepted").val(),
+            note: $("#note").val(),
             isDeleted: false
         }).then(function () {
             location.reload()
@@ -110,7 +109,7 @@
             if (result.isConfirmed) {
                 let id = this.dataset.id;
                 axios.delete("TechnicalEquipmentInfo/DeleteReceptionAndTransmission?id=" + id).then(function () {
-                    tableClients.draw(false)
+                    tableReceptionAndTransmissions.draw(false)
                     $(".tooltip").removeClass("show")
                     toastr.success('ТС успешно удален!')
                 })

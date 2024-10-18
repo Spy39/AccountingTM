@@ -29,20 +29,11 @@
 		<div class="col-1">
 			<a class="btn btn-default" asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Назад</a>
 		</div>
-		<div class="col-7">
+		<div class="col-9">
 			<div class="row">
                 <h3>@Model.TypeEquipment @Model.Brand @Model.Model</h3>
 			</div>
 		</div>
-		<div class="col-2">
-			<div class="row">
-				Статус: @Model.Status
-			</div>
-			<div class="row">
-				Изменено:
-			</div>
-		</div>
-
 		<div class="col-2">
 			<div class="float-sm-right">
 				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editBasicModal" type="submit">
@@ -59,10 +50,47 @@
 	</div>
 </div>
 
+<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+	<div class="row">
+		
+		<div class="col-3 p-1">
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="@(Model.Status ?? string.Empty)" readonly>
+				<label for="floatingInputValue">Статус</label>
+			</form>
+		</div>
+		<div class="col-3 p-1">
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="Не входит в комплект (сделать ссылку)" readonly>
+				<label for="floatingInputValue">Комплект</label>
+			</form>
+		</div>
+		<div class="col-3 p-1">
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="Добавить дату" readonly>
+				<label for="floatingInputValue">Последнее обслуживание</label>
+			</form>
+		</div>
+		<div class="col-3 p-1">
+			<form class="form-floating mb-2">
+				<input type="text" class="form-control" id="floatingInputValue" value="Добавить дату" readonly>
+				<label for="floatingInputValue">Последнее изменение</label>
+			</form>
+		</div>
+
+@* 		<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Подсказка вверху">
+			Подсказка вверху
+		</button> *@
+
+		
+	</div>
+</div>
+
+
 
 <div class="container col-12">
 	<div class="row">
-		<div class="col-3 p-3">
+		<div class="col-3 p-1">
 			<div class="row btn-light">
 				<h4>Основная информация</h4>
 				<img src="~/img/technical-support.png" class="img-fluid" alt="...">
@@ -103,37 +131,38 @@
 				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editAdditionalModal" type="submit">Изменить</button>
 			</div>
 
+			
+		</div>
+
+
+
+		<div class="col-9 p-3">
+
 			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
 					<div class="row">
 						<div class="col-8">
-							<h5>Описание</h5>
+							<h5><i class="fa-solid fa-file-pen">   Описание</i></h5>
 						</div>
 						<div class="col-4">
 							<div class="float-sm-right">
 								<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editDescriptionModal" type="submit">
 									<i class="fa-solid fa-pen"></i>
 								</button>
-								<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#addDescriptionModal" type="submit">
-									<i class="fa-solid fa-plus"></i>
-								</button>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						ввв
+						Здесь текст описания...
 					</div>
 				</div>
 			</div>
-		</div>
 
-
-		<div class="col-9 p-3">
 			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
 					<div class="row">
 						<div class="col-9">
-							<h5>Учёт выполненных работ</h5>
+							<h5><i class="fa-solid fa-clipboard-list">   Учет выполненных работ</i></h5>
 						</div>
 						<div class="col-3">
 							<div class="float-sm-right">
@@ -163,62 +192,27 @@
 			</div>
 
 			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-				<div class="row">
-					<div class="col-9">
-						<h5>Прием и передача изделия</h5>
-					</div>
-					<div class="col-3">
-						<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addReceptionAndTransmissionModal" type="submit">
-								<i class="fa-solid fa-plus"></i>
-							</button>
-						</div>
-					</div>
-				</div>
-					<div class="row">
-						<table id="receptionAndTransmissionTable" class="table table-bordered align-middle table-hover" style="width:100%">
-							<thead class="table">
-                                <tr>
-                                    <td>Дата</td>
-                                    <td>Состояние изделия</td>
-                                    <td>Основание (наименование, номер и дата документа)</td>
-                                    <td>Предприятие и ФИО сдавшего</td>
-                                    <td>Предприятие и ФИО принявшего</td>
-                                    <td>Примечание</td>
-                                    <td></td>
-                                </tr>
-                            </thead>
-                            <tbody>
-
-                            </tbody>
-                        </table>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
 					<div class="row">
 						<div class="col-9">
-							<h5>Ремонт</h5>
+                            <h5><i class="fa-solid fa-wrench">   Техническое обслуживание</i></h5>
 						</div>
 						<div class="col-3">
 							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addRepairModal" type="submit">
+								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addCompletedWorkModal" type="submit">
 									<i class="fa-solid fa-plus"></i>
 								</button>
 							</div>
 						</div>
 					</div>
 					<div class="row">
-						<table id="repairTable" class="table table-bordered align-middle table-hover" style="width:100%">
+						<table id="completedWorkTable" class="table table-bordered align-middle table-hover" style="width:100%">
 							<thead class="table">
 								<tr>
 									<td>Дата</td>
-									<td>Предприятие</td>
-									<td>Причина поступления в ремонт</td>
-									<td>Сведения о производственном ремонте</td>
+									<td>Вид ТО</td>
+									<td>Наименование</td>
+									<td>Фамилия проводившего ТО</td>
 									<td></td>
 								</tr>
 							</thead>
@@ -230,132 +224,276 @@
 			</div>
 
 			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-					<div class="row">
-						<div class="col-9">
-							<h5>Хранение</h5>
-						</div>
-						<div class="col-3">
-							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addStorageModal" type="submit">
-									<i class="fa-solid fa-plus"></i>
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
+					<div class="card collapsed-card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="fa-solid fa-list">   Характеристики</i>
+							</h3>
+							<div class="card-tools">
+								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#createCharacteristicModal">
+									<i class="fas fa-square-plus"></i>
+								</button>
+								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
 								</button>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<table id="storageTable" class="table table-bordered align-middle table-hover" style="width:100%">
-							<thead class="table">
-                                <tr>
-                                    <td>Дата приемки на хранение</td>
-                                    <td>Дата снятия с хранения</td>
-                                    <td>Условия хранения</td>
-                                    <td>Вид хранения</td>
-                                    <td>Примечание</td>
-                                    <td></td>
-                                </tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
+
+						<div class="card-body">
+							<table id="characteristic" class="table table-bordered align-middle table-hover" style="width:100%">
+								<thead class="table">
+									<tr>
+										<td>Показатель</td>
+										<td>Ед. измерения</td>
+										<td>Значение</td>
+										<td></td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-					<div class="row">
-						<div class="col-9">
-							<h5>Консервация</h5>
-						</div>
-						<div class="col-3">
-							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addConservationModal" type="submit">
-									<i class="fa-solid fa-plus"></i>
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
+					<div class="card collapsed-card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="fa-solid fa-handshake">   Прием и передача изделия</i>
+							</h3>
+							<div class="card-tools">
+								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addReceptionAndTransmissionModal">
+									<i class="fas fa-square-plus"></i>
+								</button>
+								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
 								</button>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<table id="conservationTable" class="table table-bordered align-middle table-hover" style="width:100%">
-							<thead class="table">
-								<tr>
-									<td>Дата</td>
-									<td>Наименование работ</td>
-									<td>Срок действия</td>
-									<td>Фамилия и инициалы</td>
-									<td></td>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
+
+						<div class="card-body">
+							<table id="receptionAndTransmissionTable" class="table table-bordered align-middle table-hover" style="width:100%">
+								<thead class="table">
+									<tr>
+										<td>Дата</td>
+										<td>Состояние изделия</td>
+										<td>Основание (наименование, номер и дата документа)</td>
+										<td>Предприятие и ФИО сдавшего</td>
+										<td>Предприятие и ФИО принявшего</td>
+										<td>Примечание</td>
+										<td></td>
+									</tr>
+								</thead>
+								<tbody>
+
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-					<div class="row">
-						<div class="col-9">
-							<h5>Сведения об утилизации</h5>
-						</div>
-						<div class="col-3">
-							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#addDisposalInformationModal" type="submit">
-									<i class="fa-solid fa-plus"></i>
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
+					<div class="card collapsed-card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="fa-solid fa-screwdriver-wrench">   Ремонт</i>
+							</h3>
+							<div class="card-tools">
+								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addRepairModal">
+									<i class="fas fa-square-plus"></i>
+								</button>
+								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
 								</button>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<table id="disposalInformationTable" class="table table-bordered align-middle table-hover" style="width:100%">
-							<thead class="table">
-								<tr>
-									<td>Дата</td>
-									<td>Описание</td>
-									<td>Примечание</td>
-									<td></td>
-								</tr>
-							</thead>
-							<tbody>
 
-							</tbody>
-						</table>
+						<div class="card-body">
+							<table id="repairTable" class="table table-bordered align-middle table-hover" style="width:100%">
+								<thead class="table">
+									<tr>
+										<td>Дата</td>
+										<td>Предприятие</td>
+										<td>Причина поступления в ремонт</td>
+										<td>Сведения о производственном ремонте</td>
+										<td></td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-					<div class="row">
-						<div class="col-9">
-							<h5>Характеристики</h5>
-						</div>
-						<div class="col-3">
-							<div class="float-sm-right">
-								<button class="btn btn-default mb-1" data-bs-toggle="modal" data-bs-target="#createCharacteristicModal" type="submit">
-									<i class="fa-solid fa-plus"></i>
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
+					<div class="card collapsed-card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="fa-solid fa-box-archive">   Хранение</i>
+							</h3>
+							<div class="card-tools">
+								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addStorageModal">
+									<i class="fas fa-square-plus"></i>
+								</button>
+								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
 								</button>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<table id="characteristic" class="table table-bordered align-middle table-hover" style="width:100%">
-							<thead class="table">
-								<tr>
-									<td>Показатель</td>
-									<td>Ед. измерения</td>
-									<td>Значение</td>
-									<td></td>
-								</tr>
-							</thead>
-							<tbody>
-							</tbody>
-						</table>
+
+						<div class="card-body">
+							<table id="storageTable" class="table table-bordered align-middle table-hover" style="width:100%">
+								<thead class="table">
+									<tr>
+										<td>Дата приемки на хранение</td>
+										<td>Дата снятия с хранения</td>
+										<td>Условия хранения</td>
+										<td>Вид хранения</td>
+										<td></td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
+
+			<div class="row">
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
+					<div class="card collapsed-card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="fa-solid fa-warehouse">   Консервация</i>
+							</h3>
+							<div class="card-tools">
+								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addConservationModal">
+									<i class="fas fa-square-plus"></i>
+								</button>
+								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+						</div>
+
+						<div class="card-body">
+							<table id="conservationTable" class="table table-bordered align-middle table-hover" style="width:100%">
+								<thead class="table">
+									<tr>
+										<td>Дата</td>
+										<td>Наименование работ</td>
+										<td>Срок действия</td>
+										<td>Фамилия и инициалы</td>
+										<td></td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
+					<div class="card collapsed-card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="fa-solid fa-trash">   Сведения об утилизации</i>
+							</h3>
+							<div class="card-tools">
+								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addDisposalInformationModal">
+									<i class="fas fa-square-plus"></i>
+								</button>
+								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+						</div>
+
+						<div class="card-body">
+							<table id="disposalInformationTable" class="table table-bordered align-middle table-hover" style="width:100%">
+								<thead class="table">
+									<tr>
+										<td>Дата</td>
+										<td>Описание</td>
+										<td>Примечание</td>
+										<td></td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
+					<div class="card collapsed-card">
+						<div class="card-header">
+							<h3 class="card-title">
+								<i class="fa-solid fa-timeline">   История операций</i>
+							</h3>
+							<div class="card-tools">
+								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
+									<i class="fas fa-minus"></i>
+								</button>
+								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
+									<i class="fas fa-times"></i>
+								</button>
+							</div>
+						</div>
+
+						<div class="card-body">
+							<table id="disposalInformationTable" class="table table-bordered align-middle table-hover" style="width:100%">
+								<thead class="table">
+									<tr>
+										<td>Дата</td>
+										<td>Тип операции</td>
+										<td>Наименование операции</td>
+										<td>ФИО</td>
+										<td></td>
+									</tr>
+								</thead>
+								<tbody>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 	</div>
 </div>

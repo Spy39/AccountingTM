@@ -50,7 +50,7 @@ const initTableLocations = () => {
     });
 
     //Добавление
-    $(document).on("click", "#createLocationBtn", function () {
+    $("#createLocationBtn").click(function () {
 
         axios.post("Location/Create", {
             name: $("#location").val(),

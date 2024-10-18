@@ -32,11 +32,11 @@
     columnDefs: [
         {
             targets: 0,
-            data: 'dateStart',
+            data: 'acceptance',
         },
         {
             targets: 1,
-            data: 'dateEnd',
+            data: 'removal',
         },
         {
             targets: 2,
@@ -48,10 +48,6 @@
         },
         {
             targets: 4,
-            data: 'note',
-        },
-        {
-            targets: 5,
             data: null,
             render: (data, type, row, meta) => {
                 return `<button class="btn btn-danger delete storage" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
@@ -64,24 +60,21 @@
         tableClients.ajax.reload()
     })
 
-    //Добавление нового технического средства
+    //Добавление
     $("#createStorageBtn").click(function () {
-        axios.post("TechnicalEquipmentInfo/CreateStorage", {
-            typeId: +$("#typeEquipment").val(),
-            brandId: +$("#brand").val(),
-            model: $("#model").val(),
-            serialNumber: $("#serialNumber").val(),
-            inventoryNumber: $("#inventoryNumber").val(),
-            state: +$("#state").val(),
-            employeeId: +$("#employee").val(),
-            locationId: +$("#location").val(),
+        axios.post("/TechnicalEquipmentInfo/CreateStorage", {
+            technicalEquipmentId: +$("#technicalEquipmentId").val(),
+            acceptance: moment($("#dateAcceptance").val(), 'DD.MM.YYYY').toDate(),
+            removal: moment($("#dateRemoval").val(), 'DD.MM.YYYY').toDate(),
+            storageConditions: $("#storageConditions").val(),
+            typeOfStorage: $("#typeOfStorage").val(),
             isDeleted: false
         }).then(function () {
             location.reload()
         })
     })
 
-    //Удаление технического средства
+    //Удаление
     $(document).on("click", ".delete.storage", function () {
         let name = this.dataset.name;
         Swal.fire({
@@ -97,7 +90,7 @@
             if (result.isConfirmed) {
                 let id = this.dataset.id;
                 axios.delete("TechnicalEquipmentInfo/DeleteStorage?id=" + id).then(function () {
-                    tableClients.draw(false)
+                    tableStorages.draw(false)
                     $(".tooltip").removeClass("show")
                     toastr.success('ТС успешно удален!')
                 })

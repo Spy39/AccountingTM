@@ -50,7 +50,7 @@ const initTableCategories = () => {
     });
 
     //Добавление
-    $(document).on("click", "#createCategoryBtn", function () {
+    $("#createCategoryBtn").click(function () {
 
         axios.post("Category/Create", {
             name: $("#category").val(),

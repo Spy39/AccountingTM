@@ -55,8 +55,11 @@
     $(document).on("click", "#createCharacteristicBtn", function () {
 
         axios.post("TechnicalEquipmentInfo/CreateCharacteristic", {
-            name: $("#characteristic").val(),
-
+            technicalEquipmentId: +$("#technicalEquipmentId").val(),
+            indicatorId: +$("#indicator").val(),
+            unitId: +$("#unit").val(),
+            meaning: $("#meaning").val(),
+            isDeleted: false
         }).then(function () {
             location.reload()
         })
@@ -78,7 +81,7 @@
             if (result.isConfirmed) {
                 let id = this.dataset.id;
                 axios.delete("TechnicalEquipmentInfo/DeleteCharacteristic?id=" + id).then(function () {
-                    tableBrands.draw(false)
+                    tableCharacteristics.draw(false)
                     $(".tooltip").removeClass("show")
                     toastr.success(`Характеристика ${name} успешно удалена!`)
                 })

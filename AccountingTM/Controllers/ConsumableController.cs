@@ -3,6 +3,7 @@ using Accounting.Models;
 using AccountingTM.Domain.Models;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.TechnicalEquipment;
+using AccountingTM.Exceptions;
 using AccountingTM.ViewModels.Application;
 using AccountingTM.ViewModels.Consumable;
 using Microsoft.AspNetCore.Authorization;
@@ -47,19 +48,20 @@ namespace AccountingTM.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] Consumable input)
         {
-            //if (!string.IsNullOrWhiteSpace(input.InventoryNumber))
-            //{
-            //    if (_context.TechnicalEquipment.Any(x => x.InventoryNumber == input.InventoryNumber))
-            //    {
-            //        throw new UserFriendlyException("Техническое средство с таким инвентарным номером уже существует!");
-            //    }
-            //}
+            //В условии сделать совпадение по типу И бренду И модели
+            if (!string.IsNullOrWhiteSpace(input.Model))
+            {
+                if (_context.Consumables.Any(x => x.Model == input.Model))
+                {
+                    throw new UserFriendlyException("Расходный материал с такой моделью уже существует!");
+                }
+            }
             _context.Consumables.Add(input);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        [HttpDelete]
+		[HttpDelete]
         public IActionResult Delete(int id)
         {
             var entity = _context.Consumables.Find(id);
@@ -73,22 +75,6 @@ namespace AccountingTM.Controllers
             return Ok();
         }
 
-		//Информация о расходном материале
-		[Route("[controller]/{id:int}")]
-		[HttpGet]
-		public IActionResult Info(int id)
-		{
-			Consumable consumable = _context.Consumables.Include(x => x.Brand).Include(x => x.TypeConsumable).Include(x => x.Location).Include(x => x.Unit).First(x => x.Id == id);
-			var model = new ConsumableViewModel
-			{
-				Brand = consumable.Brand.Name,
-				Model = consumable.Model,
-				TypeConsumable = consumable.TypeConsumable.Name,
-				Location = consumable.Location.Name,
-				Unit = consumable.Unit.Name,
-				Quantity = consumable.Quantity,
-			};
-			return View(model);
-		}
+
 	}
 }

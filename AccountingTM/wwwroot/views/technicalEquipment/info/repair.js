@@ -60,24 +60,21 @@
         tableClients.ajax.reload()
     })
 
-    //Добавление нового технического средства
+    //Добавление
     $("#createRepairBtn").click(function () {
-        axios.post("TechnicalEquipmentInfo/CreateRepair", {
-            typeId: +$("#typeEquipment").val(),
-            brandId: +$("#brand").val(),
-            model: $("#model").val(),
-            serialNumber: $("#serialNumber").val(),
-            inventoryNumber: $("#inventoryNumber").val(),
-            state: +$("#state").val(),
-            employeeId: +$("#employee").val(),
-            locationId: +$("#location").val(),
+        axios.post("/TechnicalEquipmentInfo/CreateRepair", {
+            technicalEquipmentId: +$("#technicalEquipmentId").val(),
+            date: moment($("#dateRepair").val(), 'DD.MM.YYYY').toDate(),
+            company: $("#company").val(),
+            reasonForRepair: $("#reasonForRepair").val(),
+            repairInformation: $("#repairInformation").val(),
             isDeleted: false
         }).then(function () {
             location.reload()
         })
     })
 
-    //Удаление технического средства
+    //Удаление
     $(document).on("click", ".delete.repair", function () {
         let name = this.dataset.name;
         Swal.fire({
@@ -93,7 +90,7 @@
             if (result.isConfirmed) {
                 let id = this.dataset.id;
                 axios.delete("TechnicalEquipmentInfo/DeleteRepair?id=" + id).then(function () {
-                    tableClients.draw(false)
+                    tableRepairs.draw(false)
                     $(".tooltip").removeClass("show")
                     toastr.success('ТС успешно удален!')
                 })

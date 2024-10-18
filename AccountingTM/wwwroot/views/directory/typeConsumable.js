@@ -49,7 +49,7 @@ const initTableConsumables = () => {
     });
 
     //Добавление
-    $(document).on("click", "#createTypeConsumableBtn", function () {
+    $("#createTypeConsumableBtn").click(function () {
 
         axios.post("TypeConsumable/Create", {
             name: $("#typeConsumable").val(),

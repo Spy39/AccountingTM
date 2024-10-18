@@ -1,5 +1,6 @@
 ﻿using AccountingTM.Domain;
 using AccountingTM.Domain.Enums;
+using AccountingTM.Domain.Models;
 using AccountingTM.Domain.Models.Directory;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,6 +24,8 @@ namespace Accounting.Models
 		public int LocationId { get; set; }
 		[ForeignKey(nameof(LocationId))]
 		public Location? Location { get; set; } //Местоположение технического средства
+		public int? SetId { get; set; }
+		public Set Set { get; set; }
 		/// <summary>
 		/// Модель технического средства
 		/// </summary>

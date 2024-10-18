@@ -1,0 +1,43 @@
+﻿@* Изменение информации о расходном материале *@
+<div class="modal fade" tabindex="-1" id="EditConsumableModal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Изменение данных расходного материала</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Наименование типа</label>
+					<select id="typeConsumable"></select>
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Наименование бренда</label>
+					<select id="brand"></select>
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Наименование модели</label>
+					<input type="text" class="form-control" id="model" name="model" placeholder="Наименование модели" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Местоположение</label>
+					<select id="location"></select>
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Единица измерения</label>
+					<select id="unit"></select>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="create-btn" class="btn btn-primary">Изменить</button>
+			</div>
+		</div>
+	</div>
+</div>

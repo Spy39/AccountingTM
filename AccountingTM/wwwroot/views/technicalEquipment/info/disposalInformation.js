@@ -57,18 +57,20 @@
         tableClients.ajax.reload()
     })
 
-    //Добавление сведений об утилизации
+    //Добавление
     $("#createDisposalInformationBtn").click(function () {
-        axios.post("TechnicalEquipmentInfo/CreateDisposalInformation", {
-            date: $("#date").val(),
+        axios.post("/TechnicalEquipmentInfo/CreateDisposalInformation", {
+            technicalEquipmentId: +$("#technicalEquipmentId").val(),
+            date: moment($("#dateDisposalInformation").val(), 'DD.MM.YYYY').toDate(),
             description: $("#description").val(),
             note: $("#note").val(),
+            isDeleted: false
         }).then(function () {
             location.reload()
         })
     })
 
-    //Удаление технического средства
+    //Удаление
     $(document).on("click", ".delete.disposalInformation", function () {
         let name = this.dataset.name;
         Swal.fire({
@@ -84,7 +86,7 @@
             if (result.isConfirmed) {
                 let id = this.dataset.id;
                 axios.delete("TechnicalEquipmentInfo/DeleteDisposalInformation?id=" + id).then(function () {
-                    tableClients.draw(false)
+                    tableDisposalInformations.draw(false)
                     $(".tooltip").removeClass("show")
                     toastr.success('ТС успешно удален!')
                 })

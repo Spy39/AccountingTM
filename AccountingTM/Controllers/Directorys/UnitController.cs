@@ -1,5 +1,4 @@
 ﻿using Accounting.Data;
-using AccountingTM.Domain.Migrations;
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;

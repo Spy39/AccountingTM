@@ -8,6 +8,7 @@
         filter.searchQuery = $("#search-input").val()
         filter.maxResultCount = data.length || 10;
         filter.skipCount = data.start;
+        filter.technicalEquipmentId = +$("#technicalEquipmentId").val();
         axios.get('/Application/GetAll', {
             params: filter
         })
@@ -32,25 +33,23 @@
     columnDefs: [
         {
             targets: 0,
-            data: 'date',
+            data: 'dateOfCreation',
         },
         {
             targets: 1,
-            data: 'application.applicationNumber',
+            data: 'applicationNumber',
         },
         {
             targets: 2,
-            data: 'nameAndReason',
+            data: 'subject',
         },
         {
             targets: 3,
-            data: 'employee',
-            render: (data, type, row, meta) => {
-                return data ? `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}` : '';
-            }
+            data: 'employee.fullName',
+            
         },
         {
-            targets: 5,
+            targets: 4,
             data: 'status',
             render: (data, type, row, meta) => {
                 switch (data) {
@@ -78,16 +77,17 @@
     })
 
     //Добавление
-    $(document).on("click", "#createCompletedWorkBtn", function () {
+    $('#createCompletedWorkBtn').click(function () {
 
         axios.post("/Application/CreateCompletedWork", {
+            technicalEquipmentId: +$("#technicalEquipmentId").val(),
             categoryId: +$("#category").val(),
             subject: $("#subject").val(),
             description: $("#description").val(),
             author: $("#author").val(),
             locationId: +$("#location").val(),
             priority: +$("#priority").val(),
-            dateOfCreation: dayjs($("#dateCompletedWork").val(), 'DD.MM.YYYY').toDate()
+            dateOfCreation: moment($("#dateCompletedWork").val(), 'DD.MM.YYYY').toDate()
         }).then(function () {
             location.reload()
         })
@@ -109,7 +109,7 @@
             if (result.isConfirmed) {
                 let id = this.dataset.id;
                 axios.delete("TechnicalEquipmentInfo/Delete?id=" + id).then(function () {
-                    tableClients.draw(false)
+                    tableCompletedWorks.draw(false)
                     $(".tooltip").removeClass("show")
                     toastr.success('ТС успешно удален!')
                 })

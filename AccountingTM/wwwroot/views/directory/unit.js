@@ -50,7 +50,7 @@ const initTableUnits = () => {
     });
 
     //Добавление
-    $(document).on("click", "#createUnitBtn", function () {
+    $("#createUnitBtn").click(function () {
 
         axios.post("Unit/Create", {
             name: $("#unit").val(),

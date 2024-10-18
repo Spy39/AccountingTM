@@ -1,4 +1,5 @@
-﻿using AccountingTM.Domain.Enums;
+﻿using Accounting.Models;
+using AccountingTM.Domain.Enums;
 using AccountingTM.Domain.Models.Directory;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,10 @@ namespace AccountingTM.Domain.Models
 		public Category Category { get; set; } // Категория
         public int? EmployeeId { get; set; }
         public Employee Employee { get; set; } // Исполнитель
-        /// <summary>Номер заявки</summary>
-        public string ApplicationNumber { get; set; }
+		public int? TechnicalEquipmentId { get; set; }
+		public TechnicalEquipment TechnicalEquipment { get; set; }
+		/// <summary>Номер заявки</summary>
+		public string ApplicationNumber { get; set; }
 		/// <summary>Дата создания</summary>
 		public DateTime DateOfCreation { get; set; }
 		/// <summary>Дата изменения</summary>

@@ -50,7 +50,7 @@ const initTableBrands = () => {
     });
 
     //Добавление
-    $(document).on("click", "#createBrandBtn", function () {
+    $("#createBrandBtn").click(function () {
 
         axios.post("Brand/Create", {
             name: $("#brand").val(),

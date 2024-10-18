@@ -16,6 +16,7 @@ builder.Services.AddControllersWithViews(x =>
 }).AddRazorRuntimeCompilation();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 var connectionString = builder.Configuration.GetConnectionString("Default");
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddDbContext<DataContext>(x => x.UseNpgsql(connectionString));
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Account/Login");
 

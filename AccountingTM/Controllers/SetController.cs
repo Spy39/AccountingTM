@@ -1,14 +1,18 @@
 ﻿using Accounting.Data;
-using AccountingTM.Domain.Models.Directory;
+using AccountingTM.Domain.Models;
 using AccountingTM.Dto.Common;
+using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.Exceptions;
+using AccountingTM.ViewModels.Consumable;
+using AccountingTM.ViewModels.Set;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers
 {
-	//Комплекты
-	[Authorize]
+    //Комплекты
+    [Authorize]
     public class SetController : Controller
 	{
 		private readonly DataContext _context;
@@ -19,24 +23,26 @@ namespace AccountingTM.Controllers
 		}
 
 		//Комплект
-		[HttpGet]
-		public IActionResult GetAllSet([FromQuery] SearchPagedRequestDto input)
+		[HttpGet("[controller]/[action]")]
+		public IActionResult GetAllSet([FromQuery] GetAllTechnicalDto input)
 		{
-			IQueryable<Set> query = _context.Sets;
+			IQueryable<Set> query = _context.Sets.Include(x => x.Location).Include(x => x.Employee);
 			if (!string.IsNullOrWhiteSpace(input.SearchQuery))
 			{
 				var keyword = input.SearchQuery.ToLower();
-				query = query.Where(x => x.Name.ToLower().Contains(keyword));
+				//query = query.Where(x => x.LastName.ToLower().Contains(keyword));
 			}
 
 			var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 			return Ok(new PagedResultDto<Set>(query.Count(), entities));
 		}
 
+
 		[HttpGet]
 		public IActionResult Index()
 		{
-			return View();
+			var set = _context.Sets.ToList();
+			return View(set);
 		}
 
 		[HttpPost]
@@ -83,6 +89,22 @@ namespace AccountingTM.Controllers
 			return Ok(new PagedResultDto<Set>(query.Count(), entities));
 		}
 
+		//Информация о расходном материале
+		[Route("[controller]/{id:int}")]
+		[HttpGet]
+		public IActionResult Info(int id)
+		{
+			Set set = _context.Sets.Include(x => x.Location).Include(x => x.Employee).First(x => x.Id == id);
+			var model = new SetViewModel
+			{
+				SetId = id,
+				Employee = set.Employee.FullName,
+				Location = set.Location.Name,
+				Name = set.Name,
+				Status = set.StatusSet.ToString()
+			};
+			return View(model);
+		}
 
 		[HttpPost]
 		public IActionResult CreateCompoundSet([FromBody] Set input)

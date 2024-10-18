@@ -5,15 +5,15 @@ let tableConsumables = new DataTable('#consumableTable', {
     paging: true,
     serverSide: true,
     bAutoWidth: false,
-    aoColumns: [
-        { sWidth: '19%' },
-        { sWidth: '19%' },
-        { sWidth: '19%' },
-        { sWidth: '19%' },
-        { sWidth: '11%' },
-        { sWidth: '6%' },
-        { sWidth: '7%' }
-    ],
+    //aoColumns: [
+    //    //{ sWidth: '19%' },
+    //    //{ sWidth: '19%' },
+    //    //{ sWidth: '19%' },
+    //    //{ sWidth: '19%' },
+    //    //{ sWidth: '11%' },
+    //    //{ sWidth: '6%' },
+    //    //{ sWidth: '7%' }
+    //],
     ajax: function (data, callback, settings) {
         var filter = {};
         filter.searchQuery = $("#search-input").val()
@@ -59,17 +59,33 @@ let tableConsumables = new DataTable('#consumableTable', {
         },
         {
             targets: 4,
-            data: 'unit.name',
-        },
-        {
-            targets: 5,
             data: 'quantity',
         },
         {
+            targets: 5,
+            data: 'unit.name',
+        },
+        {
             targets: 6,
+            data: 'status',
+            render: (data, type, row, meta) => {
+                switch (data) {
+                    case 0: return "В наличии";
+                    case 1: return "Малый запас";
+                    case 2: return "Отсутствует";
+                    default: return "";
+                }
+            }
+        },
+        {
+            targets: 7,
+            data: 'dateLatestAddition',
+        },
+        {
+            targets: 8,
             data: null,
             render: (data, type, row, meta) => {
-                return `<a href="consumable/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о РМ"><i class="fa-solid fa-circle-info"></i></a>
+                return `<a href="/ConsumableHistory/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о РМ"><i class="fa-solid fa-circle-info"></i></a>
                         <button class="btn btn-danger delete consumable" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
             }
         }]
@@ -86,7 +102,6 @@ $("#create-btn").click(function () {
         model: $("#model").val(),
         locationId: +$("#location").val(),
         unitId: +$("#unit").val(),
-        quantity: $("#quantity").val(),
 
         isDeleted: false
     }).then(function () {
@@ -110,7 +125,7 @@ $(document).on("click", ".delete.consumable", function () {
         if (result.isConfirmed) {
             let id = this.dataset.id;
             axios.delete("Consumable/Delete?id=" + id).then(function () {
-                tableClients.draw(false)
+                tableConsumables.draw(false)
                 $(".tooltip").removeClass("show")
                 toastr.success(`Расходный материал ${name} успешно удален!`)
             })
@@ -214,39 +229,6 @@ $("#location").select2({
     },
     templateResult: (data) => data.name,
     templateSelection: (data) => data.name
-})
-
-//Ответственный
-$("#employee").select2({
-    width: '100%',
-    allowClear: true,
-    placeholder: 'Ответственный',
-    ajax: {
-        transport: (data, success, failure) => {
-            let params = data.data;
-            let maxResultCount = 30;
-
-            params.page = params.page || 1;
-
-            let filter = {};
-            filter.maxResultCount = maxResultCount;
-            filter.skipCount = (params.page - 1) * maxResultCount;
-            filter.keyword = params.term
-            axios.get("/Employee/GetAll", { params: filter }).then(function (result) {
-
-                success({
-                    results: result.data.items,
-                    pagination: {
-                        more: (params.page * maxResultCount) < result.data.totalCount
-                    }
-                });
-            });
-        },
-        cache: true
-    },
-    templateResult: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
-    templateSelection: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
-
 })
 
 //Единица измерения

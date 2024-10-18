@@ -49,7 +49,7 @@ const initTableTypes = () => {
     });
 
     //Добавление
-    $(document).on("click", "#createTypeEquipmentBtn", function () {
+    $("#createTypeEquipmentBtn").click(function () {
 
         axios.post("TypeEquipment/Create", {
             name: $("#typeEquipment").val(),
