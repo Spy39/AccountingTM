@@ -68,18 +68,14 @@ let tableConsumables = new DataTable('#consumableTable', {
         {
             targets: 6,
             data: 'status',
-            render: (data, type, row, meta) => {
-                switch (data) {
-                    case 0: return "В наличии";
-                    case 1: return "Малый запас";
-                    case 2: return "Отсутствует";
-                    default: return "";
-                }
-            }
         },
         {
             targets: 7,
             data: 'dateLatestAddition',
+            render: (data, type, row, meta) => {
+                return data ? dayjs(data).format("DD.MM.YYYY HH:mm") : "";
+            }
+
         },
         {
             targets: 8,

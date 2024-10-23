@@ -20,32 +20,185 @@
 </section>
 
 <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-	<div class="row">
-		<div class="col-6">
-			<!-- SEARCH FORM -->
-			<form class="form-inline">
-				<div class="col-3">
-					<div class="input-group">
-						<input type="search" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
-						<button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
-
-
-					</div>
+	<div class="row col-12">
+		<div class="col-2">
+			<div class="btn-group" role="group" aria-label="Группа кнопок с вложенным раскрывающимся списком">
+				<div class="btn-group" role="group">
+					<button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+						Выберите категорию
+					</button>
+					<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+						<li><a class="dropdown-item" href="#">Технические средства</a></li>
+						<li><a class="dropdown-item" href="#">Расходные материалы</a></li>
+						<li><a class="dropdown-item" href="#">Неисправности</a></li>
+					</ul>
 				</div>
-			</form>
+			</div>
 		</div>
 
-		<div class="dropdown col-3">
-
+		<div class="col-2">
+			<div class="mb-1">
+				<label class="form-label" for="floatingInput">Тип</label>
+				<select id="typeConsumable"></select>
+			</div>
 		</div>
-		<div class="col-3">
+
+		<div class="col-2">
+			<div class="mb-1">
+				<label class="form-label" for="floatingInput">Бренд</label>
+				<select id="brand"></select>
+			</div>
+		</div>
+
+
+        <div class="col-2">
+			<div class="mb-1">
+				<label class="form-label" for="floatingInput">Модель</label>
+				<select id="model"></select>
+			</div>
+        </div>
+
+        <div class="col-2">
+			<div class="form-floating mb-1">
+				<label for="floatingInput">Дата</label>
+				<input type="text" id="dateCompletedWork" class="form-control" name="dateCompletedWork" placeholder="Дата" />
+			</div>
+        </div>
+
+	
+
+		<div class="col-2">
 			<div class="float-sm-right">
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#ApplicationModal">Новая заявка</button>
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#FilterModal">Фильтр</button>
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#FilterModal">Применить</button>
 			</div>
 		</div>
 	</div>
 </div>
+
+
+<section class="content">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+
+				<div class="card card-primary card-outline">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="far fa-chart-bar"></i><ya-tr-span data-index="36-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Interactive Area Chart " data-translation=" Интерактивная карта местности " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Интерактивная карта местности </ya-tr-span>
+						</h3>
+						<div class="card-tools">
+							<ya-tr-span data-index="37-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Real time " data-translation=" В режиме реального времени " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> В режиме реального времени </ya-tr-span><div class="btn-group" id="realtime" data-toggle="btn-toggle">
+								<button type="button" class="btn btn-default btn-sm active" data-toggle="on"><ya-tr-span data-index="38-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="On" data-translation="Вкл ." data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Вкл .</ya-tr-span></button>
+								<button type="button" class="btn btn-default btn-sm" data-toggle="off"><ya-tr-span data-index="38-1" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Off" data-translation="ВЫКЛ" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">ВЫКЛ</ya-tr-span></button>
+							</div>
+						</div>
+					</div>
+					<div class="card-body">
+						<div id="interactive" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 1107.8px; height: 300px;" width="1384" height="375"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 1107.8px; height: 300px;" width="1384" height="375"></canvas><div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;"><svg style="width: 100%; height: 100%;"><g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;"><text x="28" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">0</text><text x="131.88241388821842" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">10</text><text x="239.74099974680428" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">20</text><text x="347.59958560539013" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">30</text><text x="455.458171463976" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">40</text><text x="563.3167573225619" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">50</text><text x="671.1753431811477" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">60</text><text x="779.0339290397336" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">70</text><text x="886.8925148983194" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">80</text><text x="994.7511007569053" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">90</text></g><g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;"><text x="8.952343940734863" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0</text><text x="1" y="218.2" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">20</text><text x="1" y="167.4" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">40</text><text x="1" y="116.6" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">60</text><text x="1" y="65.8" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">80</text><text x="-6.95156192779541" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">100</text></g></svg></div></div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+
+				<div class="card card-primary card-outline">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="far fa-chart-bar"></i><ya-tr-span data-index="39-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Line Chart " data-translation=" Линейный график " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Линейный график </ya-tr-span>
+						</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<div id="line-chart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;"><svg style="width: 100%; height: 100%;"><g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;"><text x="37" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">0</text><text x="107.72592592592592" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">2</text><text x="178.45185185185184" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">4</text><text x="249.17777777777775" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">6</text><text x="319.9037037037037" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">8</text><text x="386.6534576592622" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">10</text><text x="457.37938358518807" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">12</text></g><g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;"><text x="1" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-1.5</text><text x="1" y="226.66666666666669" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-1.0</text><text x="1" y="184.33333333333334" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-0.5</text><text x="5.975780487060547" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">1.5</text><text x="5.975780487060547" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0.0</text><text x="5.975780487060547" y="99.66666666666667" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0.5</text><text x="5.975780487060547" y="57.333333333333336" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">1.0</text></g></svg></div></div>
+					</div>
+
+				</div>
+
+
+				<div class="card card-primary card-outline">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="far fa-chart-bar"></i><ya-tr-span data-index="40-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Area Chart " data-translation=" Схема местности " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Схема местности </ya-tr-span>
+						</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<div id="area-chart" style="height: 338px; padding: 0px; position: relative;" class="full-width-chart"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 564.4px; height: 338px;" width="705" height="422"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 564.4px; height: 338px;" width="705" height="422"></canvas></div>
+					</div>
+
+				</div>
+
+			</div>
+
+			<div class="col-md-6">
+
+				<div class="card card-primary card-outline">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="far fa-chart-bar"></i><ya-tr-span data-index="41-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Bar Chart " data-translation=" Столбчатая диаграмма " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Столбчатая диаграмма </ya-tr-span>
+						</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<div id="bar-chart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;"><svg style="width: 100%; height: 100%;"><g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;"><text x="106.95021230524236" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">February</text><text x="201.02272612831808" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">March</text><text x="289.8460229180076" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">April</text><text x="376.23377092534844" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">May</text><text x="25.455823482166636" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">January</text><text x="457.76839526783334" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">June</text></g><g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;"><text x="8.952343940734863" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0</text><text x="8.952343940734863" y="205.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">5</text><text x="1" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">20</text><text x="1" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">10</text><text x="1" y="78.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">15</text></g></svg></div></div>
+					</div>
+
+				</div>
+
+
+				<div class="card card-primary card-outline">
+					<div class="card-header">
+						<h3 class="card-title">
+							<i class="far fa-chart-bar"></i><ya-tr-span data-index="42-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Donut Chart " data-translation=" Пончиковая диаграмма " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Пончиковая диаграмма </ya-tr-span>
+						</h3>
+						<div class="card-tools">
+							<button type="button" class="btn btn-tool" data-card-widget="collapse">
+								<i class="fas fa-minus"></i>
+							</button>
+							<button type="button" class="btn btn-tool" data-card-widget="remove">
+								<i class="fas fa-times"></i>
+							</button>
+						</div>
+					</div>
+					<div class="card-body">
+						<div id="donut-chart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 69.5px; left: 321.156px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;"><ya-tr-span data-index="43-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Series2" data-translation="Серия 2" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Серия 2</ya-tr-span><br><ya-tr-span data-index="43-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="30%" data-translation="30%" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">30%</ya-tr-span></div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 209.5px; left: 299.156px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;"><ya-tr-span data-index="44-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Series3" data-translation="Серия 3" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Серия 3</ya-tr-span><br><ya-tr-span data-index="44-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="20%" data-translation="20%" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">20%</ya-tr-span></div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 128.5px; left: 140.156px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;"><ya-tr-span data-index="45-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Series4" data-translation="Серия 4" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Серия 4</ya-tr-span><br><ya-tr-span data-index="45-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="50%" data-translation="50%" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">50%</ya-tr-span></div></span></div>
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+</section>
+
 
 
 

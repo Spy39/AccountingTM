@@ -33,10 +33,16 @@
         {
             targets: 0,
             data: 'acceptance',
+            render: (data, type, row, meta) => {
+                return data ? dayjs(data).format("DD.MM.YYYY") : "";
+            }
         },
         {
             targets: 1,
             data: 'removal',
+            render: (data, type, row, meta) => {
+                return data ? dayjs(data).format("DD.MM.YYYY") : "";
+            }
         },
         {
             targets: 2,

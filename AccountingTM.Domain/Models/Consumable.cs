@@ -37,18 +37,20 @@ namespace AccountingTM.Domain.Models
 		public double SmallStockValue { get; set; }
 
 		/// <summary>Статус</summary>/// 
-		public string GetStatus()
-		{
-			if(Quantity == 0)
-			{
-				return "Отсутствует";
-			}
-            else if(Quantity <= SmallStockValue)
-            {
-				return "Малый запас";
-			}
-			return "В наличии";
-
+		public string Status 
+		{ 
+			get 
+			{ 			
+				if(Quantity == 0)
+				{
+					return "Отсутствует";
+				}
+				else if(Quantity <= SmallStockValue)
+				{
+					return "Малый запас";
+				}
+				return "В наличии"; 
+			} 
 		}
 	}
 }

@@ -33,6 +33,9 @@
         {
             targets: 0,
             data: 'date',
+            render: (data, type, row, meta) => {
+                return data ? dayjs(data).format("DD.MM.YYYY") : "";
+            }
         },
         {
             targets: 1,

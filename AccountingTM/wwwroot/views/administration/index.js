@@ -61,7 +61,7 @@ $(function () {
                 targets: 5,
                 data: null,
                 render: (data, type, row, meta) => {
-                    return `<a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС"><i class="fa-regular fa-address-card"></i></a>
+                    return `<a href="administration/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Изменить"><i class="fa-regular fa-address-card"></i></a>
                             <button class="btn btn-danger delete administration" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
                 }
             }]
@@ -76,8 +76,10 @@ $(function () {
             employeeId: +$("#fio").val(),
             login: $("#login").val(),
             password: $("#password").val(),
-            right: +$("#role").val(),
-            employeeId: +$("#employee").val(),
+            lastName: +$("#lastName").val(),
+            firstName: +$("#firstName").val(),
+            fatherName: +$("#fatherName").val(),
+            userRoles: +$("#userRoles").val(),
             isDeleted: false
         }).then(function () {
             location.reload()

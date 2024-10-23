@@ -22,7 +22,7 @@ namespace AccountingTM.Controllers
         [HttpGet("[controller]/[action]")]
         public IActionResult GetAll([FromQuery] GetAllTechnicalDto input)
         {
-            IQueryable<ConsumableHistory> query = _context.ConsumableHistories.Include(x => x.Employee);
+            IQueryable<ConsumableHistory> query = _context.ConsumableHistories.Include(x => x.Employee).Where(x => x.ConsumableId == input.ConsumableId);
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
@@ -53,7 +53,7 @@ namespace AccountingTM.Controllers
 				Location = consumable.Location.Name,
 				Unit = consumable.Unit.Name,
 				Quantity = consumable.Quantity,
-				Status = consumable.GetStatus(),
+				Status = consumable.Status,
 				DateLatestAddition = consumable.DateLatestAddition
 			};
 			return View(model);
@@ -62,11 +62,16 @@ namespace AccountingTM.Controllers
 		[HttpPost]
 		public IActionResult Supply([FromBody] ConsumableHistory input)
 		{
-            //input.Consumable.DateLatestAddition = DateTime.Now;
-            input.DateOfOperation = DateTime.Now;
-            input.IsSupply = true;
 			var user = _context.Users.First(x => x.Login == User.Identity.Name);
 			input.EmployeeId = user.EmployeeId.Value;
+			input.DateOfOperation = DateTime.Now;
+
+			var consumable = _context.Consumables.Find(input.ConsumableId);
+			consumable.Quantity += input.Quantity;
+			consumable.DateLatestAddition = input.DateOfOperation;
+
+			input.IsSupply = true;
+
 			_context.ConsumableHistories.Add(input);
 			_context.SaveChanges();
 			return Ok();
@@ -75,10 +80,22 @@ namespace AccountingTM.Controllers
 		[HttpPost]
 		public IActionResult WriteOff([FromBody] ConsumableHistory input)
 		{
+			var consumable = _context.Consumables.Find(input.ConsumableId);
+			if (consumable.Quantity < input.Quantity)
+			{
+				return BadRequest($"Введенное количество не может превышать {consumable.Quantity}");
+			}
+			consumable.Quantity -= input.Quantity;
+
+			var user = _context.Users.First(x => x.Login == User.Identity.Name);
+			input.EmployeeId = user.EmployeeId.Value;
 			input.DateOfOperation = DateTime.Now;
+			input.IsSupply = false;
+
 			_context.ConsumableHistories.Add(input);
+			_context.Consumables.Update(consumable);
 			_context.SaveChanges();
-			return RedirectToAction("Index");
+			return Ok();
 		}
 
 		[HttpDelete]

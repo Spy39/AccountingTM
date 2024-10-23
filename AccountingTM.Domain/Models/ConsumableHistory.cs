@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace AccountingTM.Domain.Models
 {
+	/// <summary>
+	/// История операций расходного материала
+	/// </summary>
 	public class ConsumableHistory : Entity
 	{
 		public Consumable Consumable { get; set; }

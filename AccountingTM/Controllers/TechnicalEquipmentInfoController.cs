@@ -79,6 +79,7 @@ namespace AccountingTM.Controllers
 			[HttpPost]
 			public IActionResult CreateConservation([FromBody] Conservation input)
 			{
+				input.Date += TimeSpan.FromHours(3);
 				_context.Conservations.Add(input);
 				_context.SaveChanges();
 				return RedirectToAction("Index");
@@ -117,6 +118,7 @@ namespace AccountingTM.Controllers
 			[HttpPost]
 			public IActionResult CreateDisposalInformation([FromBody] DisposalInformation input)
 			{
+				input.Date += TimeSpan.FromHours(3);
 				_context.DisposalInformations.Add(input);
 				_context.SaveChanges();
 				return RedirectToAction("Index");
@@ -155,6 +157,7 @@ namespace AccountingTM.Controllers
 			[HttpPost]
 			public IActionResult CreateReceptionAndTransmission([FromBody] ReceptionAndTransmission input)
 			{
+				input.Date += TimeSpan.FromHours(3);
 				_context.ReceptionAndTransmissions.Add(input);
 				_context.SaveChanges();
 				return RedirectToAction("Index");
@@ -193,6 +196,7 @@ namespace AccountingTM.Controllers
 			[HttpPost]
 			public IActionResult CreateRepair([FromBody] Repair input)
 			{
+			    input.Date += TimeSpan.FromHours(3);
 				_context.Repairs.Add(input);
 				_context.SaveChanges();
 				return RedirectToAction("Index");
@@ -231,6 +235,8 @@ namespace AccountingTM.Controllers
 			[HttpPost]
 			public IActionResult CreateStorage([FromBody] Storage input)
 			{
+				input.Acceptance += TimeSpan.FromHours(3);
+				input.Removal += TimeSpan.FromHours(3);
 				_context.Storages.Add(input);
 				_context.SaveChanges();
 				return RedirectToAction("Index");

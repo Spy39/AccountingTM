@@ -57,7 +57,9 @@ namespace AccountingTM.Controllers
 		public IActionResult Create([FromBody] Application input)
 		{
 			//Генерирование номера заявки
-			input.ApplicationNumber = Guid.NewGuid().ToString();
+			input.ApplicationNumber = Guid.NewGuid().ToString().Substring(0, 7);
+
+
 			var now = DateTime.Now;
 
 			input.DateOfCreation = now;

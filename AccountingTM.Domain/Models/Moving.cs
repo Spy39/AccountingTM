@@ -5,7 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Accounting.Models
 {
-    public class Moving : Entity
+	//На удаление?
+
+
+	public class Moving : Entity
     {
         public int DocumentTypeId { get; set; }
         

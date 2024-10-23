@@ -3,10 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Accounting.Models
 {
-    /// <summary>
-    /// Неисправность
-    /// </summary>
-    public class Malfunction : Entity
+	//На удаление?
+
+
+	/// <summary>
+	/// Неисправность
+	/// </summary>
+	public class Malfunction : Entity
     {
         public string? Date { get; set; }
         public string? Name { get; set; }

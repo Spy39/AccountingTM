@@ -19,6 +19,7 @@ let tableConsumables = new DataTable('#transactionHistoryTable', {
         filter.searchQuery = $("#search-input").val()
         filter.maxResultCount = data.length || 10;
         filter.skipCount = data.start;
+        filter.consumableId = +$("#consumableId").val();
         axios.get('/ConsumableHistory/GetAll', {
             params: filter
         })
@@ -92,8 +93,6 @@ $("#supplyBtn").click(function () {
         quantity: +$("#quantity").val(),
         comment: $("#comment").val(),
         isType: $("#isType").val(),
-
-        isDeleted: false
     }).then(function () {
         location.reload()
     })
@@ -102,16 +101,15 @@ $("#supplyBtn").click(function () {
 //Списание расходного материала
 $("#writeOffBtn").click(function () {
     axios.post("/ConsumableHistory/WriteOff", {
-        typeConsumableId: +$("#typeConsumable").val(),
-        brandId: +$("#brand").val(),
+        consumableId: +$("#consumableId").val(),
+        typeConsumableId: +$("#typeConsumableId").val(),
+        brandId: +$("#brandId").val(),
         model: $("#model").val(),
-        locationId: +$("#location").val(),
-        unitId: +$("#unit").val(),
-        quantity: $("#quantity").val(),
+        locationId: +$("#locationId").val(),
+        unitId: +$("#unitId").val(),
+        quantity: +$("#quantityWriteOff").val(),
         comment: $("#comment").val(),
         isType: $("#isType").val(),
-
-        isDeleted: false
     }).then(function () {
         location.reload()
     })

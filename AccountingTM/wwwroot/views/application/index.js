@@ -56,10 +56,19 @@
             {
                 targets: 1,
                 data: 'dateOfCreation',
+                render: (data, type, row, meta) => {
+                    return data ? dayjs(data).format("DD.MM.YYYY HH:mm") : "";
+                }
+
             },
             {
                 targets: 2,
                 data: 'dateOfChange',
+                render: (data, type, row, meta) => {
+                    return data ? dayjs(data).format("DD.MM.YYYY HH:mm") : "";
+                }
+
+
             },
             {
                 targets: 3,
