@@ -1,5 +1,8 @@
-﻿//Администрирование
-$(function () {
+﻿//Анализ
+$('#date').datepicker({
+    range: true,
+    multipleDatesSeparator: ' - ',
+});
 
     //Вывод данных в таблицу
     let tableAdministrations = new DataTable('#administrationTable', {
@@ -70,109 +73,83 @@ $(function () {
         tableAdministrations.ajax.reload()
     })
 
-    //Добавление
-    $("#create-btn").click(function () {
-        axios.post("Administration/Create", {
-            employeeId: +$("#fio").val(),
-            login: $("#login").val(),
-            password: $("#password").val(),
-            right: +$("#role").val(),
-            employeeId: +$("#employee").val(),
-            isDeleted: false
-        }).then(function () {
-            location.reload()
-        })
-    })
 
-    //Удаление
-    $(document).on("click", ".delete.administration", function () {
-        let name = this.dataset.name;
-        Swal.fire({
-            title: "Вы уверены?",
-            text: `Пользователь ${name} будет удален!`,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Да",
-            cancelButtonText: "Нет",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let id = this.dataset.id;
-                axios.delete("Administration/Delete?id=" + id).then(function () {
-                    tableClients.draw(false)
-                    $(".tooltip").removeClass("show")
-                    toastr.success(`Пользователь ${name} успешно удален!`)
-                })
-            }
-        });
-    })
 
-    //Вывод Select
-    //Сотрудник
-    $("#employee").select2({
-        width: '100%',
-        allowClear: true,
-        placeholder: 'Сотрудник',
-        ajax: {
-            transport: (data, success, failure) => {
-                let params = data.data;
-                let maxResultCount = 30;
+$("#CalculateBtn").click(function () {
+    const dates = $("#date").val().split(" - ");
+    axios.post("/Analysis/Calculate", {
+        Category: +$("#categories").val(),
+        TypeConsumableId: +$("#typeConsumableId").val(),
+        BrandId: +$("#brand").val(),
+        //Model: $("#model").val(),
+        DateStart: moment(dates[0], 'DD.MM.YYYY').toDate(),
+        DateEnd: moment(dates[1], 'DD.MM.YYYY').toDate(),
+    }).then(function () {    })
+})
 
-                params.page = params.page || 1;
+//Вывод Select
+//Select
 
-                let filter = {};
-                filter.maxResultCount = maxResultCount;
-                filter.skipCount = (params.page - 1) * maxResultCount;
-                filter.keyword = params.term
-                axios.get("/Employee/GetAll", { params: filter }).then(function (result) {
+//Тип расходного материала
+$("#typeConsumable").select2({
+    width: '100%',
+    allowClear: true,
+    placeholder: 'Наименование типа',
+    ajax: {
+        transport: (data, success, failure) => {
+            let params = data.data;
+            let maxResultCount = 30;
 
-                    success({
-                        results: result.data.items,
-                        pagination: {
-                            more: (params.page * maxResultCount) < result.data.totalCount
-                        }
-                    });
+            params.page = params.page || 1;
+
+            let filter = {};
+            filter.maxResultCount = maxResultCount;
+            filter.skipCount = (params.page - 1) * maxResultCount;
+            filter.keyword = params.term
+            axios.get("/TypeConsumable/GetAll", { params: filter }).then(function (result) {
+
+                success({
+                    results: result.data.items,
+                    pagination: {
+                        more: (params.page * maxResultCount) < result.data.totalCount
+                    }
                 });
-            },
-            cache: true
+            });
         },
-        templateResult: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
-        templateSelection: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
+        cache: true
+    },
+    templateResult: (data) => data.name,
+    templateSelection: (data) => data.name
+})
 
-    })
+//Бренд техниеского средства
+$("#brand").select2({
+    width: '100%',
+    allowClear: true,
+    placeholder: 'Наименование бренда',
+    ajax: {
+        transport: (data, success, failure) => {
+            let params = data.data;
+            let maxResultCount = 30;
 
-    //Права
-    $("#role").select2({
-        width: '100%',
-        allowClear: true,
-        placeholder: 'Права',
-        ajax: {
-            transport: (data, success, failure) => {
-                let params = data.data;
-                let maxResultCount = 30;
+            params.page = params.page || 1;
 
-                params.page = params.page || 1;
+            let filter = {};
+            filter.maxResultCount = maxResultCount;
+            filter.skipCount = (params.page - 1) * maxResultCount;
+            filter.keyword = params.term
+            axios.get("/Brand/GetAll", { params: filter }).then(function (result) {
 
-                let filter = {};
-                filter.maxResultCount = maxResultCount;
-                filter.skipCount = (params.page - 1) * maxResultCount;
-                filter.keyword = params.term
-                //Исправить
-                axios.get("/Employee/GetAll", { params: filter }).then(function (result) {
-                    
-                    success({
-                        results: result.data.items,
-                        pagination: {
-                            more: (params.page * maxResultCount) < result.data.totalCount
-                        }
-                    });
+                success({
+                    results: result.data.items,
+                    pagination: {
+                        more: (params.page * maxResultCount) < result.data.totalCount
+                    }
                 });
-            },
-            cache: true
+            });
         },
-        templateResult: (data) => data.name,
-        templateSelection: (data) => data.name
-    })
-
+        cache: true
+    },
+    templateResult: (data) => data.name,
+    templateSelection: (data) => data.name
 })

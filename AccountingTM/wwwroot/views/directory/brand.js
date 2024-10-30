@@ -84,6 +84,7 @@ const initTableBrands = () => {
         });
     })
 
+
 }
 
 export default initTableBrands;

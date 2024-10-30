@@ -1,5 +1,4 @@
 ﻿//Администрирование
-$(function () {
 
     //Вывод данных в таблицу
     let tableAdministrations = new DataTable('#administrationTable', {
@@ -176,5 +175,3 @@ $(function () {
         templateResult: (data) => data.name,
         templateSelection: (data) => data.name
     })
-
-})

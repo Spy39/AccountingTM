@@ -54,7 +54,7 @@
     //Добавление
     $(document).on("click", "#createCharacteristicBtn", function () {
 
-        axios.post("TechnicalEquipmentInfo/CreateCharacteristic", {
+        axios.post("/TechnicalEquipmentInfo/CreateCharacteristic", {
             technicalEquipmentId: +$("#technicalEquipmentId").val(),
             indicatorId: +$("#indicator").val(),
             unitId: +$("#unit").val(),

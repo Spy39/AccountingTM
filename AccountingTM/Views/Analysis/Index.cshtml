@@ -22,54 +22,43 @@
 <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
 	<div class="row col-12">
 		<div class="col-2">
-			<div class="btn-group" role="group" aria-label="Группа кнопок с вложенным раскрывающимся списком">
-				<div class="btn-group" role="group">
-					<button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-						Выберите категорию
-					</button>
-					<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-						<li><a class="dropdown-item" href="#">Технические средства</a></li>
-						<li><a class="dropdown-item" href="#">Расходные материалы</a></li>
-						<li><a class="dropdown-item" href="#">Неисправности</a></li>
-					</ul>
-				</div>
-			</div>
+            <select id="categories" class="form-select" aria-label="Default select example">
+                <option selected>Выберите тип анализа</option>
+                <option value="0">Технические средства</option>
+                <option value="1">Расходные материалы</option>
+                <option value="2">Неисправности</option>
+            </select>
 		</div>
 
 		<div class="col-2">
-			<div class="mb-1">
-				<label class="form-label" for="floatingInput">Тип</label>
-				<select id="typeConsumable"></select>
-			</div>
+				<select id="typeConsumable" class="form-select">
+					<option selected>Выберите тип расходного материала</option>
+				</select>
 		</div>
 
 		<div class="col-2">
-			<div class="mb-1">
-				<label class="form-label" for="floatingInput">Бренд</label>
-				<select id="brand"></select>
-			</div>
+				<select id="brand" class="form-select">
+					<option selected>Выберите бренд</option>
+				</select>
 		</div>
 
-
         <div class="col-2">
-			<div class="mb-1">
-				<label class="form-label" for="floatingInput">Модель</label>
-				<select id="model"></select>
-			</div>
+				<select id="model" class="form-select">
+					<option selected>Выберите модель</option>
+				</select>
         </div>
 
         <div class="col-2">
-			<div class="form-floating mb-1">
-				<label for="floatingInput">Дата</label>
-				<input type="text" id="dateCompletedWork" class="form-control" name="dateCompletedWork" placeholder="Дата" />
-			</div>
+				<input type="text"
+					   class="form-control"
+					   id="date"
+					   name="dateCompletedWork"
+					   placeholder="Дата" />
         </div>
-
-	
 
 		<div class="col-2">
 			<div class="float-sm-right">
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#FilterModal">Применить</button>
+				<button class="btn btn-default" id="CalculateBtn">Применить</button>
 			</div>
 		</div>
 	</div>
@@ -201,6 +190,7 @@
 
 
 
+@* @await Html.PartialAsync("_EditSetModal.cshtml") *@
 
 @section Scripts {
 	<script src="~/views/analysis/index.js"></script>
