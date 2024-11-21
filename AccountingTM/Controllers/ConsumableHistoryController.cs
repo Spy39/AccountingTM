@@ -69,7 +69,7 @@ namespace AccountingTM.Controllers
 			var consumable = _context.Consumables.Find(input.ConsumableId);
 			consumable.Quantity += input.Quantity;
 			consumable.DateLatestAddition = input.DateOfOperation;
-
+			input.QuantityAfterOperation = consumable.Quantity;
 			input.IsSupply = true;
 
 			_context.ConsumableHistories.Add(input);
@@ -90,6 +90,7 @@ namespace AccountingTM.Controllers
 			var user = _context.Users.First(x => x.Login == User.Identity.Name);
 			input.EmployeeId = user.EmployeeId.Value;
 			input.DateOfOperation = DateTime.Now;
+			input.QuantityAfterOperation = consumable.Quantity;
 			input.IsSupply = false;
 
 			_context.ConsumableHistories.Add(input);

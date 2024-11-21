@@ -20,6 +20,8 @@ namespace AccountingTM.Domain.Models
 		public Brand? Employee { get; set; } //Бренд		
 		/// <summary>Количество</summary>
 		public double Quantity { get; set; }
+		/// <summary>Количество после операции</summary>
+		public double QuantityAfterOperation { get; set; }
 		/// <summary>Дата операции</summary>///
 		public DateTime? DateOfOperation { get; set; }
 		/// <summary>Тип операции</summary>///

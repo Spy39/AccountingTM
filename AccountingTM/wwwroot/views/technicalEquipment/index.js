@@ -142,6 +142,21 @@
         });
     })
 
+    //Импорт технического средства
+    $("#upload-btn").click(function () {
+        const formData = new FormData();
+        formData.append('file', document.getElementById("formFile").files[0]);
+        axios.post("TechnicalEquipment/UploadExcel", 
+            formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            }
+        }).then(function () {
+
+            location.reload(formData)
+        })
+    })
+
     //Вывод Select
 
     //Тип технического средства

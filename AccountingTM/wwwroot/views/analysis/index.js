@@ -79,9 +79,9 @@ $("#CalculateBtn").click(function () {
     const dates = $("#date").val().split(" - ");
     axios.post("/Analysis/Calculate", {
         Category: +$("#categories").val(),
-        TypeConsumableId: +$("#typeConsumableId").val(),
+        TypeConsumableId: +$("#typeConsumable").val(),
         BrandId: +$("#brand").val(),
-        //Model: $("#model").val(),
+        Model: $("#model").val(),
         DateStart: moment(dates[0], 'DD.MM.YYYY').toDate(),
         DateEnd: moment(dates[1], 'DD.MM.YYYY').toDate(),
     }).then(function () {    })
@@ -142,6 +142,38 @@ $("#brand").select2({
 
                 success({
                     results: result.data.items,
+                    pagination: {
+                        more: (params.page * maxResultCount) < result.data.totalCount
+                    }
+                });
+            });
+        },
+        cache: true
+    },
+    templateResult: (data) => data.name,
+    templateSelection: (data) => data.name
+})
+
+//Модель техниеского средства
+$("#model").select2({
+    width: '100%',
+    allowClear: true,
+    placeholder: 'Наименование модели',
+    ajax: {
+        transport: (data, success, failure) => {
+            let params = data.data;
+            let maxResultCount = 30;
+
+            params.page = params.page || 1;
+
+            let filter = {};
+            filter.maxResultCount = maxResultCount;
+            filter.skipCount = (params.page - 1) * maxResultCount;
+            filter.keyword = params.term
+            axios.get("/TechnicalEquipment/GetAllModel", { params: filter }).then(function (result) {
+
+                success({
+                    results: result.data.items.map(x => ({ id: x, name: x })),
                     pagination: {
                         more: (params.page * maxResultCount) < result.data.totalCount
                     }

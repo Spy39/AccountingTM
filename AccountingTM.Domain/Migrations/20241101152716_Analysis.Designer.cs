@@ -3,6 +3,7 @@ using System;
 using Accounting.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AccountingTM.Domain.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241101152716_Analysis")]
+    partial class Analysis
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -146,9 +148,6 @@ namespace AccountingTM.Domain.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("TypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("WorkTimeAvg")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");

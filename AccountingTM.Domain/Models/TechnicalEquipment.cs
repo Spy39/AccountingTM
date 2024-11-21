@@ -45,6 +45,10 @@ namespace Accounting.Models
 		/// </summary>
 		public DateTime? DateEnd { get; set; }
 		/// <summary>
+		/// Средний срок работы в месяцах
+		/// </summary>
+		public int? WorkTimeAvg { get; set; }
+		/// <summary>
 		/// Дата действия гарантии
 		/// </summary>
 		public DateTime? DateGarant { get; set; }
