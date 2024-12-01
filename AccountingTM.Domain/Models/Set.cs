@@ -15,11 +15,10 @@ namespace AccountingTM.Domain.Models
     /// </summary>
     public class Set : Entity
     {
-		public int LocationId { get; set; }
-		[ForeignKey(nameof(LocationId))]
-		public Location Location { get; set; } //Местоположение
-		public int EmployeeId { get; set; }
-		[ForeignKey(nameof(EmployeeId))]
+
+		public int? LocationId { get; set; }
+		public Location? Location { get; set; } //Местоположение
+		public int? EmployeeId { get; set; }
 		public Employee? Employee { get; set; } //Ответственный			
 		/// <summary>Наименование комплекта</summary>///
 		public string Name { get; set; }

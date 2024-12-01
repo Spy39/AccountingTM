@@ -40,6 +40,11 @@ namespace Accounting.Controllers
                 //query = query.Where(x => x.Name.ToLower().Contains(keyword) || x.Model.ToLower().Contains(keyword) ||
                 //    x.SerialNumber.ToLower().Contains(keyword));
             }
+			if (input.IsWithoutSet)
+			{
+				query = query.Where(x => x.SetId == null);
+			}
+
             var clients = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
             return Ok(new PagedResultDto<TechnicalEquipment>(query.Count(), clients));

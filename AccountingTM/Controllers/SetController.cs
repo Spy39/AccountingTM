@@ -1,6 +1,7 @@
 ﻿using Accounting.Data;
 using AccountingTM.Domain.Models;
 using AccountingTM.Dto.Common;
+using AccountingTM.Dto.Set;
 using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.Exceptions;
 using AccountingTM.ViewModels.Consumable;
@@ -76,17 +77,22 @@ namespace AccountingTM.Controllers
 
 		//Состав комплекта
 		[HttpGet]
-		public IActionResult GetAllCompoundSet([FromQuery] SearchPagedRequestDto input)
+		public IActionResult GetAllCompoundSet([FromQuery] GetAllCompoundSetDto input)
 		{
-			IQueryable<Set> query = _context.Sets;
-			if (!string.IsNullOrWhiteSpace(input.SearchQuery))
-			{
-				var keyword = input.SearchQuery.ToLower();
-				query = query.Where(x => x.Name.ToLower().Contains(keyword));
-			}
+			IQueryable<Set> query = _context.Sets.Where(x => x.Id == input.SetId); ;
 
 			var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 			return Ok(new PagedResultDto<Set>(query.Count(), entities));
+		}
+
+		//История изменений
+		[HttpGet]
+		public IActionResult GetAllHistoryOfChangesSet([FromQuery] GetAllHistoryOfChangesSetDto input)
+		{
+			IQueryable<SetHistory> query = _context.SetHistories.Where(x => x.SetId == input.SetId);
+
+			var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+			return Ok(new PagedResultDto<SetHistory>(query.Count(), entities));
 		}
 
 		//Информация о расходном материале
@@ -98,8 +104,8 @@ namespace AccountingTM.Controllers
 			var model = new SetViewModel
 			{
 				SetId = id,
-				Employee = set.Employee.FullName,
-				Location = set.Location.Name,
+				Employee = set?.Employee?.FullName,
+				Location = set?.Location?.Name,
 				Name = set.Name,
 				Status = set.StatusSet.ToString()
 			};

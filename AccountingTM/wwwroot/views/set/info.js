@@ -15,7 +15,7 @@ let tableCompoundSets = new DataTable('#compoundSetTable', {
     },
     ajax: function (data, callback, settings) {
         var filter = {};
-        filter.searchQuery = $("#search-input").val()
+        filter.setId = +$("#SetId").val();
         filter.maxResultCount = data.length || 10;
         filter.skipCount = data.start;
         axios.get('/Set/GetAllCompoundSet', {
@@ -88,10 +88,10 @@ let tableChangesSets = new DataTable('#changesSetTable', {
     serverSide: true,
     ajax: function (data, callback, settings) {
         var filter = {};
-        filter.searchQuery = $("#search-input").val()
         filter.maxResultCount = data.length || 10;
         filter.skipCount = data.start;
-        axios.get('/Set/GetAllCompoundSet', {
+        filter.setId = +$("#SetId").val();
+        axios.get('/Set/GetAllHistoryOfChangesSet', {
             params: filter
         })
             .then(function (result) {
@@ -161,6 +161,7 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
         filter.searchQuery = $("#search-input").val()
         filter.maxResultCount = data.length || 10;
         filter.skipCount = data.start;
+        filter.isWithoutSet = true;
         axios.get('/TechnicalEquipment/GetAll', {
             params: filter
         })
