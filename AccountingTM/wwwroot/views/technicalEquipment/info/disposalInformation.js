@@ -1,5 +1,4 @@
-﻿
-    //Вывод сведений об утилизации в таблицу
+﻿    //Вывод сведений об утилизации в таблицу
     let tableDisposalInformations = new DataTable('#disposalInformationTable', {
         paging: true,
         serverSide: true,
@@ -28,7 +27,13 @@
                 action: () => tableDisposalInformations.draw(false)
             }
         ],
-        initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+        drawCallback: function () {
+            if ($('[data-bs-toggle="tooltip"]')) {
+                setTimeout(() => {
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                }, 1000)
+            }
+        },
         columnDefs: [
             {
                 targets: 0,
@@ -49,8 +54,7 @@
                 targets: 3,
                 data: null,
                 render: (data, type, row, meta) => {
-                    return `<a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС"><i class="fa-regular fa-address-card"></i></a>
-                            <button class="btn btn-danger delete disposalInformation" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
+                    return `<button class="btn btn-danger delete disposalInformation" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
                 }
             }]
     });
@@ -78,7 +82,7 @@
         let name = this.dataset.name;
         Swal.fire({
             title: "Вы уверены?",
-            text: `ТС ${name} будет удален!`,
+            text: `Запись ${name} будет удален!`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -91,7 +95,7 @@
                 axios.delete("TechnicalEquipmentInfo/DeleteDisposalInformation?id=" + id).then(function () {
                     tableDisposalInformations.draw(false)
                     $(".tooltip").removeClass("show")
-                    toastr.success('ТС успешно удален!')
+                    toastr.success('Запись удалена!')
                 })
             }
         });

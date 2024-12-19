@@ -1,70 +1,77 @@
 ﻿@* Добавление новой заявки *@
-<div class="modal fade" id="ApplicationModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-	<div class="modal-dialog modal-xl">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Создание новой заявки</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body mb-3">
-				<div class="mb-1">
-					<label class="form-label" for="floatingInput">Категория</label>
-					<select id="category"></select>
-				</div>
+<div class="modal fade" id="ApplicationModal" aria-hidden="true" aria-labelledby="ApplicationModalLabel" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ApplicationModalLabel">Создание новой заявки</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body mb-3">
+                <!-- Категория -->
+                <div class="mb-3">
+                    <label class="form-label" for="category">Категория</label>
+                    <select id="category" class="form-select" placeholder="Выберите категорию">
+                        <option selected disabled>Выберите категорию</option>
+                    </select>
+                </div>
 
-				<div class="mb-1">
-					<label for="exampleFormControlInput1" class="form-label">Тема</label>
-					<input type="text" class="form-control" id="subject" placeholder="Тема заявки...">
-				</div>
-				<div class="mb-1">
-					<label for="exampleFormControlTextarea1" class="form-label">Описание неисправности</label>
-					<textarea class="form-control" id="description" rows="3"></textarea>
-				</div>
-				<div class="mb-1">
-					<label for="exampleFormControlInput1" class="form-label">Автор</label>
-					<input type="text" class="form-control" id="author" placeholder="Иванов И.П.">
-				</div>
-				<div class="mb-1">
-					<label class="form-label" for="floatingInput">Местоположение</label>
-					<select id="location"></select>
-				</div>
+                <!-- Тема -->
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Тема</label>
+                    <input type="text" class="form-control" id="subject" placeholder="Тема заявки...">
+                </div>
 
-				<div class="mb-1">
-					<label class="form-label" for="floatingInput">Выберите приоритет заявки</label>
-					<select id="priority" class="form-select mb-1" aria-label="Пример выбора по умолчанию">
-						<option value="0">
-							Критический
-						</option>
-						<option value="1">
-							Высокий
-						</option>
-						<option value="2">
-							Нормальный
-						</option>
-						<option value="3">
-							Низкий
-						</option>
-					</select>
-				</div>
+                <!-- Описание неисправности -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Описание неисправности</label>
+                    <textarea class="form-control" id="description" rows="3" placeholder="Опишите проблему..."></textarea>
+                </div>
 
-				<div class="form-check mb-1">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault">
-						Открыть заявку после отправки
-					</label>
-				</div>
-				<div class="form-check mb-1">
-					<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-					<label class="form-check-label" for="flexCheckDefault">
-						Назначить заявку себе
-					</label>
-				</div>
+                <!-- Автор -->
+                <div class="mb-3">
+                    <label for="author" class="form-label">Автор</label>
+                    <input type="text" class="form-control" id="author" placeholder="Иванов И.П.">
+                </div>
 
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-				<button id="create-btn" class="btn btn-primary">Отправить</button>
-			</div>
-		</div>
-	</div>
+                <!-- Местоположение -->
+                <div class="mb-3">
+                    <label class="form-label" for="location">Местоположение</label>
+                    <select id="location" class="form-select" placeholder="Выберите местоположение">
+                        <option selected disabled>Выберите местоположение</option>
+                    </select>
+                </div>
+
+                <!-- Приоритет -->
+                <div class="mb-3">
+                    <label class="form-label" for="priority">Приоритет</label>
+                    <select id="priority" class="form-select">
+                        <option value="0">Критический</option>
+                        <option value="1">Высокий</option>
+                        <option value="2" selected>Нормальный</option>
+                        <option value="3">Низкий</option>
+                    </select>
+                </div>
+
+                <!-- Чекбоксы -->
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="openAfterSubmit">
+                    <label class="form-check-label" for="openAfterSubmit">
+                        Открыть заявку после отправки
+                    </label>
+                </div>
+                <div class="form-check mb-2">
+                    <input class="form-check-input" type="checkbox" id="assignToSelf">
+                    <label class="form-check-label" for="assignToSelf">
+                        Назначить заявку себе
+                    </label>
+                </div>
+            </div>
+
+            <!-- Кнопки -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button id="create-btn" class="btn btn-primary">Отправить</button>
+            </div>
+        </div>
+    </div>
 </div>

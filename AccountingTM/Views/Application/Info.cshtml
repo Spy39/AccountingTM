@@ -52,126 +52,132 @@
 </div>
 
 <div class="container col-12">
-	<div class="row">
-		<div class="col-3 p-3">
-			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-					<div class="row">
-						<div class="col-9">
-                            <p>Статус заявки: @Model.Status
-								<select class="custom-select form-control-border" id="exampleSelectBorderWidth2">
-									<option>Value 1</option>
-									<option>Value 2</option>
-									<option>Value 3</option>
-								</select>
-							</p>
-							<p class="nav-line"></p>
-							<p>Категория: @Model.Category
-								<select class="custom-select form-control-border" id="exampleSelectBorderWidth2">
-									<option>Value 1</option>
-									<option>Value 2</option>
-									<option>Value 3</option>
-								</select>
-							</p>
-							<p class="nav-line"></p>
-							<p>Приоритет: @Model.Priority
-								<select class="custom-select form-control-border" id="exampleSelectBorderWidth2">
-									<option>Value 1</option>
-									<option>Value 2</option>
-									<option>Value 3</option>
-								</select>
-							</p>
-							<p class="nav-line"></p>
-							<p>Исполнитель: @Model.Executor</p>
-							<button type="button" class="btn btn-link">Назначить себе</button>
-							<button type="button" class="btn btn-link">Решена</button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-					<div class="row">
-						<div class="col-9">
-							<h5>Информация</h5>
-							<p>Номер заявки: @Model.ApplicationNumber</p>
-							<p>Дата создания: @Model.DateOfCreation</p>
-							<p>Последнее обновление: @Model.DateOfChange</p>
-							<p>Последний ответивший: @Model.LastReply</p>
-							<p>Срок исполнения: @Model.ExpirationDate</p>
-							<p></p>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-					<div class="row">
-						<div class="col-9">
-							<h5>История изменений</h5>
-						</div>
-				</div>
-			</div>
-			</div>
-		</div>
 
-		<div class="col-9 p-3">
+    <!-- Главная панель -->
+    <div class="row">
+        <!-- Левая колонка -->
+        <div class="col-md-4">
+            <!-- Статус и параметры -->
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">Параметры заявки</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Статус заявки</label>
+                        <select class="form-select" id="status">
+                            <option selected>@Model.Status</option>
+                            <option>Открыта</option>
+                            <option>Закрыта</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="category" class="form-label">Категория</label>
+                        <select class="form-select" id="category">
+                            <option selected>@Model.Category</option>
+                            <option>Категория 1</option>
+                            <option>Категория 2</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="priority" class="form-label">Приоритет</label>
+                        <select class="form-select" id="priority">
+                            <option selected>@Model.Priority</option>
+                            <option>Высокий</option>
+                            <option>Средний</option>
+                            <option>Низкий</option>
+                        </select>
+                    </div>
+                    <div>
+                        <p>Исполнитель: <strong>@Model.Executor</strong></p>
+                        <button class="btn btn-link">Назначить себе</button>
+                        <button class="btn btn-link">Решена</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Информация о заявке -->
+            <div class="card mb-3">
+                <div class="card-header bg-secondary text-white">Информация</div>
+                <div class="card-body">
+                    <p>Номер заявки: <strong>@Model.ApplicationNumber</strong></p>
+                    <p>Дата создания: <strong>@Model.DateOfCreation</strong></p>
+                    <p>Последнее обновление: <strong>@Model.DateOfChange</strong></p>
+                    <p>Последний ответивший: <strong>@Model.LastReply</strong></p>
+                    <p>Срок исполнения: <strong>@Model.ExpirationDate</strong></p>
+                </div>
+            </div>
+            <!-- История изменений -->
+            <div class="card">
+                <div class="card-header bg-dark text-white">История изменений</div>
+                <div class="card-body">
+                    <p>Здесь будет история изменений...</p>
+                </div>
+            </div>
+        </div>
 
-			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-					<div class="row">
-						<h5>@Model.Subject</h5>
-						<p>Автор: @Model.Author</p>
-						<p>Помещение: @Model.Location</p>
-						<p>Краткое описание: @Model.Description</p>
-					</div>
-				</div>
-			</div>
-		
-			<div class="row">
-				<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-					<div class="row">
-						<h5>Комментарии</h5>
-						<div class="form-group">
-							<label>Textarea</label>
-							<textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-						</div>
+        <!-- Правая колонка -->
+        <div class="col-md-8">
+            <!-- Основная информация -->
+            <div class="card mb-3">
+                <div class="card-header bg-info text-white">Основная информация</div>
+                <div class="card-body">
+                    <h5>@Model.Subject</h5>
+                    <p>Автор: <strong>@Model.Author</strong></p>
+                    <p>Помещение: <strong>@Model.Location</strong></p>
+                    <p>Краткое описание: @Model.Description</p>
+                </div>
+            </div>
 
-						<div class="custom-file  mb-1">
-							<input type="file" class="custom-file-input" id="customFile">
-							<label class="custom-file-label" for="customFile">Choose file</label>
-						</div>
-
-						<div>
-							<div class="row mb-1">
-								<div class="col-sm-6">
-
-									<div class="form-group">
-
-										<div class="custom-control custom-checkbox">
-											<input class="custom-control-input" type="checkbox" id="customCheckbox2" checked="">
-											<label for="customCheckbox2" class="custom-control-label">Назначить заявку себе</label>
-										</div>
-
-										<div class="custom-control custom-checkbox">
-											<input class="custom-control-input" type="checkbox" id="customCheckbox1" value="option1">
-											<label for="customCheckbox1" class="custom-control-label">Изменить приоритет</label>
-										</div>
-									</div>
-								</div>
-								
-							</div>
-						</div>
-						<div>
-							<button type="submit" class="btn btn-primary">Добавить ответ</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
+            <!-- Комментарии -->
+            <div class="card">
+                <div class="card-header bg-success text-white">Комментарии</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="comment" class="form-label">Добавить комментарий</label>
+                        <textarea class="form-control" id="comment" rows="3" placeholder="Введите комментарий..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Добавить файл</label>
+                        <input type="file" class="form-control" id="file">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="assignToMe">
+                        <label class="form-check-label" for="assignToMe">
+                            Назначить заявку себе
+                        </label>
+                    </div>
+                    <button class="btn btn-primary mt-3">Добавить комментарий</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Модальное окно -->
+<div class="modal fade" id="AddTechnicalEquipmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Добавить техническое средство</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Поля формы -->
+                <div class="mb-3">
+                    <label for="equipmentName" class="form-label">Название оборудования</label>
+                    <input type="text" class="form-control" id="equipmentName" placeholder="Введите название">
+                </div>
+                <div class="mb-3">
+                    <label for="equipmentSerial" class="form-label">Серийный номер</label>
+                    <input type="text" class="form-control" id="equipmentSerial" placeholder="Введите серийный номер">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @await Html.PartialAsync("_AddTechnicalEquipmentModal.cshtml")
 

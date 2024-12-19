@@ -53,6 +53,102 @@
 </div>
 
 
+<section class="content mt-3">
+    <div class="container-fluid">
+        <!-- Карточки с общей статистикой -->
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <div class="card text-white bg-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Технические средства</h5>
+                        <p class="card-text">Всего: <strong>250</strong></p>
+                        <p class="card-text">Исправные: <strong>200</strong></p>
+                        <p class="card-text">Неисправные: <strong>50</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Расходные материалы</h5>
+                        <p class="card-text">Всего: <strong>120</strong></p>
+                        <p class="card-text">Использовано за месяц: <strong>40</strong></p>
+                        <p class="card-text">Запас на складе: <strong>80</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-danger mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Неисправности</h5>
+                        <p class="card-text">Всего: <strong>15</strong></p>
+                        <p class="card-text">Ожидают ремонта: <strong>10</strong></p>
+                        <p class="card-text">Устранено: <strong>5</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-white bg-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Заявки</h5>
+                        <p class="card-text">Всего заявок: <strong>250</strong></p>
+                        <p class="card-text">Обработано: <strong>180</strong></p>
+                        <p class="card-text">В работе: <strong>50</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Графики -->
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="text-center">Динамика неисправностей</h3>
+                <div class="border p-3" style="height: 300px; background-color: #f9f9f9;">
+                    <!-- Вставить график с использованием библиотеки Chart.js -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h3 class="text-center">Использование расходных материалов</h3>
+                <div class="border p-3" style="height: 300px; background-color: #f9f9f9;">
+                    <!-- Вставить график с использованием библиотеки Chart.js -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Таблица со списком неисправностей -->
+        <div class="mt-4">
+            <h3 class="text-center">Последние неисправности</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Техническое средство</th>
+                        <th>Описание</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>12.12.2024</td>
+                        <td>Сканер багажа</td>
+                        <td>Ошибка передачи данных</td>
+                        <td><span class="badge bg-danger">Ожидает ремонта</span></td>
+                    </tr>
+                    <tr>
+                        <td>10.12.2024</td>
+                        <td>Камера видеонаблюдения</td>
+                        <td>Неисправен объектив</td>
+                        <td><span class="badge bg-success">Ремонт завершён</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
+
+
 <section class="content">
     <div class="container-fluid">
         <div class="row">

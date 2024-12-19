@@ -1,5 +1,4 @@
-﻿
-//Вывод данных о характеристиках технического средства в таблицу
+﻿//Вывод данных о характеристиках технического средства в таблицу
     let tableCharacteristics = new DataTable('#characteristic', {
     paging: true,
     serverSide: true,
@@ -28,7 +27,13 @@
             action: () => tableCharacteristics.draw(false)
         }
     ],
-    initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+        drawCallback: function () {
+            if ($('[data-bs-toggle="tooltip"]')) {
+                setTimeout(() => {
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                }, 1000)
+            }
+        },
     columnDefs: [
         {
             targets: 0,
@@ -52,25 +57,37 @@
     });
 
     //Добавление
-    $(document).on("click", "#createCharacteristicBtn", function () {
+    //$(document).on("click", "#createCharacteristicBtn", function () {
+    //    axios.post("/TechnicalEquipmentInfo/CreateCharacteristic", {
+    //        technicalEquipmentId: +$("#technicalEquipmentId").val(),
+    //        indicatorId: +$("#indicator").val(),
+    //        unitId: +$("#unit").val(),
+    //        meaning: $("#meaning").val(),
+    //        isDeleted: false
+    //    }).then(function () {
+    //        location.reload()
+    //    })
+    //})
 
-        axios.post("/TechnicalEquipmentInfo/CreateCharacteristic", {
-            technicalEquipmentId: +$("#technicalEquipmentId").val(),
-            indicatorId: +$("#indicator").val(),
-            unitId: +$("#unit").val(),
-            meaning: $("#meaning").val(),
-            isDeleted: false
-        }).then(function () {
-            location.reload()
-        })
+$("#createCharacteristicBtn").click(function () {
+    axios.post("/TechnicalEquipmentInfo/CreateCharacteristic", {
+        technicalEquipmentId: +$("#technicalEquipment").val(),
+        indicatorId: +$("#indicator").val(),
+        unitId: +$("#unit").val(),
+        meaning: $("#meaning").val(),
+        isDeleted: false
+    }).then(function () {
+        location.reload()
     })
+})
+
 
     //Удаление
     $(document).on("click", ".delete.сharacteristic", function () {
         let name = this.dataset.name;
         Swal.fire({
             title: "Вы уверены?",
-            text: `Характеристика ${name} будет удалена!`,
+            text: `Запись ${name} будет удалена!`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -83,7 +100,7 @@
                 axios.delete("TechnicalEquipmentInfo/DeleteCharacteristic?id=" + id).then(function () {
                     tableCharacteristics.draw(false)
                     $(".tooltip").removeClass("show")
-                    toastr.success(`Характеристика ${name} успешно удалена!`)
+                    toastr.success(`Запись удалена!`)
                 })
             }
         });

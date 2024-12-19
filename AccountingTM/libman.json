@@ -20,16 +20,16 @@
     },
     {
       "provider": "jsdelivr",
-      "library": "datatables.net-bs5@1.13.6",
+      "library": "datatables.net-bs5@2.1.8",
       "destination": "wwwroot/lib/datatables.net-bs5/"
     },
     {
-      "library": "jquery@3.7.0",
+      "library": "jquery@3.7.1",
       "destination": "wwwroot/lib/jquery/"
     },
     {
       "provider": "jsdelivr",
-      "library": "datatables.net@1.13.6",
+      "library": "datatables.net@2.1.8",
       "destination": "wwwroot/lib/datatables.net/"
     },
     {

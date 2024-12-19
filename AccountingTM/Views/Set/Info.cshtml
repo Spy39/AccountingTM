@@ -29,7 +29,7 @@
 		<div class="col-1">
 			<a class="btn btn-default" asp-area="" asp-controller="Set" asp-action="Index">Назад</a>
 		</div>
-		<div class="col-7">
+		<div class="col-5">
 			<div class="row">
 				<h3>@Model.Name</h3>
 			</div>
@@ -39,6 +39,9 @@
 			<div class="row">
 				Статус: @Model.Status
 			</div>
+		</div>
+
+		<div class="col-2">
 			<div class="row">
 				Местоположение: @Model.Location
 			</div>
@@ -63,7 +66,7 @@
 <div class="col-12" id="page-content">
 	<div class="row">
 		<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-			<div class="row">
+			<div class="row mb-3 align-items-center">
 				<div class="col-9">
 					<h5>Состав комплекта</h5>
 				</div>
@@ -112,7 +115,7 @@
 <div class="col-12" id="page-content">
 	<div class="row">
 		<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-			<div class="row">
+			<div class="row mb-3 align-items-center">
 				<div class="col-9">
 					<h5>История изменений</h5>
 				</div>

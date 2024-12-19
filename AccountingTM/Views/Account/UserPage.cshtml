@@ -10,36 +10,58 @@
 	</ol>
 }
 
-<div class="container col-6 mb-1">
-	<div class="row">
-		<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-			<div class="row">
-                <form class="form-floating mb-2">
-                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
-                    <label for="floatingInputValue">Фамилия, имя, отчество</label>
-                </form>
-                <form class="form-floating mb-2">
-                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
-                    <label for="floatingInputValue">Логин</label>
-                </form>
-                <form class="form-floating mb-2">
-                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
-                    <label for="floatingInputValue">Пароль</label>
-                </form>
-                <form class="form-floating mb-2">
-                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
-                    <label for="floatingInputValue">Должность</label>
-                </form>
-                <form class="form-floating mb-2">
-                    <input type="text" class="form-control" id="floatingInputValue" value="" readonly>
-                    <label for="floatingInputValue">Права</label>
-                </form>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-                    <button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editUserPage" type="submit">Изменить</button>
-                </div>
-			</div>
-		</div>
-	</div>
+<div class="container col-md-6 mb-4">
+    <!-- Заголовок страницы -->
+    <div class="row mb-3">
+        <div class="col text-center">
+            <h3 class="fw-bold">Персональная страница</h3>
+        </div>
+    </div>
+
+    <!-- Карточка информации пользователя -->
+    <div class="shadow-sm p-4 mb-4 bg-body-tertiary rounded">
+        <!-- Форма с полями информации -->
+        <form>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="userFullName" value="Иванов Иван Иванович" readonly>
+                <label for="userFullName"><i class="fa-solid fa-user me-2"></i>Фамилия, имя, отчество</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="userLogin" value="ivanov_ii" readonly>
+                <label for="userLogin"><i class="fa-solid fa-user-lock me-2"></i>Логин</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="userPassword" value="********" readonly>
+                <label for="userPassword"><i class="fa-solid fa-key me-2"></i>Пароль</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="userPosition" value="Инженер отдела контроля" readonly>
+                <label for="userPosition"><i class="fa-solid fa-briefcase me-2"></i>Должность</label>
+            </div>
+
+            <div class="form-floating mb-4">
+                <input type="text" class="form-control" id="userRights" value="Администратор" readonly>
+                <label for="userRights"><i class="fa-solid fa-user-shield me-2"></i>Права доступа</label>
+            </div>
+
+            <!-- Кнопки действий -->
+            <div class="d-flex justify-content-end gap-2">
+                <!-- Кнопка редактировать -->
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editUserPage">
+                    <i class="fa-solid fa-pen me-1"></i>Изменить
+                </button>
+                <!-- Кнопка сброса пароля -->
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
+                    <i class="fa-solid fa-rotate me-1"></i>Сбросить пароль
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 @await Html.PartialAsync("_EditUserPageModal.cshtml")
+@await Html.PartialAsync("_ResetPasswordModal.cshtml")
+                

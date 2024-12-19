@@ -6,7 +6,9 @@ using AccountingTM.Domain.Models.Tables;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.Exceptions;
+using AccountingTM.Models;
 using AccountingTM.ViewModels.TechnicalEquipment;
+using AutoMapper;
 using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Wordprocessing;
 using EnumsNET;
@@ -22,10 +24,12 @@ namespace Accounting.Controllers
     public class TechnicalEquipmentController : Controller
     {
         private readonly DataContext _context;
+		private readonly IMapper _mapper;
 
-        public TechnicalEquipmentController(DataContext context)
+        public TechnicalEquipmentController(DataContext context, IMapper mapper)
         {
             _context = context;
+			_mapper = mapper;
         }
 
         //Технические средства
@@ -37,8 +41,9 @@ namespace Accounting.Controllers
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
-                //query = query.Where(x => x.Name.ToLower().Contains(keyword) || x.Model.ToLower().Contains(keyword) ||
-                //    x.SerialNumber.ToLower().Contains(keyword));
+                query = query.Where(x => x.Type.Name.ToLower().Contains(keyword) || x.Brand.Name.ToLower().Contains(keyword) ||
+                    x.Model.ToLower().Contains(keyword) || x.SerialNumber.ToLower().Contains(keyword) || x.Employee.FirstName.ToLower().Contains(keyword) || 
+					x.Employee.FatherName.ToLower().Contains(keyword) || x.Employee.LastName.ToLower().Contains(keyword) || x.Location.Name.ToLower().Contains(keyword));
             }
 			if (input.IsWithoutSet)
 			{

@@ -3,6 +3,7 @@ using AccountingTM.Domain.Models;
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Domain.Models.Tables;
 using AccountingTM.Domain.Permissions;
+using AccountingTM.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Accounting.Data
@@ -34,16 +35,17 @@ namespace Accounting.Data
 		public DbSet<ReceptionAndTransmission> ReceptionAndTransmissions { get; set; }
 		public DbSet<Repair> Repairs { get; set; }
 		public DbSet<Storage> Storages { get; set; }
-		//Основные таблицы
-		public DbSet<Application> Applications { get; set; }
-		public DbSet<Characteristic> Characteristics { get; set; }
+        public DbSet<TechnicalEquipmentHistory> TechnicalEquipmentHistories { get; set; }
+        //Основные таблицы
+        public DbSet<Application> Applications { get; set; }
+        public DbSet<ApplicationHistory> ApplicationHistories { get; set; }
+        public DbSet<CommentsOnTheApplication> CommentsOnTheApplications { get; set; }
+        public DbSet<Characteristic> Characteristics { get; set; }
 		public DbSet<Consumable> Consumables { get; set; }
 		public DbSet<ConsumableHistory> ConsumableHistories { get; set; }
 		public DbSet<Set> Sets { get; set; }
 		public DbSet<SetHistory> SetHistories { get; set; }
 		public DbSet<DocumentType> DocumentType { get; set; }
-        public DbSet<Malfunction> Malfunction { get; set; }
-		public DbSet<Moving> Moving { get; set; }
 		public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }

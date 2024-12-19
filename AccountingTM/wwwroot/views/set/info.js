@@ -6,13 +6,7 @@
 let tableCompoundSets = new DataTable('#compoundSetTable', {
     paging: true,
     serverSide: true,
-    select: {
-        style: 'os',
-        selector: 'td:first-child'
-    },
-    fixedColumns: {
-        start: 2
-    },
+
     ajax: function (data, callback, settings) {
         var filter = {};
         filter.setId = +$("#SetId").val();
@@ -38,11 +32,17 @@ let tableCompoundSets = new DataTable('#compoundSetTable', {
             action: () => tableCompoundSets.draw(false)
         }
     ],
-    initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+    drawCallback: function () {
+        if ($('[data-bs-toggle="tooltip"]')) {
+            setTimeout(() => {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            },1000)
+        }
+    },
     columnDefs: [
         {
             targets: 0,
-            data: 'typeEquipment.name',
+            data: 'type.name',
         },
         {
             targets: 1,
@@ -111,7 +111,13 @@ let tableChangesSets = new DataTable('#changesSetTable', {
             action: () => tableChangesSets.draw(false)
         }
     ],
-    initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+    drawCallback: function () {
+        if ($('[data-bs-toggle="tooltip"]')) {
+            setTimeout(() => {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            }, 1000)
+        }
+    },
     columnDefs: [
         {
             targets: 0,
@@ -146,6 +152,13 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
     paging: true,
     serverSide: true,
     bAutoWidth: false,
+    select: {
+        selector: 'td:first-child',
+        style: 'multi'
+    },
+    fixedColumns: {
+        start: 2
+    },
     aoColumns: [
         { sWidth: '14%' },
         { sWidth: '14%' },
@@ -182,26 +195,38 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
             action: () => tableClients.draw(false)
         }
     ],
-    initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+    drawCallback: function () {
+        if ($('[data-bs-toggle="tooltip"]')) {
+            setTimeout(() => {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            }, 1000)
+        }
+        
+    },
     columnDefs: [
         {
-            targets: 0,
-            data: 'type.name',
+            orderable: false,
+            render: DataTable.render.select(),
+            targets: 0
         },
         {
             targets: 1,
-            data: 'brand.name',
+            data: 'type.name',
         },
         {
             targets: 2,
-            data: 'model',
+            data: 'brand.name',
         },
         {
             targets: 3,
-            data: 'serialNumber',
+            data: 'model',
         },
         {
             targets: 4,
+            data: 'serialNumber',
+        },
+        {
+            targets: 5,
             data: 'state',
             render: (data, type, row, meta) => {
                 switch (data) {
@@ -214,22 +239,21 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
 
         },
         {
-            targets: 5,
+            targets: 6,
             data: 'employee',
             render: (data, type, row, meta) => {
                 return `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`;
             }
         },
         {
-            targets: 6,
+            targets: 7,
             data: 'location.name',
         },
         {
-            targets: 7,
-            data: null,
+            targets: 8,
+            data: ``,
             render: (data, type, row, meta) => {
-                return `<a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС"><i class="fa-solid fa-circle-info"></i></a>
-                            <button class="btn btn-danger delete technicalEquipment" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
+                return ``;
             }
         }]
 });
@@ -237,18 +261,12 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
 
 //Добавление в состав комплекта
 $("#create-btn").click(function () {
-    axios.post("Set/CreateCompoundSet", {
-        typeConsumableId: +$("#typeEquipment").val(),
-        brandId: +$("#brand").val(),
-        model: $("#model").val(),
-        serialNumber: $("#serialNumber").val(),
-        employeeId: +$("#state").val(),
-        locationId: +$("#location").val(),
-
-        isDeleted: false
+    axios.post("/Set/CreateCompoundSet", {
+        setId: +$("#SetId").val(),
+        technicalEquipmentIds: tabletechnicalEquipments.rows({ selected: true }).data().map(x => x.id).toArray()
     }).then(function () {
         location.reload()
-    })
+        })
 })
 
 //Удаление из состава комплекта

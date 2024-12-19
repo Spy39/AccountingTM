@@ -1,4 +1,5 @@
 ﻿using Accounting.Models;
+using AccountingTM.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace AccountingTM.Domain.Models.Tables
 {
-	/// <summary>
-	/// Прием и передача изделия
-	/// </summary>
-	public class ReceptionAndTransmission : Entity
+    /// <summary>
+    /// Прием и передача изделия
+    /// </summary>
+    public class ReceptionAndTransmission : Entity
 	{
 		public int TechnicalEquipmentId { get; set; }
 		[ForeignKey(nameof(TechnicalEquipmentId))]

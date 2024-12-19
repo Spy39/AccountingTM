@@ -1,17 +1,18 @@
-﻿using Accounting.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Accounting.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AccountingTM.Models;
 
 namespace AccountingTM.Domain.Models.Tables
 {
-	/// <summary>
-	/// Сведения об утилизации
-	/// </summary>
-	public class DisposalInformation : Entity
+    /// <summary>
+    /// Сведения об утилизации
+    /// </summary>
+    public class DisposalInformation : Entity
 	{
 		public int TechnicalEquipmentId { get; set; }
 		[ForeignKey(nameof(TechnicalEquipmentId))]

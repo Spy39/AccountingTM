@@ -1,6 +1,6 @@
-﻿using Accounting.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Accounting.Models;
+using AccountingTM.Models;
 namespace AccountingTM.Domain.Models.Tables
 {
     /// <summary>

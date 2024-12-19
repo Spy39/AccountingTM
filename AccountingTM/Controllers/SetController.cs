@@ -1,9 +1,12 @@
 ﻿using Accounting.Data;
+using Accounting.Models;
 using AccountingTM.Domain.Models;
+using AccountingTM.Domain.Models.Tables;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.Set;
 using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.Exceptions;
+using AccountingTM.Models;
 using AccountingTM.ViewModels.Consumable;
 using AccountingTM.ViewModels.Set;
 using Microsoft.AspNetCore.Authorization;
@@ -79,10 +82,10 @@ namespace AccountingTM.Controllers
 		[HttpGet]
 		public IActionResult GetAllCompoundSet([FromQuery] GetAllCompoundSetDto input)
 		{
-			IQueryable<Set> query = _context.Sets.Where(x => x.Id == input.SetId); ;
+			IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Location).Where(x => x.SetId == input.SetId); ;
 
 			var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
-			return Ok(new PagedResultDto<Set>(query.Count(), entities));
+			return Ok(new PagedResultDto<TechnicalEquipment>(query.Count(), entities));
 		}
 
 		//История изменений
@@ -113,16 +116,15 @@ namespace AccountingTM.Controllers
 		}
 
 		[HttpPost]
-		public IActionResult CreateCompoundSet([FromBody] Set input)
+		public IActionResult CreateCompoundSet([FromBody] CreateCompoundSetDto input)
 		{
-			if (!string.IsNullOrWhiteSpace(input.Name))
+			foreach(var technicalEquipmentId in input.TechnicalEquipmentIds)
 			{
-				if (_context.Sets.Any(x => x.Name == input.Name))
-				{
-					throw new UserFriendlyException("Комплект с таким названием уже существует!");
-				}
+				var technicalEquipment = _context.TechnicalEquipment.Find(technicalEquipmentId);
+				technicalEquipment.SetId = input.SetId;
+				_context.TechnicalEquipment.Update(technicalEquipment);
+
 			}
-			_context.Sets.Add(input);
 			_context.SaveChanges();
 			return Ok();
 		}

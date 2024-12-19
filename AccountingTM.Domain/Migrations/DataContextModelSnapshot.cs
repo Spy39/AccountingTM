@@ -22,150 +22,6 @@ namespace AccountingTM.Domain.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Accounting.Models.Malfunction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Critical")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Date")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DateOfSolve")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Manifestation")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TechnicalEquipmentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TechnicalEquipmentId");
-
-                    b.ToTable("Malfunction");
-                });
-
-            modelBuilder.Entity("Accounting.Models.Moving", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ConveyedId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("DocumentNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DocumentTypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("NewRespId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TechnicalEquipmentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConveyedId");
-
-                    b.HasIndex("DocumentTypeId");
-
-                    b.HasIndex("NewRespId");
-
-                    b.HasIndex("TechnicalEquipmentId");
-
-                    b.ToTable("Moving");
-                });
-
-            modelBuilder.Entity("Accounting.Models.TechnicalEquipment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BrandId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DateEnd")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DateGarant")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DateStart")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<DateTime?>("DeletedDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<int>("EmployeeId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("InventoryNumber")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("LocationId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Model")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("SerialNumber")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("SetId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("State")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("WorkTimeAvg")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BrandId");
-
-                    b.HasIndex("EmployeeId");
-
-                    b.HasIndex("LocationId");
-
-                    b.HasIndex("SetId");
-
-                    b.HasIndex("TypeId");
-
-                    b.ToTable("TechnicalEquipment");
-                });
-
             modelBuilder.Entity("Accounting.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -269,6 +125,69 @@ namespace AccountingTM.Domain.Migrations
                     b.HasIndex("TechnicalEquipmentId");
 
                     b.ToTable("Applications");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Models.ApplicationHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApplicationId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("TypeOfOperation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.ToTable("ApplicationHistories");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Models.CommentsOnTheApplication", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ApplicationId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("PathToFile")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
+
+                    b.ToTable("CommentsOnTheApplications");
                 });
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Consumable", b =>
@@ -580,12 +499,17 @@ namespace AccountingTM.Domain.Migrations
                     b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("SetId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("TypeOfOperation")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("SetId");
 
                     b.ToTable("SetHistories");
                 });
@@ -822,6 +746,39 @@ namespace AccountingTM.Domain.Migrations
                     b.ToTable("Storages");
                 });
 
+            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.TechnicalEquipmentHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TechnicalEquipmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TypeOfOperation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TechnicalEquipmentId");
+
+                    b.ToTable("TechnicalEquipmentHistories");
+                });
+
             modelBuilder.Entity("AccountingTM.Domain.Models.UserRole", b =>
                 {
                     b.Property<int>("RoleId")
@@ -863,6 +820,78 @@ namespace AccountingTM.Domain.Migrations
                     b.HasDiscriminator<string>("Discriminator").HasValue("Permission");
                 });
 
+            modelBuilder.Entity("AccountingTM.Models.TechnicalEquipment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BrandId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DateEnd")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DateGarant")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DateStart")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("DeletedDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("InventoryNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("SetId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("WorkTimeAvg")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("SetId");
+
+                    b.HasIndex("TypeId");
+
+                    b.ToTable("TechnicalEquipment");
+                });
+
             modelBuilder.Entity("AccountingTM.Domain.Permissions.RolePermission", b =>
                 {
                     b.HasBaseType("AccountingTM.Domain.Permissions.Permission");
@@ -889,93 +918,6 @@ namespace AccountingTM.Domain.Migrations
                     b.ToTable("Permission");
 
                     b.HasDiscriminator().HasValue("UserPermission");
-                });
-
-            modelBuilder.Entity("Accounting.Models.Malfunction", b =>
-                {
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
-                        .WithMany()
-                        .HasForeignKey("TechnicalEquipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("TechnicalEquipment");
-                });
-
-            modelBuilder.Entity("Accounting.Models.Moving", b =>
-                {
-                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "Conveyed")
-                        .WithMany()
-                        .HasForeignKey("ConveyedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AccountingTM.Domain.Models.DocumentType", "DocumentType")
-                        .WithMany()
-                        .HasForeignKey("DocumentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "NewResp")
-                        .WithMany()
-                        .HasForeignKey("NewRespId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
-                        .WithMany()
-                        .HasForeignKey("TechnicalEquipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Conveyed");
-
-                    b.Navigation("DocumentType");
-
-                    b.Navigation("NewResp");
-
-                    b.Navigation("TechnicalEquipment");
-                });
-
-            modelBuilder.Entity("Accounting.Models.TechnicalEquipment", b =>
-                {
-                    b.HasOne("AccountingTM.Domain.Models.Directory.Brand", "Brand")
-                        .WithMany()
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AccountingTM.Domain.Models.Directory.Location", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AccountingTM.Domain.Models.Set", "Set")
-                        .WithMany()
-                        .HasForeignKey("SetId");
-
-                    b.HasOne("AccountingTM.Domain.Models.Directory.TypeEquipment", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Brand");
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Location");
-
-                    b.Navigation("Set");
-
-                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("Accounting.Models.User", b =>
@@ -1005,7 +947,7 @@ namespace AccountingTM.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
                         .WithMany()
                         .HasForeignKey("TechnicalEquipmentId");
 
@@ -1016,6 +958,34 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("Location");
 
                     b.Navigation("TechnicalEquipment");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Models.ApplicationHistory", b =>
+                {
+                    b.HasOne("AccountingTM.Domain.Models.Application", "Application")
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.Navigation("Application");
+
+                    b.Navigation("Employee");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Models.CommentsOnTheApplication", b =>
+                {
+                    b.HasOne("AccountingTM.Domain.Models.Application", "Application")
+                        .WithMany()
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Application");
                 });
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Consumable", b =>
@@ -1095,7 +1065,15 @@ namespace AccountingTM.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AccountingTM.Domain.Models.Set", "Set")
+                        .WithMany()
+                        .HasForeignKey("SetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("Set");
                 });
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.Characteristic", b =>
@@ -1106,7 +1084,7 @@ namespace AccountingTM.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
                         .WithMany()
                         .HasForeignKey("TechnicalEquipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1133,7 +1111,7 @@ namespace AccountingTM.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
                         .WithMany()
                         .HasForeignKey("TechnicalEquipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1152,7 +1130,7 @@ namespace AccountingTM.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
                         .WithMany()
                         .HasForeignKey("TechnicalEquipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1165,7 +1143,7 @@ namespace AccountingTM.Domain.Migrations
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.DisposalInformation", b =>
                 {
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
                         .WithMany()
                         .HasForeignKey("TechnicalEquipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1176,7 +1154,7 @@ namespace AccountingTM.Domain.Migrations
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.ReceptionAndTransmission", b =>
                 {
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
                         .WithMany()
                         .HasForeignKey("TechnicalEquipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1187,7 +1165,7 @@ namespace AccountingTM.Domain.Migrations
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.Repair", b =>
                 {
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
                         .WithMany()
                         .HasForeignKey("TechnicalEquipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1198,11 +1176,28 @@ namespace AccountingTM.Domain.Migrations
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.Storage", b =>
                 {
-                    b.HasOne("Accounting.Models.TechnicalEquipment", "TechnicalEquipment")
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
                         .WithMany()
                         .HasForeignKey("TechnicalEquipmentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TechnicalEquipment");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.TechnicalEquipmentHistory", b =>
+                {
+                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
+
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
+                        .WithMany()
+                        .HasForeignKey("TechnicalEquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
 
                     b.Navigation("TechnicalEquipment");
                 });
@@ -1224,6 +1219,47 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AccountingTM.Models.TechnicalEquipment", b =>
+                {
+                    b.HasOne("AccountingTM.Domain.Models.Directory.Brand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AccountingTM.Domain.Models.Directory.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AccountingTM.Domain.Models.Set", "Set")
+                        .WithMany()
+                        .HasForeignKey("SetId");
+
+                    b.HasOne("AccountingTM.Domain.Models.Directory.TypeEquipment", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Brand");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Location");
+
+                    b.Navigation("Set");
+
+                    b.Navigation("Type");
                 });
 
             modelBuilder.Entity("AccountingTM.Domain.Permissions.RolePermission", b =>

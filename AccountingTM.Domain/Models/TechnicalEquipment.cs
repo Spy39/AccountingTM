@@ -5,7 +5,7 @@ using AccountingTM.Domain.Models.Directory;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Accounting.Models
+namespace AccountingTM.Models
 {
     /// <summary>
     /// Технические средства

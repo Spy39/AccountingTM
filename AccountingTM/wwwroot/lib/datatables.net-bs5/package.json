@@ -5,13 +5,12 @@
     "module": "js/dataTables.bootstrap5.mjs",
     "style": "css/dataTables.bootstrap5.css",
     "types": "./types/dataTables.bootstrap5.d.ts",
-    "version": "1.13.6",
+    "version": "2.1.8",
     "files": [
         "css/**/*.css",
         "js/**/*.js",
         "js/**/*.mjs",
-        "types/**/*.d.ts",
-        "images/*"
+        "types/**/*.d.ts"
     ],
     "keywords": [
         "Bootstrap",
@@ -23,7 +22,7 @@
         "sort"
     ],
     "dependencies": {
-        "datatables.net": ">=1.13.4",
+        "datatables.net": "2.1.8",
         "jquery": ">=1.7"
     },
     "moduleType": [

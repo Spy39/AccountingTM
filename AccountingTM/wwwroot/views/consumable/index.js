@@ -123,7 +123,7 @@ $(document).on("click", ".delete.consumable", function () {
             axios.delete("Consumable/Delete?id=" + id).then(function () {
                 tableConsumables.draw(false)
                 $(".tooltip").removeClass("show")
-                toastr.success(`Расходный материал ${name} успешно удален!`)
+                toastr.success(`Расходный материал успешно удален!`)
             })
         }
     });

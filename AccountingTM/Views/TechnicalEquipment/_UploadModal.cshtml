@@ -1,22 +1,51 @@
 ﻿@* Загрузка списка из файла *@
 <div class="modal fade" tabindex="-1" id="upload">
-	<div class="modal-dialog modal-lg">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Загрузка списка из файла</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<div class="modal-body">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Загрузка списка из файла</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-4">
+                    <label for="formFile" class="form-label">Выберите файл для загрузки:</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
 
-				<div class="mb-3">
-					<input class="form-control" type="file" id="formFile">
-				</div>
-
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-				<button id="upload-btn" class="btn btn-primary">Зарузить</button>
-			</div>
-		</div>
-	</div>
+                <div class="mt-3">
+                    <h6 class="mb-2">Таблица Excel должна содержать следующие колонки:</h6>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Тип ТС</th>
+                                    <th>Бренд</th>
+                                    <th>Модель</th>
+                                    <th>ФИО</th>
+                                    <th>Местоположение</th>
+                                    <th>Серийный номер</th>
+                                    <th>Инвентарный номер</th>
+                                    <th>Дата изготовления</th>
+                                    <th>Дата ввода в эксплуатацию</th>
+                                    <th>Средний срок работы</th>
+                                    <th>Гарантийный срок</th>
+                                    <th>Состояние</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="12" class="text-center">Пример структуры таблицы</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-muted">Убедитесь, что таблица соответствует указанному формату перед загрузкой.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <button id="upload-btn" class="btn btn-primary">Загрузить</button>
+            </div>
+        </div>
+    </div>
 </div>

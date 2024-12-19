@@ -1,4 +1,4 @@
-﻿@using Accounting.Models;
+﻿@using AccountingTM.Models
 @model IEnumerable<TechnicalEquipment>
 
 @{
@@ -29,8 +29,8 @@
 			<form class="form-inline">
 				<div class="col-3">
 					<div class="input-group">
-						<input type="search" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
-						<button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
+						<input id="search-input" type="search" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
+						<button class="btn btn-outline-secondary" type="submit" id="search-btn"><i class="fas fa-search"></i></button>
 					</div>
 				</div>
 			</form>

@@ -1,6 +1,7 @@
 ﻿using Accounting.Models;
 using AccountingTM.Domain.Enums;
 using AccountingTM.Domain.Models.Directory;
+using AccountingTM.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

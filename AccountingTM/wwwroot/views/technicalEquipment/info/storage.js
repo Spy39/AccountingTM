@@ -1,5 +1,5 @@
-﻿
-//Вывод данных о хранении технического средства в таблицу
+﻿//Вывод данных о хранении технического средства в таблицу
+
     let tableStorages = new DataTable('#storageTable', {
     paging: true,
     serverSide: true,
@@ -28,7 +28,13 @@
             action: () => tableStorages.draw(false)
         }
     ],
-    initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+        drawCallback: function () {
+            if ($('[data-bs-toggle="tooltip"]')) {
+                setTimeout(() => {
+                    $('[data-bs-toggle="tooltip"]').tooltip();
+                }, 1000)
+            }
+        },
     columnDefs: [
         {
             targets: 0,
@@ -63,7 +69,7 @@
 
 
     $("#search-btn").click(function () {
-        tableClients.ajax.reload()
+        tableStorages.ajax.reload()
     })
 
     //Добавление
@@ -85,7 +91,7 @@
         let name = this.dataset.name;
         Swal.fire({
             title: "Вы уверены?",
-            text: `ТС ${name} будет удален!`,
+            text: `Запись ${name} будет удалена!`,
             icon: "warning",
             showCancelButton: true,
             confirmButtonColor: "#3085d6",
@@ -95,10 +101,10 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 let id = this.dataset.id;
-                axios.delete("TechnicalEquipmentInfo/DeleteStorage?id=" + id).then(function () {
+                axios.delete("/TechnicalEquipmentInfo/DeleteStorage?id=" + id).then(function () {
                     tableStorages.draw(false)
                     $(".tooltip").removeClass("show")
-                    toastr.success('ТС успешно удален!')
+                    toastr.success('Запись удалена!')
                 })
             }
         });

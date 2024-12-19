@@ -81,7 +81,7 @@ namespace AccountingTM.Controllers
         public IActionResult CreateCompletedWork([FromBody] Application input)
         {
             //Генерирование номера заявки
-            input.ApplicationNumber = Guid.NewGuid().ToString();
+            input.ApplicationNumber = Guid.NewGuid().ToString().Substring(0, 7);
 			var user = _context.Users.First(x => x.Login == User.Identity.Name);
 			input.EmployeeId = user.EmployeeId;
 			input.DateOfChange = input.DateOfCreation;
