@@ -1,10 +1,5 @@
 ﻿using AccountingTM.Domain.Models.Directory;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AccountingTM.Domain.Models
 {
@@ -15,11 +10,11 @@ namespace AccountingTM.Domain.Models
         public Application? Application { get; set; }
         public int? EmployeeId { get; set; }
         public Employee Employee { get; set; } // Исполнитель
-        /// <summary>
-        /// Дата
-        /// </summary>
+        /// <summary>Дата</summary>
         public DateTime Date { get; set; } = DateTime.Now;
+        /// <summary>Тип операции</summary>
         public string TypeOfOperation { get; set; }
+        /// <summary>Наименование операции</summary>
         public string Name { get; set; }
     }
 }

@@ -77,7 +77,8 @@ let tableCompoundSets = new DataTable('#compoundSetTable', {
             targets: 6,
             data: null,
             render: (data, type, row, meta) => {
-                return `<button class="btn btn-danger delete compoundSet" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
+                return `<a href="/technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС"><i class="fa-solid fa-circle-info"></i></a>
+                        <button class="btn btn-danger delete compoundSet" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
             }
         }]
 });

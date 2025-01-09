@@ -1,17 +1,15 @@
 ﻿using Accounting.Data;
-using Accounting.Models;
 using AccountingTM.Domain.Models;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.Exceptions;
-using AccountingTM.ViewModels.Application;
-using AccountingTM.ViewModels.Consumable;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers
 {
+    //Учет расходных материалов
     [Authorize]
     public class ConsumableController : Controller
     {
@@ -22,6 +20,7 @@ namespace AccountingTM.Controllers
             _context = context;
         }
 
+        //Вывод данных в таблицу
         [HttpGet("[controller]/[action]")]
         public IActionResult GetAll([FromQuery] GetAllTechnicalDto input)
         {
@@ -29,10 +28,16 @@ namespace AccountingTM.Controllers
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
-                //query = query.Where(x => x.LastName.ToLower().Contains(keyword));
+                query = query.Where(x => x.TypeConsumable.Name.ToLower().Contains(keyword) ||
+                                         x.Brand.Name.ToLower().Contains(keyword) ||
+                                         x.Model.ToLower().Contains(keyword) ||
+                                         x.Location.Name.ToLower().Contains(keyword) ||
+                                         x.Unit.Name.ToLower().Contains(keyword) ||
+                                         x.Status.ToLower().Contains(keyword));
             }
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
             return Ok(new PagedResultDto<Consumable>(query.Count(), entities));
         }
 
@@ -61,7 +66,7 @@ namespace AccountingTM.Controllers
             return RedirectToAction("Index");
         }
 
-		[HttpDelete]
+        [HttpDelete]
         public IActionResult Delete(int id)
         {
             var entity = _context.Consumables.Find(id);
@@ -76,5 +81,5 @@ namespace AccountingTM.Controllers
         }
 
 
-	}
+    }
 }

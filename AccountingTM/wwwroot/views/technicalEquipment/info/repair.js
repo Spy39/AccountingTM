@@ -1,13 +1,14 @@
 ﻿//Вывод сведений о ремонте технического средства в таблицу
 
 let tableRepairs = new DataTable('#repairTable', {
-paging: true,
-serverSide: true,
-ajax: function (data, callback, settings) {
+    paging: true,
+    serverSide: true,
+    ajax: function (data, callback, settings) {
     var filter = {};
     filter.searchQuery = $("#search-input").val()
     filter.maxResultCount = data.length || 10;
     filter.skipCount = data.start;
+    filter.technicalEquipmentId = +$("#technicalEquipmentId").val();
     axios.get('/TechnicalEquipmentInfo/GetAllRepair', {
         params: filter
     })
@@ -20,14 +21,14 @@ ajax: function (data, callback, settings) {
             });
         })
 
-},
-buttons: [
+    },
+    buttons: [
     {
         name: 'refresh',
         text: '<i class="fas fa-redo-alt"></i>',
         action: () => tableRepairs.draw(false)
     }
-],
+    ],
     drawCallback: function () {
         if ($('[data-bs-toggle="tooltip"]')) {
             setTimeout(() => {
@@ -35,7 +36,7 @@ buttons: [
             }, 1000)
         }
     },
-columnDefs: [
+    columnDefs: [
     {
         targets: 0,
         data: 'date',
@@ -65,10 +66,6 @@ columnDefs: [
 });
 
 
-$("#search-btn").click(function () {
-    tableRepairs.ajax.reload()
-})
-
 //Добавление
 $("#createRepairBtn").click(function () {
     axios.post("/TechnicalEquipmentInfo/CreateRepair", {
@@ -76,19 +73,26 @@ $("#createRepairBtn").click(function () {
         date: moment($("#dateRepair").val(), 'DD.MM.YYYY').toDate(),
         company: $("#company").val(),
         reasonForRepair: $("#reasonForRepair").val(),
-        repairInformation: $("#repairInformation").val(),
-        isDeleted: false
+        repairInformation: $("#repairInformation").val()
     }).then(function () {
-        location.reload()
+        tableRepairs.draw(false);
+        $("#addRepairModal").modal("hide")
     })
 })
+$("#addRepairModal").on("hide.bs.modal", function () {
+    $("#dateRepair").val('');
+    $("#company").val('');
+    $("#reasonForRepair").val('');
+    $("#repairInformation").val('');
+})
+
 
 //Удаление
 $(document).on("click", ".delete.repair", function () {
     let name = this.dataset.name;
     Swal.fire({
         title: "Вы уверены?",
-        text: `Запись ${name} будет удален!`,
+        text: `Запись будет удалена!`,
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -98,7 +102,7 @@ $(document).on("click", ".delete.repair", function () {
     }).then((result) => {
         if (result.isConfirmed) {
             let id = this.dataset.id;
-            axios.delete("TechnicalEquipmentInfo/DeleteRepair?id=" + id).then(function () {
+            axios.delete("/TechnicalEquipmentInfo/DeleteRepair?id=" + id).then(function () {
                 tableRepairs.draw(false)
                 $(".tooltip").removeClass("show")
                 toastr.success('Запись удалена!')

@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Accounting.Models;
-using AccountingTM.Models;
+﻿using AccountingTM.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace AccountingTM.Domain.Models.Tables
 {
     /// <summary>
@@ -12,17 +11,11 @@ namespace AccountingTM.Domain.Models.Tables
         [ForeignKey(nameof(TechnicalEquipmentId))]
         public TechnicalEquipment? TechnicalEquipment { get; set; }
         public DateTime Date { get; set; }
-        /// <summary>
-        /// Предприятие
-        /// </summary>
+        /// <summary>Предприятие</summary>
         public string Company { get; set; }
-        /// <summary>
-        /// Причина поступления в ремонт
-        /// </summary>
+        /// <summary>Причина поступления в ремонт</summary>
         public string ReasonForRepair { get; set; }
-        /// <summary>
-        /// Сведения о производственном ремонте
-        /// </summary>
+        /// <summary>Сведения о производственном ремонте</summary>
         public string RepairInformation { get; set; }
     }
 }

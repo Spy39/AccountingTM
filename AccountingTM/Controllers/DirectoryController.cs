@@ -22,6 +22,10 @@ namespace AccountingTM.Controllers
         {
             return PartialView("_Brand");
         }
+        public IActionResult Model()
+        {
+            return PartialView("_Model");
+        }
         public IActionResult Category()
         {
             return PartialView("_Category");

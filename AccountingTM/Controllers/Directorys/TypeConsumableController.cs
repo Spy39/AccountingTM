@@ -5,8 +5,9 @@ using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccountingTM.Controllers.Directorys
+namespace AccountingTM.Controllers.Directories
 {
+    //Типы расходных материалов
     [Authorize]
     public class TypeConsumableController : Controller
     {
@@ -28,7 +29,20 @@ namespace AccountingTM.Controllers.Directorys
             }
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
             return Ok(new PagedResultDto<TypeConsumable>(query.Count(), entities));
+        }
+
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var entity = _context.TypeConsumables.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"Тип расходного материала с id = {id} не найден");
+            }
+
+            return Ok(entity);
         }
 
         [HttpPost]

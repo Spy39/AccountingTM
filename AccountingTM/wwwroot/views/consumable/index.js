@@ -86,9 +86,11 @@ let tableConsumables = new DataTable('#consumableTable', {
             }
         }]
 });
-$("#search-btn").click(function () {
+
+$("#searchConsumableBtn").click(function () {
     tableConsumables.ajax.reload()
 })
+
 
 //Добавление
 $("#create-btn").click(function () {
@@ -104,6 +106,7 @@ $("#create-btn").click(function () {
         location.reload()
     })
 })
+
 
 //Удаление
 $(document).on("click", ".delete.consumable", function () {

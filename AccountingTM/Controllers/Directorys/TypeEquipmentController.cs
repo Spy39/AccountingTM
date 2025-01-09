@@ -5,8 +5,9 @@ using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccountingTM.Controllers.Directorys
+namespace AccountingTM.Controllers.Directories
 {
+    //Типы технических средств
     [Authorize]
     public class TypeEquipmentController : Controller
     {
@@ -28,7 +29,20 @@ namespace AccountingTM.Controllers.Directorys
             }
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
             return Ok(new PagedResultDto<TypeEquipment>(query.Count(), entities));
+        }
+
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var entity = _context.TypeEquipments.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"Тип технического средства с id = {id} не найден");
+            }
+
+            return Ok(entity);
         }
 
         [HttpPost]

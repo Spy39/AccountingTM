@@ -1,5 +1,4 @@
 ﻿using Accounting.Data;
-using Accounting.Models;
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
@@ -7,8 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AccountingTM.Controllers.Directorys
+namespace AccountingTM.Controllers.Directories
 {
+    //Бренды
     [Authorize]
     public class BrandController : Controller
     {
@@ -30,14 +30,26 @@ namespace AccountingTM.Controllers.Directorys
             }
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
             return Ok(new PagedResultDto<Brand>(query.Count(), entities));
+        }
+
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var entity = _context.Brands.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"Бренд с id = {id} не найден");
+            }
+
+            return Ok(entity);
         }
 
         public async Task<IActionResult> Index()
         {
             return View(await _context.Brands.ToListAsync());
         }
-
 
         [HttpPost]
         public IActionResult Create([FromBody] Brand input)

@@ -5,8 +5,9 @@ using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccountingTM.Controllers.Directorys
+namespace AccountingTM.Controllers.Directories
 {
+    //Показатели
     [Authorize]
     public class IndicatorController : Controller
     {
@@ -28,7 +29,20 @@ namespace AccountingTM.Controllers.Directorys
             }
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
             return Ok(new PagedResultDto<Indicator>(query.Count(), entities));
+        }
+
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var entity = _context.Indicators.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"Показатель с id = {id} не найден");
+            }
+
+            return Ok(entity);
         }
 
         [HttpPost]

@@ -21,19 +21,12 @@
 
 <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
     <div class="row">
-        <div class="col-6">
-            <!-- SEARCH FORM -->
-            <form class="form-inline">
-                <div class="input-group input-group-sm">
-                    @*<input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">*@
-                    <input type="search" class="form-control form-control-sm" placeholder="Поиск" aria-controls="example1">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
+        <div class="col-3 mb-1">
+            <input type="text" id="dateStatistic" class="form-control" name="dateStatistic" placeholder="Выберите период статистики" />
+        </div>
+
+        <div class="col-3">
+            <button id="createConservationBtn" class="btn btn-default">Применить</button>
         </div>
 
         <div class="col-6">
@@ -49,9 +42,9 @@
                 </button>
             </div>
         </div>
+
     </div>
 </div>
-
 
 <section class="content mt-3">
     <div class="container-fluid">
@@ -99,194 +92,94 @@
             </div>
         </div>
 
-        <!-- Графики -->
-        <div class="row">
-            <div class="col-md-6">
-                <h3 class="text-center">Динамика неисправностей</h3>
-                <div class="border p-3" style="height: 300px; background-color: #f9f9f9;">
-                    <!-- Вставить график с использованием библиотеки Chart.js -->
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h3 class="text-center">Использование расходных материалов</h3>
-                <div class="border p-3" style="height: 300px; background-color: #f9f9f9;">
-                    <!-- Вставить график с использованием библиотеки Chart.js -->
-                </div>
-            </div>
-        </div>
 
-        <!-- Таблица со списком неисправностей -->
-        <div class="mt-4">
-            <h3 class="text-center">Последние неисправности</h3>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Дата</th>
-                        <th>Техническое средство</th>
-                        <th>Описание</th>
-                        <th>Статус</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>12.12.2024</td>
-                        <td>Сканер багажа</td>
-                        <td>Ошибка передачи данных</td>
-                        <td><span class="badge bg-danger">Ожидает ремонта</span></td>
-                    </tr>
-                    <tr>
-                        <td>10.12.2024</td>
-                        <td>Камера видеонаблюдения</td>
-                        <td>Неисправен объектив</td>
-                        <td><span class="badge bg-success">Ремонт завершён</span></td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Обновленная страница статистики -->
+        <div class="container mt-4">
+            <h1 class="text-center">Статистика оборудования</h1>
+
+            <!-- Блок с таблицами -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <h3>Техника с истекшим сроком службы</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Наименование</th>
+                                <th>Дата истечения</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Данные из БД -->
+                            <tr>
+                                <td>Детектор X-Ray</td>
+                                <td>2024-11-01</td>
+                            </tr>
+                            <tr>
+                                <td>Сканер 3D</td>
+                                <td>2024-10-15</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <h3>Частые неисправности</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Тип неисправности</th>
+                                <th>Количество</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Данные из БД -->
+                            <tr>
+                                <td>Сбой ПО</td>
+                                <td>12</td>
+                            </tr>
+                            <tr>
+                                <td>Механический дефект</td>
+                                <td>8</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <!-- Хронология операций -->
+            <div class="row mb-4">
+                <div class="col-md-12">
+                    <h3>Хронология операций с оборудованием</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Дата</th>
+                                <th>Операция</th>
+                                <th>Оборудование</th>
+                                <th>Ответственный</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Данные из БД -->
+                            <tr>
+                                <td>2024-10-01</td>
+                                <td>Ремонт</td>
+                                <td>Детектор X-Ray</td>
+                                <td>Иванов И.И.</td>
+                            </tr>
+                            <tr>
+                                <td>2024-10-05</td>
+                                <td>Передача</td>
+                                <td>Сканер 3D</td>
+                                <td>Петров П.П.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </section>
 
 
-
-
-<section class="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-6">
-
-                <div class="card card-primary">
-                    <div class="card-header">
-                        <h3 class="card-title">Area Chart</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 488px;" width="488" height="250" class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="card card-danger">
-                    <div class="card-header">
-                        <h3 class="card-title">Donut Chart</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                        <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 488px;" width="488" height="250" class="chartjs-render-monitor"></canvas>
-                    </div>
-
-                </div>
-
-
-                <div class="card card-danger">
-                    <div class="card-header">
-                        <h3 class="card-title">Pie Chart</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                        <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 488px;" width="488" height="250" class="chartjs-render-monitor"></canvas>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="col-md-6">
-
-                <div class="card card-info">
-                    <div class="card-header">
-                        <h3 class="card-title">Line Chart</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas id="lineChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 488px;" width="488" height="250" class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">Bar Chart</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 488px;" width="488" height="250" class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">Stacked Bar Chart</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-minus"></i>
-                            </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart">
-                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                            <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 488px;" width="488" height="250" class="chartjs-render-monitor"></canvas>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-</section>

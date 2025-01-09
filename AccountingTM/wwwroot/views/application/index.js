@@ -1,5 +1,4 @@
 ﻿//Заявки - Главная
-
 let tableClients = new DataTable('#applicationsTable', {
     paging: true,
     serverSide: true,
@@ -113,6 +112,11 @@ let tableClients = new DataTable('#applicationsTable', {
         }]
 });
 
+$("#searchApplicationBtn").click(function () {
+    tableClients.ajax.reload()
+})
+
+
 //Создание новой заявки
 $("#create-btn").click(function () {
     axios.post("Application/Create", {
@@ -126,6 +130,7 @@ $("#create-btn").click(function () {
         location.reload()
     })
 })
+
 
 //Удаление заявки
 $(document).on("click", ".delete", function () {
@@ -149,10 +154,6 @@ $(document).on("click", ".delete", function () {
             })
         }
     });
-})
-
-$("#search-btn").click(function () {
-    tableClients.ajax.reload()
 })
 
 $("#category").select2({

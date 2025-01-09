@@ -1,11 +1,6 @@
 ﻿using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AccountingTM.Domain.Models.Tables
 {
@@ -16,11 +11,11 @@ namespace AccountingTM.Domain.Models.Tables
         public TechnicalEquipment? TechnicalEquipment { get; set; }
         public int? EmployeeId { get; set; }
         public Employee Employee { get; set; } // Исполнитель
-        /// <summary>
-        /// Дата
-        /// </summary>
+        /// <summary>Дата</summary>
         public DateTime? Date { get; set; } = DateTime.UtcNow;
+        /// <summary>Тип операции</summary>
         public string TypeOfOperation { get; set; }
+        /// <summary>Наименование операции</summary>
         public string? Name { get; set; }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using AccountingTM.Domain;
 using AccountingTM.Domain.Models;
 using AccountingTM.Domain.Models.Directory;
-using Microsoft.EntityFrameworkCore;
 
 namespace Accounting.Models
 {

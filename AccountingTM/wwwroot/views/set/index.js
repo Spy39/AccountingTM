@@ -56,11 +56,10 @@ let tableSets = new DataTable('#setTable', {
             }
         }]
 });
+$("#searchSetBtn").click(function () {
+    tableSets.ajax.reload()
+})
 
-
-    $("#search-btn").click(function () {
-        tableSets.ajax.reload()
-    })
 
 //Добавление нового комплекта
 $("#create-btn").click(function () {
@@ -71,6 +70,7 @@ $("#create-btn").click(function () {
         location.reload()
     })
 })
+
 
 //Удаление комплекта
 $(document).on("click", ".delete.set", function () {

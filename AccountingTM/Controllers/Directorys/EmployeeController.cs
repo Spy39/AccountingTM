@@ -5,8 +5,9 @@ using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccountingTM.Controllers.Directorys
+namespace AccountingTM.Controllers.Directories
 {
+    //Сотрудники
     [Authorize]
     public class EmployeeController : Controller
     {
@@ -24,11 +25,26 @@ namespace AccountingTM.Controllers.Directorys
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
-                query = query.Where(x => x.LastName.ToLower().Contains(keyword));
+                query = query.Where(x => x.FirstName.ToLower().Contains(keyword) ||
+                                         x.FatherName.ToLower().Contains(keyword) ||
+                                         x.LastName.ToLower().Contains(keyword));
             }
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
             return Ok(new PagedResultDto<Employee>(query.Count(), entities));
+        }
+
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var entity = _context.Employees.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"Сотрудник с id = {id} не найден");
+            }
+
+            return Ok(entity);
         }
 
         [HttpPost]

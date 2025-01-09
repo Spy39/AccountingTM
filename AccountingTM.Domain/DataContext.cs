@@ -25,13 +25,13 @@ namespace Accounting.Data
 		public DbSet<Employee> Employees { get; set; }
 		public DbSet<Indicator> Indicators { get; set; }
 		public DbSet<Location> Locations { get; set; }
-		public DbSet<TypeEquipment> TypeEquipments { get; set; }
+        public DbSet<Model> Models { get; set; }
+        public DbSet<TypeEquipment> TypeEquipments { get; set; }
 		public DbSet<Unit> Units { get; set; }
 		public DbSet<TypeConsumable> TypeConsumables { get; set; }
 		//Таблицы ТС
 		public DbSet<CompletedWork> CompletedWorks { get; set; }
 		public DbSet<Conservation> Conservations { get; set; }
-		public DbSet<DisposalInformation> DisposalInformations { get; set; }
 		public DbSet<ReceptionAndTransmission> ReceptionAndTransmissions { get; set; }
 		public DbSet<Repair> Repairs { get; set; }
 		public DbSet<Storage> Storages { get; set; }

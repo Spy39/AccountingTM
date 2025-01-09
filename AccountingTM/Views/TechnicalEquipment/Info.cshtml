@@ -57,9 +57,16 @@
 		</div>
 		<div class="col-3 p-1">
 			<form class="form-floating mb-2">
-				<a href="/Equipment/Details/@* @(Model.EquipmentId) *@" class="form-control text-decoration-none" readonly>
-					Ссылка - Не входит в комплект
-				</a>
+				@if(Model.Set != null){
+					<a href="/Set/@Model.Set.Id" class="form-control text-decoration-none" readonly>
+						@Model.Set.Name
+					</a>
+				}
+				else{
+					<input type="text" class="form-control" id="floatingInputValue" value="Не входит в комплект" readonly>
+
+				}
+
 				<label for="floatingInputValue">Комплект</label>
 			</form>
 		</div>
@@ -275,7 +282,7 @@
 									<tr>
 										<td>Дата</td>
 										<td>Состояние изделия</td>
-										<td>Основание (наименование, номер и дата документа)</td>
+										<td>Основание (наименование и номер документа)</td>
 										<td>Предприятие и ФИО сдавшего</td>
 										<td>Предприятие и ФИО принявшего</td>
 										<td>Примечание</td>
@@ -413,44 +420,6 @@
 					<div class="card collapsed-card">
 						<div class="card-header">
 							<h3 class="card-title mb-0">
-								<i class="fa-solid fa-trash me-2"></i>Сведения об утилизации
-							</h3>
-							<div class="card-tools">
-								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addDisposalInformationModal">
-									<i class="fas fa-square-plus"></i>
-								</button>
-								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
-							</div>
-						</div>
-
-						<div class="card-body">
-							<table id="disposalInformationTable" class="table table-bordered align-middle table-hover" style="width:100%">
-								<thead class="table">
-									<tr>
-										<td>Дата</td>
-										<td>Описание</td>
-										<td>Примечание</td>
-										<td></td>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
-					<div class="card collapsed-card">
-						<div class="card-header">
-							<h3 class="card-title mb-0">
 								<i class="fa-solid fa-timeline me-2"></i>История операций
 							</h3>
 							<div class="card-tools">
@@ -490,7 +459,6 @@
 @await Html.PartialAsync("InfoModal/_AddCompletedWorkModal.cshtml")
 @await Html.PartialAsync("InfoModal/_AddConservationModal.cshtml")
 @await Html.PartialAsync("InfoModal/_AddDescriptionModal.cshtml")
-@await Html.PartialAsync("InfoModal/_AddDisposalInformationModal.cshtml")
 @await Html.PartialAsync("InfoModal/_AddReceptionAndTransmissionModal.cshtml")
 @await Html.PartialAsync("InfoModal/_AddRepairModal.cshtml")
 @await Html.PartialAsync("InfoModal/_AddStorageModal.cshtml")

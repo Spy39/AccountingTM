@@ -43,7 +43,7 @@ const initTableCategories = () => {
                 targets: 1,
                 data: null,
                 render: (data, type, row, meta) => {
-                    return `<a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Редактировать"><i class="fa-solid fa-pen"></i></a>
+                    return `<button class="btn btn-secondary edit category" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-title="Редактировать"><i class="fa-solid fa-pen"></i></button>
                             <button class="btn btn-danger delete category" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
                 }
             }]

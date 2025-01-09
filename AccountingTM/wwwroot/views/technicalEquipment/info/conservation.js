@@ -1,6 +1,6 @@
-﻿
-//Вывод данных о консервации техничесокого средства в таблицу
-    let tableConservations = new DataTable('#conservationTable', {
+﻿//Вывод данных о консервации техничесокого средства в таблицу
+
+let tableConservations = new DataTable('#conservationTable', {
     paging: true,
     serverSide: true,
     ajax: function (data, callback, settings) {
@@ -22,124 +22,126 @@
 
     },
     buttons: [
-        {
-            name: 'refresh',
-            text: '<i class="fas fa-redo-alt"></i>',
-            action: () => tableConservations.draw(false)
-        }
+    {
+        name: 'refresh',
+        text: '<i class="fas fa-redo-alt"></i>',
+        action: () => tableConservations.draw(false)
+    }
     ],
-        drawCallback: function () {
-            if ($('[data-bs-toggle="tooltip"]')) {
-                setTimeout(() => {
-                    $('[data-bs-toggle="tooltip"]').tooltip();
-                }, 1000)
-            }
-        },
+    drawCallback: function () {
+        if ($('[data-bs-toggle="tooltip"]')) {
+            setTimeout(() => {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            }, 1000)
+        }
+    },
     columnDefs: [
-        {
-            targets: 0,
-            data: 'date',
-            render: (data, type, row, meta) => {
-                return data ? dayjs(data).format("DD.MM.YYYY") : "";
-            }
-        },
-        {
-            targets: 1,
-            data: 'nameOfWork',
-        },
-        {
-            targets: 2,
-            data: 'validity',
-        },
-        {
-            targets: 3,
-            data: 'employee',
-            render: (data, type, row, meta) => {
-                return `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`;
-            }
-        },
-        {
-            targets: 4,
-            data: null,
-            render: (data, type, row, meta) => {
-                return `<button class="btn btn-danger delete conservation" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
-            }
-        }]
+    {
+        targets: 0,
+        data: 'date',
+        render: (data, type, row, meta) => {
+            return data ? dayjs(data).format("DD.MM.YYYY") : "";
+        }
+    },
+    {
+        targets: 1,
+        data: 'nameOfWork',
+    },
+    {
+        targets: 2,
+        data: 'validity',
+    },
+    {
+        targets: 3,
+        data: 'employee',
+        render: (data, type, row, meta) => {
+            return `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`;
+        }
+    },
+    {
+        targets: 4,
+        data: null,
+        render: (data, type, row, meta) => {
+            return `<button class="btn btn-danger delete conservation" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
+        }
+    }]
 });
 
 
-    $("#search-btn").click(function () {
-        tableClients.ajax.reload()
+//Добавление
+$("#createConservationBtn").click(function () {
+    axios.post("/TechnicalEquipmentInfo/CreateConservation", {
+        technicalEquipmentId: +$("#technicalEquipmentId").val(),
+        date: moment($("#dateConservation").val(), 'DD.MM.YYYY').toDate(),
+        validity: moment($("#datePeriod").val(), 'DD.MM.YYYY').toDate(),
+        nameOfWorks: $("#nameOfWork").val(),
+        employee: $("#employee").val()
+    }).then(function () {
+        tableConservations.draw(false);
+        $("#addConservationModal").modal("hide")
     })
+})
+//$("#addConservationModal").on("hide.bs.modal", function () {
+//    $("#dateConservation").val('');
+//    $("#datePeriod").val('');
+//    $("#nameOfWork").val('');
+//    $("#employee").val(null);
+//    $("#employee").trigger("change");
+//})
 
-    //Добавление
-    $("#createConservationBtn").click(function () {
-        axios.post("/TechnicalEquipmentInfo/CreateConservation", {
-            technicalEquipmentId: +$("#technicalEquipmentId").val(),
-            date: moment($("#dateConservation").val(), 'DD.MM.YYYY').toDate(),
-            validity: moment($("#datePeriod").val(), 'DD.MM.YYYY').toDate(),
-            nameOfWorks: $("#nameOfWork").val(),
-            employee: $("#employee").val(),
-            isDeleted: false
-        }).then(function () {
-            location.reload()
-        })
-    })
 
-    //Удаление
-    $(document).on("click", ".delete.conservation", function () {
-        let name = this.dataset.name;
-        Swal.fire({
-            title: "Вы уверены?",
-            text: `Запись ${name} будет удален!`,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Да",
-            cancelButtonText: "Нет",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                let id = this.dataset.id;
-                axios.delete("TechnicalEquipmentInfo/DeleteConservation?id=" + id).then(function () {
-                    tableConservations.draw(false)
-                    $(".tooltip").removeClass("show")
-                    toastr.success('Запись удалена!')
-                })
-            }
-        });
-    })
+//Удаление
+$(document).on("click", ".delete.conservation", function () {
+    let name = this.dataset.name;
+    Swal.fire({
+        title: "Вы уверены?",
+        text: `Запись будет удалена!`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Да",
+        cancelButtonText: "Нет",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            let id = this.dataset.id;
+            axios.delete("/TechnicalEquipmentInfo/DeleteConservation?id=" + id).then(function () {
+                tableConservations.draw(false)
+                $(".tooltip").removeClass("show")
+                toastr.success('Запись удалена!')
+            })
+        }
+    });
+})
 
-    //Вывод Select
 
-    //Тип технического средства
-    $("#typeEquipment").select2({
-        width: '100%',
-        allowClear: true,
-        placeholder: 'Наименование типа',
-        ajax: {
-            transport: (data, success, failure) => {
-                let params = data.data;
-                let maxResultCount = 30;
+//Вывод Select
+//Ответственный
+$("#employee").select2({
+    width: '100%',
+    allowClear: true,
+    placeholder: 'Ответственный',
+    ajax: {
+        transport: (data, success, failure) => {
+            let params = data.data;
+            let maxResultCount = 30;
+            params.page = params.page || 1;
 
-                params.page = params.page || 1;
-
-                let filter = {};
-                filter.maxResultCount = maxResultCount;
-                filter.skipCount = (params.page - 1) * maxResultCount;
-                filter.keyword = params.term
-                axios.get("TypeEquipment/GetAll", { params: filter }).then(function (result) {
-
-                    success({
-                        results: result.data.items,
-                        pagination: {
-                            more: (params.page * maxResultCount) < result.data.totalCount
-                        }
-                    });
+            let filter = {};
+            filter.maxResultCount = maxResultCount;
+            filter.skipCount = (params.page - 1) * maxResultCount;
+            filter.keyword = params.term
+            axios.get("/Employee/GetAll", { params: filter }).then(function (result) {
+                success({
+                    results: result.data.items,
+                    pagination: {
+                        more: (params.page * maxResultCount) < result.data.totalCount
+                    }
                 });
-            },
-            cache: true
+            });
         },
-        templateResult: (data) => data.name,
-        templateSelection: (data) => data.name
-    })
+        cache: true
+    },
+    templateResult: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
+    templateSelection: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
+})

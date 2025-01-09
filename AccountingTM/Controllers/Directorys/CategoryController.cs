@@ -5,8 +5,9 @@ using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AccountingTM.Controllers.Directorys
+namespace AccountingTM.Controllers.Directories
 {
+    //Категории заявок
     [Authorize]
     public class CategoryController : Controller
     {
@@ -28,7 +29,20 @@ namespace AccountingTM.Controllers.Directorys
             }
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
+
             return Ok(new PagedResultDto<Category>(query.Count(), entities));
+        }
+
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var entity = _context.Categories.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"Категория с id = {id} не найдена");
+            }
+
+            return Ok(entity);
         }
 
         [HttpPost]

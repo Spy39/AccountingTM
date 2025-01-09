@@ -1,12 +1,6 @@
-﻿using Accounting.Models;
-using AccountingTM.Domain.Models.Directory;
+﻿using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AccountingTM.Domain.Models.Tables
 {
@@ -15,10 +9,10 @@ namespace AccountingTM.Domain.Models.Tables
     /// </summary>
     public class Characteristic : Entity
     {
-		public int TechnicalEquipmentId { get; set; }
-		[ForeignKey(nameof(TechnicalEquipmentId))]
-		public TechnicalEquipment? TechnicalEquipment { get; set; }
-		public int IndicatorId { get; set; }
+        public int TechnicalEquipmentId { get; set; }
+        [ForeignKey(nameof(TechnicalEquipmentId))]
+        public TechnicalEquipment? TechnicalEquipment { get; set; }
+        public int IndicatorId { get; set; }
         [ForeignKey(nameof(IndicatorId))]
         public Indicator Indicator { get; set; }
         public int UnitId { get; set; }
@@ -26,5 +20,7 @@ namespace AccountingTM.Domain.Models.Tables
         public Unit Unit { get; set; }
         /// <summary>Значение</summary>
         public string Meaning { get; set; }
+        public int? ModelId { get; set; }
+        public Model Model { get; set; }
     }
 }

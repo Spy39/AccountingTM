@@ -3,6 +3,7 @@ import initTableCategories from "./category.js"
 import initTableEmployees from "./employee.js"
 import initTableIndicators from "./indicator.js"
 import initTableLocations from "./location.js"
+import initTableModels from "./model.js"
 import initTableConsumables from "./typeConsumable.js"
 import initTableTypes from "./typeEquipment.js"
 import initTableUnits from "./unit.js"
@@ -19,8 +20,11 @@ $("#nav-page .nav-link").click(function () {
             //Типы расходных материалоы
             initTableConsumables();
 
-            //Бренды>
+            //Бренды
             initTableBrands();
+
+            //Модели
+            initTableModels();
 
             //Помещения
             initTableLocations();

@@ -370,6 +370,27 @@ namespace AccountingTM.Domain.Migrations
                     b.ToTable("Locations");
                 });
 
+            modelBuilder.Entity("AccountingTM.Domain.Models.Directory.Model", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Models");
+                });
+
             modelBuilder.Entity("AccountingTM.Domain.Models.Directory.TypeConsumable", b =>
                 {
                     b.Property<int>("Id")
@@ -529,6 +550,9 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int?>("ModelId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("TechnicalEquipmentId")
                         .HasColumnType("integer");
 
@@ -538,6 +562,8 @@ namespace AccountingTM.Domain.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IndicatorId");
+
+                    b.HasIndex("ModelId");
 
                     b.HasIndex("TechnicalEquipmentId");
 
@@ -611,34 +637,6 @@ namespace AccountingTM.Domain.Migrations
                     b.HasIndex("TechnicalEquipmentId");
 
                     b.ToTable("Conservations");
-                });
-
-            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.DisposalInformation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Note")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TechnicalEquipmentId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TechnicalEquipmentId");
-
-                    b.ToTable("DisposalInformations");
                 });
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.ReceptionAndTransmission", b =>
@@ -1084,6 +1082,10 @@ namespace AccountingTM.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AccountingTM.Domain.Models.Directory.Model", "Model")
+                        .WithMany()
+                        .HasForeignKey("ModelId");
+
                     b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
                         .WithMany()
                         .HasForeignKey("TechnicalEquipmentId")
@@ -1097,6 +1099,8 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired();
 
                     b.Navigation("Indicator");
+
+                    b.Navigation("Model");
 
                     b.Navigation("TechnicalEquipment");
 
@@ -1137,17 +1141,6 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
-
-                    b.Navigation("TechnicalEquipment");
-                });
-
-            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.DisposalInformation", b =>
-                {
-                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
-                        .WithMany()
-                        .HasForeignKey("TechnicalEquipmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("TechnicalEquipment");
                 });
