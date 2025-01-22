@@ -49,18 +49,30 @@ const initTableIndicators = () => {
             }]
     });
 
-//Добавление
+    //Добавление
     $("#createIndicatorBtn").click(function () {
-
         axios.post("Indicator/Create", {
             name: $("#indicator").val(),
-
         }).then(function () {
             location.reload()
         })
     })
 
-//Удаление
+    //Редактирование
+    $(document).on("click", ".edit.indicator", function () {
+        let id = this.dataset.id;
+        axios.get('/Indicator/Get', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const indicator = response.data;
+            $("#indicator").val(indicator.name);
+            $("#createIndicator").modal("show");
+        })
+    })
+
+    //Удаление
     $(document).on("click", ".delete.indicator", function () {
         let name = this.dataset.name;
         Swal.fire({

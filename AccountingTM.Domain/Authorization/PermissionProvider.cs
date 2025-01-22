@@ -1,10 +1,5 @@
 ﻿using AccountingTM.Domain.Permissions;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AccountingTM.Domain.Authorization
 {
@@ -33,14 +28,58 @@ namespace AccountingTM.Domain.Authorization
             users.CreateChildPermission(PermissionNames.Users.Update, "pen");
             users.CreateChildPermission(PermissionNames.Users.Delete, "trash");
 
-            var technicalEquipment = new Permission(PermissionNames.TechnicalEquipments.Pages, "user-tie");
-            technicalEquipment.CreateChildPermission(PermissionNames.TechnicalEquipments.Create, "plus");
-            technicalEquipment.CreateChildPermission(PermissionNames.TechnicalEquipments.Read, "book");
-            technicalEquipment.CreateChildPermission(PermissionNames.TechnicalEquipments.Delete, "trash");
+            var technicalEquipments = new Permission(PermissionNames.TechnicalEquipments.Pages, "user-tie");
+            technicalEquipments.CreateChildPermission(PermissionNames.TechnicalEquipments.Create, "plus");
+            technicalEquipments.CreateChildPermission(PermissionNames.TechnicalEquipments.Read, "book");
+            technicalEquipments.CreateChildPermission(PermissionNames.TechnicalEquipments.Delete, "trash");
+
+            var consumables = new Permission(PermissionNames.TechnicalEquipments.Pages, "user-tie");
+            consumables.CreateChildPermission(PermissionNames.TechnicalEquipments.Create, "plus");
+            consumables.CreateChildPermission(PermissionNames.TechnicalEquipments.Read, "book");
+            consumables.CreateChildPermission(PermissionNames.TechnicalEquipments.Delete, "trash");
+
+            var sets = new Permission(PermissionNames.TechnicalEquipments.Pages, "user-tie");
+            sets.CreateChildPermission(PermissionNames.TechnicalEquipments.Create, "plus");
+            sets.CreateChildPermission(PermissionNames.TechnicalEquipments.Read, "book");
+            sets.CreateChildPermission(PermissionNames.TechnicalEquipments.Delete, "trash");
+
+            var applications = new Permission(PermissionNames.TechnicalEquipments.Pages, "user-tie");
+            applications.CreateChildPermission(PermissionNames.TechnicalEquipments.Create, "plus");
+            applications.CreateChildPermission(PermissionNames.TechnicalEquipments.Read, "book");
+            applications.CreateChildPermission(PermissionNames.TechnicalEquipments.Delete, "trash");
+
+            var analysis = new Permission(PermissionNames.TechnicalEquipments.Pages, "user-tie");
+            analysis.CreateChildPermission(PermissionNames.TechnicalEquipments.Create, "plus");
+            analysis.CreateChildPermission(PermissionNames.TechnicalEquipments.Read, "book");
+            analysis.CreateChildPermission(PermissionNames.TechnicalEquipments.Delete, "trash");
+
+            var statistics = new Permission(PermissionNames.TechnicalEquipments.Pages, "user-tie");
+            statistics.CreateChildPermission(PermissionNames.TechnicalEquipments.Create, "plus");
+            statistics.CreateChildPermission(PermissionNames.TechnicalEquipments.Read, "book");
+            statistics.CreateChildPermission(PermissionNames.TechnicalEquipments.Delete, "trash");
+
+            var administrations = new Permission(PermissionNames.Users.Pages, "users");
+            administrations.CreateChildPermission(PermissionNames.Users.Create, "plus");
+            administrations.CreateChildPermission(PermissionNames.Users.Read, "book");
+            administrations.CreateChildPermission(PermissionNames.Users.Update, "pen");
+            administrations.CreateChildPermission(PermissionNames.Users.Delete, "trash");
+
+            var directories = new Permission(PermissionNames.Users.Pages, "users");
+            directories.CreateChildPermission(PermissionNames.Users.Create, "plus");
+            directories.CreateChildPermission(PermissionNames.Users.Read, "book");
+            directories.CreateChildPermission(PermissionNames.Users.Update, "pen");
+            directories.CreateChildPermission(PermissionNames.Users.Delete, "trash");
 
             _permissions.Add(roles);
             _permissions.Add(users);
-            _permissions.Add(technicalEquipment);
+            _permissions.Add(technicalEquipments);
+            _permissions.Add(consumables);
+            _permissions.Add(sets);
+            _permissions.Add(applications);
+            _permissions.Add(analysis);
+            _permissions.Add(statistics);
+            _permissions.Add(administrations);
+            _permissions.Add(directories);
         }
     }
 }

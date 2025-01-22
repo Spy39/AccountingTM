@@ -45,7 +45,6 @@ namespace Accounting.Data
 		public DbSet<ConsumableHistory> ConsumableHistories { get; set; }
 		public DbSet<Set> Sets { get; set; }
 		public DbSet<SetHistory> SetHistories { get; set; }
-		public DbSet<DocumentType> DocumentType { get; set; }
 		public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<UserPermission> UserPermissions { get; set; }

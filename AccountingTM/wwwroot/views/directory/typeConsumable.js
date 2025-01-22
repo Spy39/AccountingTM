@@ -59,6 +59,20 @@ const initTableConsumables = () => {
         })
     })
 
+    //Редактирование
+    $(document).on("click", ".edit.typeConsumable", function () {
+        let id = this.dataset.id;
+        axios.get('/TypeConsumable/Get', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const typeConsumable = response.data;
+            $("#typeConsumable").val(typeConsumable.name);
+            $("#createTypeConsumable").modal("show");
+        })
+    })
+
     //Удаление
     $(document).on("click", ".delete.typeConsumable", function () {
         let name = this.dataset.name;

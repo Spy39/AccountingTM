@@ -69,13 +69,6 @@ namespace AccountingTM.Controllers
             input.DateOfCreation = now;
             input.DateOfChange = now;
 
-            //if (!string.IsNullOrWhiteSpace(input.))
-            //{
-            //	if (_context.TechnicalEquipment.Any(x => x.InventoryNumber == input.InventoryNumber))
-            //	{
-            //		throw new UserFriendlyException("Техническое средство с таким инвентарным номером уже существует!");
-            //	}
-            //}
             _context.Applications.Add(input);
             _context.SaveChanges();
             return RedirectToAction("Index");
@@ -112,20 +105,6 @@ namespace AccountingTM.Controllers
             }
 
             _context.Applications.Remove(entity);
-            _context.SaveChanges();
-            return Ok();
-        }
-
-        [HttpDelete]
-        public IActionResult DeleteCompletedWork(int id)
-        {
-            var entity = _context.CompletedWorks.Find(id);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-
-            _context.CompletedWorks.Remove(entity);
             _context.SaveChanges();
             return Ok();
         }

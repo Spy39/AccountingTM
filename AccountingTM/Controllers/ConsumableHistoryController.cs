@@ -33,9 +33,21 @@ namespace AccountingTM.Controllers
             return Ok(new PagedResultDto<ConsumableHistory>(query.Count(), entities));
         }
 
+        //Редактирование информации о расходном материале
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var entity = _context.Consumables.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"Расходный материал с id = {id} не найден");
+            }
 
-		//Информация о расходном материале
-		[Route("[controller]/{id:int}")]
+            return Ok(entity);
+        }
+
+        //Информация о расходном материале
+        [Route("[controller]/{id:int}")]
 		[HttpGet]
 		public IActionResult Index(int id)
 		{

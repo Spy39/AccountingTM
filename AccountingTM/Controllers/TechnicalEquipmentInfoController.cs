@@ -18,12 +18,37 @@ namespace AccountingTM.Controllers
             _context = context;
         }
 
+        //Редактирование основной информации ТС
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var entity = _context.TechnicalEquipment.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"ТС с id = {id} не найдено");
+            }
+
+            return Ok(entity);
+        }
+
+        //Редактирование дополнительной информации ТС
+        [HttpGet]
+        public IActionResult GetAditional(int id)
+        {
+            var entity = _context.TechnicalEquipment.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"ТС с id = {id} не найдено");
+            }
+
+            return Ok(entity);
+        }
 
         //Характеристики технического средства
         [HttpGet]
         public IActionResult GetAllCharacteristic([FromQuery] SearchPagedRequestDto input)
         {
-            IQueryable<Characteristic> query = _context.Characteristics.Include(x => x.Unit).Include(x => x.Indicator);
+            IQueryable<Characteristic> query = _context.Characteristics.Include(x => x.Unit).Include(x => x.Indicator)/*.Where(x => x.TechnicalEquipmentId == input.)*/;
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 

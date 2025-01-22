@@ -8,6 +8,7 @@ let tableCharacteristics = new DataTable('#characteristic', {
     filter.searchQuery = $("#search-input").val()
     filter.maxResultCount = data.length || 10;
     filter.skipCount = data.start;
+    filter.technicalEquipmentId = +$("#technicalEquipmentId").val();
     axios.get('/TechnicalEquipmentInfo/GetAllCharacteristic', {
         params: filter
     })

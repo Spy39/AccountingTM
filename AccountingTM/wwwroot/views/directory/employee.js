@@ -64,21 +64,36 @@ const initTableEmployees = () => {
             }]
     });
 
-//Добавление
+    //Добавление
     $("#createEmployeeBtn").click(function () {
-
         axios.post("Employee/Create", {
             lastName: $("#lastName").val(),
             firstName: $("#firstName").val(),
             fatherName: $("#fatherName").val(),
             position: $("#position").val(),
-
         }).then(function () {
             location.reload()
         })
     })
 
-//Удаление
+    //Редактирование
+    $(document).on("click", ".edit.employee", function () {
+        let id = this.dataset.id;
+        axios.get('/Employee/Get', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const employee = response.data;
+            $("#lastName").val(employee.lastName);
+            $("#firstName").val(employee.firstName);
+            $("#fatherName").val(employee.fatherName);
+            $("#position").val(employee.position);
+            $("#createEmployee").modal("show");
+        })
+    })
+
+    //Удаление
     $(document).on("click", ".delete.employee", function () {
         let name = this.dataset.name;
         Swal.fire({

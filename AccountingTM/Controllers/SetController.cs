@@ -85,7 +85,7 @@ namespace AccountingTM.Controllers
         [HttpGet]
         public IActionResult GetAllCompoundSet([FromQuery] GetAllCompoundSetDto input)
         {
-            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Location).Where(x => x.SetId == input.SetId); ;
+            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Location).Where(x => x.SetId == input.SetId);
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
             return Ok(new PagedResultDto<TechnicalEquipment>(query.Count(), entities));
@@ -101,7 +101,7 @@ namespace AccountingTM.Controllers
             return Ok(new PagedResultDto<SetHistory>(query.Count(), entities));
         }
 
-        //Информация о расходном материале
+        //Информация о комплекте
         [Route("[controller]/{id:int}")]
         [HttpGet]
         public IActionResult Info(int id)
@@ -130,6 +130,19 @@ namespace AccountingTM.Controllers
             }
             _context.SaveChanges();
             return Ok();
+        }
+
+        //Редактирование информации о комплекте
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            var entity = _context.Sets.Find(id);
+            if (entity == null)
+            {
+                throw new Exception($"Комплект с id = {id} не найден");
+            }
+
+            return Ok(entity);
         }
 
         [HttpDelete]

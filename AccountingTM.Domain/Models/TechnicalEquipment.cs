@@ -28,7 +28,8 @@ namespace AccountingTM.Models
         /// <summary>
         /// Модель технического средства
         /// </summary>
-        public string Model { get; set; }
+        public int? ModelId { get; set; }
+        public Model Model { get; set; }
         public string? SerialNumber { get; set; }
         public string? InventoryNumber { get; set; }
         /// <summary>

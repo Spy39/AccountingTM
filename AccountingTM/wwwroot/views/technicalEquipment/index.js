@@ -58,7 +58,7 @@
             },
             {
                 targets: 2,
-                data: 'model',
+                data: 'model.name',
             },
             {
                 targets: 3,

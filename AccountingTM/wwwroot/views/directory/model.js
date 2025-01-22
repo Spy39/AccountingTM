@@ -50,7 +50,6 @@ const initTableModels = () => {
 
     //Добавление
     $("#createModelBtn").click(function () {
-
         axios.post("Model/Create", {
             name: $("#model").val(),
             description: $("#modelDescription").val(),
@@ -68,9 +67,20 @@ const initTableModels = () => {
             }
         }).then(function (response) {
             const model = response.data;
-            $("#model").val(model.name);
-            $("#modelDescription").val(model.description);
-            $("#createModel").modal("show");
+            $("#editNameModel").val(model.name);
+            $("#editModelId").val(model.id);
+            $("#editModelDescription").val(model.description);
+            $("#editModel").modal("show");
+        })
+    })
+
+    $("#editModelBtn").click(function () {
+        axios.post("Model/Update", {
+            id: +$("#editModelId").val(),
+            name: $("#editNameModel").val(),
+            description: $("#editModelDescription").val(),
+        }).then(function () {
+            location.reload()
         })
     })
 
@@ -97,7 +107,6 @@ const initTableModels = () => {
             }
         });
     })
-
 
 }
 

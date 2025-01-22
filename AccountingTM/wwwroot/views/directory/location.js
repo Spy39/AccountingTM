@@ -51,12 +51,24 @@ const initTableLocations = () => {
 
     //Добавление
     $("#createLocationBtn").click(function () {
-
         axios.post("Location/Create", {
             name: $("#location").val(),
-
         }).then(function () {
             location.reload()
+        })
+    })
+
+    //Редактирование
+    $(document).on("click", ".edit.location", function () {
+        let id = this.dataset.id;
+        axios.get('/Location/Get', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const location = response.data;
+            $("#location").val(location.name);
+            $("#createLocation").modal("show");
         })
     })
 

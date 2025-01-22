@@ -11,6 +11,48 @@
     $('#datePeriod').datepicker({ container: '#addConservationModal', dateFormat: "dd.mm.yyyy" });
     $('#dateDisposalInformation').datepicker({ container: '#addDisposalInformationModal', dateFormat: "dd.mm.yyyy" });
 
+    //Редактирование основной информации о ТС
+    $("#editBasicBtn").click(function () {
+        let id = this.dataset.id;
+        axios.get('/TechnicalEquipmentInfo/Get', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const technicalEquipment = response.data;
+            $("#typeEquipment").val(technicalEquipment.type);
+            $("#typeEquipment").trigger("change");
+            $("#brand").val(technicalEquipment.brand);
+            $("#brand").trigger("change");
+            $("#model").val(technicalEquipment.model);
+            $("#state").val(technicalEquipment.state);
+            $("#editBasicModal").modal("show");
+        })
+    })
+
+    //Редактирование дополнительной информации о ТС
+    $("#editAdditionalBtn").click(function () {
+        let id = this.dataset.id;
+        axios.get('/TechnicalEquipmentInfo/GetAditional', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const technicalEquipment = response.data;
+            $("#serialNumber").val(technicalEquipment.serialNumber);
+            $("#inventoryNumber").val(technicalEquipment.inventoryNumber);
+            $("#employee").val(technicalEquipment.employee);
+            $("#employee").trigger("change");
+            $("#location").val(technicalEquipment.location);
+            $("#location").trigger("change");
+            $("#model").val(technicalEquipment.date);
+            $("#state").val(technicalEquipment.dateStart);
+            $("#state").val(technicalEquipment.dateEnd);
+            $("#workTimeAvg").val(technicalEquipment.workTimeAvg);
+            $("#editAdditionalModal").modal("show");
+        })
+    })
+
     //Вывод Select
 
     //Тип технического средства

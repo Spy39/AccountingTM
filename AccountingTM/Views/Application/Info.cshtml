@@ -39,13 +39,7 @@
 
 		<div class="col-2">
 			<div class="float-sm-right">
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#AddTechnicalEquipmentModal">Добавить к ТС</button>
-				<button type="button" class="btn btn-default">
-					<i class="fa-solid fa-download"></i>
-				</button>
-				<button type="button" class="btn btn-default">
-					<i class="fa-solid fa-print"></i>
-				</button>
+				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#AddTechnicalEquipmentModal">Прикрепить к ТС</button>
 			</div>
 		</div>
 	</div>
@@ -55,11 +49,19 @@
 
     <!-- Главная панель -->
     <div class="row">
+
         <!-- Левая колонка -->
         <div class="col-md-4">
+
             <!-- Статус и параметры -->
             <div class="card mb-3">
-                <div class="card-header bg-primary text-white">Параметры заявки</div>
+                <div class="card-header bg-default">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-pen"></i> Параметры заявки
+                        </h5>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="status" class="form-label">Статус заявки</label>
@@ -93,31 +95,55 @@
                     </div>
                 </div>
             </div>
+
             <!-- Информация о заявке -->
             <div class="card mb-3">
-                <div class="card-header bg-secondary text-white">Информация</div>
+                <div class="card-header bg-default">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-circle-info"></i> Информация
+                        </h5>
+                    </div>
+                </div>
                 <div class="card-body">
                     <p>Номер заявки: <strong>@Model.ApplicationNumber</strong></p>
+                    <p>Прикреплена к ТС: <strong>@* @Model.ApplicationNumber *@ Нет</strong></p>
+                    
                     <p>Дата создания: <strong>@Model.DateOfCreation</strong></p>
                     <p>Последнее обновление: <strong>@Model.DateOfChange</strong></p>
                     <p>Последний ответивший: <strong>@Model.LastReply</strong></p>
                     <p>Срок исполнения: <strong>@Model.ExpirationDate</strong></p>
                 </div>
             </div>
+
             <!-- История изменений -->
-            <div class="card">
-                <div class="card-header bg-dark text-white">История изменений</div>
+            <div class="card mb-3">
+                <div class="card-header bg-default">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-clock-rotate-left"></i> История изменений
+                        </h5>
+                    </div>
+                </div>
                 <div class="card-body">
                     <p>Здесь будет история изменений...</p>
                 </div>
             </div>
+
         </div>
 
         <!-- Правая колонка -->
         <div class="col-md-8">
+
             <!-- Основная информация -->
             <div class="card mb-3">
-                <div class="card-header bg-info text-white">Основная информация</div>
+                <div class="card-header bg-default">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-file-pen"></i> Основная информация
+                        </h5>
+                    </div>
+                </div>
                 <div class="card-body">
                     <h5>@Model.Subject</h5>
                     <p>Автор: <strong>@Model.Author</strong></p>
@@ -127,8 +153,14 @@
             </div>
 
             <!-- Комментарии -->
-            <div class="card">
-                <div class="card-header bg-success text-white">Комментарии</div>
+            <div class="card mb-3">
+                <div class="card-header bg-default">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fa-solid fa-comment-dots"></i> Комментарии
+                        </h5>
+                    </div>
+                </div>
                 <div class="card-body">
                     <div class="mb-3">
                         <label for="comment" class="form-label">Добавить комментарий</label>
@@ -144,36 +176,13 @@
                             Назначить заявку себе
                         </label>
                     </div>
-                    <button class="btn btn-primary mt-3">Добавить комментарий</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                    <button class="btn btn-default mt-3" data-bs-toggle="modal" data-bs-target="#editDescriptionModal" type="button">
+                        <i class="fa-solid fa-plus"></i> Добавить комментарий
+                    </button>
 
-<!-- Модальное окно -->
-<div class="modal fade" id="AddTechnicalEquipmentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Добавить техническое средство</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Поля формы -->
-                <div class="mb-3">
-                    <label for="equipmentName" class="form-label">Название оборудования</label>
-                    <input type="text" class="form-control" id="equipmentName" placeholder="Введите название">
-                </div>
-                <div class="mb-3">
-                    <label for="equipmentSerial" class="form-label">Серийный номер</label>
-                    <input type="text" class="form-control" id="equipmentSerial" placeholder="Введите серийный номер">
                 </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                <button type="button" class="btn btn-primary">Сохранить</button>
-            </div>
+
         </div>
     </div>
 </div>

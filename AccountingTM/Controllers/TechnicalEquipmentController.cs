@@ -29,13 +29,13 @@ namespace Accounting.Controllers
         [HttpGet("[controller]/[action]")]
         public IActionResult GetAll([FromQuery] GetAllTechnicalDto input)
         {
-            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Location).Include(x => x.Employee);
+            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Model).Include(x => x.Location).Include(x => x.Employee);
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
                 query = query.Where(x => x.Type.Name.ToLower().Contains(keyword) ||
                                          x.Brand.Name.ToLower().Contains(keyword) ||
-                                         x.Model.ToLower().Contains(keyword) ||
+                                         x.Model.Name.ToLower().Contains(keyword) ||
                                          x.SerialNumber.ToLower().Contains(keyword) ||
                                          //x.State.ToLower().Contains(keyword) ||
                                          x.Employee.FirstName.ToLower().Contains(keyword) ||
@@ -54,14 +54,12 @@ namespace Accounting.Controllers
             return Ok(new PagedResultDto<TechnicalEquipment>(query.Count(), clients));
         }
 
-
         [HttpGet]
         public IActionResult Index()
         {
             var technicalEquipments = _context.TechnicalEquipment.ToList();
             return View(technicalEquipments);
         }
-
 
         [HttpPost]
         public IActionResult Create([FromBody] TechnicalEquipment input)
@@ -98,12 +96,12 @@ namespace Accounting.Controllers
         [HttpGet]
         public IActionResult Info(int id)
         {
-            TechnicalEquipment technicalEquipment = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Location).Include(x => x.Employee).Include(x => x.Set).First(x => x.Id == id);
+            TechnicalEquipment technicalEquipment = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Model).Include(x => x.Location).Include(x => x.Employee).Include(x => x.Set).First(x => x.Id == id);
             var model = new InfoViewModel
             {
                 TechnicalId = id,
                 Brand = technicalEquipment.Brand.Name,
-                Model = technicalEquipment.Model,
+                Model = technicalEquipment.Model.Name,
                 TypeEquipment = technicalEquipment.Type.Name,
                 SerialNumber = technicalEquipment.SerialNumber,
                 InventoryNumber = technicalEquipment.InventoryNumber,
@@ -122,14 +120,14 @@ namespace Accounting.Controllers
         [HttpGet]
         public IActionResult GetAllModel([FromQuery] SearchPagedRequestDto input)
         {
-            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment;
+            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment.Include(x => x.Model);
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
-                query = query.Where(x => x.Model.ToLower().Contains(keyword));
+                query = query.Where(x => x.Model.Name.ToLower().Contains(keyword));
             }
 
-            var entities = query.Select(x => x.Model).Distinct().ToList();
+            var entities = query.Select(x => x.Model.Name).Distinct().ToList();
             return Ok(new PagedResultDto<string>(entities.Count(), entities));
         }
 
@@ -197,6 +195,12 @@ namespace Accounting.Controllers
 
                             var garantTime = row.Cell(11).GetValue<int>();
                             var state = row.Cell(12).GetValue<string>();
+                            var model = _context.Models.FirstOrDefault(x => x.Name == row.Cell(3).GetValue<string>());
+                            if(model == null)
+                            {
+                                _context.Models.Add(model);
+                                _context.SaveChanges();
+                            }
                             // Добавление записи в таблицу Учет ТС
                             var device = new TechnicalEquipment
                             {
@@ -204,7 +208,7 @@ namespace Accounting.Controllers
                                 BrandId = brand.Id,
                                 EmployeeId = responsible.Id,
                                 LocationId = location.Id,
-                                Model = row.Cell(3).GetValue<string>(),
+                                ModelId = model.Id,
                                 SerialNumber = row.Cell(6).GetValue<string>(),
                                 InventoryNumber = row.Cell(7).GetValue<string>(),
                                 Date = row.Cell(8).GetValue<DateTime>(),

@@ -50,12 +50,24 @@ const initTableTypes = () => {
 
     //Добавление
     $("#createTypeEquipmentBtn").click(function () {
-
         axios.post("TypeEquipment/Create", {
             name: $("#typeEquipment").val(),
-
         }).then(function () {
             location.reload()
+        })
+    })
+
+    //Редактирование
+    $(document).on("click", ".edit.typeEquipment", function () {
+        let id = this.dataset.id;
+        axios.get('/TypeEquipment/Get', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const typeEquipment = response.data;
+            $("#typeEquipment").val(typeEquipment.name);
+            $("#createType").modal("show");
         })
     })
 

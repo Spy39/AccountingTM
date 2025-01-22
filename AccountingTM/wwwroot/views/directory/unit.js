@@ -51,12 +51,24 @@ const initTableUnits = () => {
 
     //Добавление
     $("#createUnitBtn").click(function () {
-
         axios.post("Unit/Create", {
             name: $("#unit").val(),
-
         }).then(function () {
             location.reload()
+        })
+    })
+
+    //Редактирование
+    $(document).on("click", ".edit.unit", function () {
+        let id = this.dataset.id;
+        axios.get('/Unit/Get', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const unit = response.data;
+            $("#unit").val(unit.name);
+            $("#createUnits").modal("show");
         })
     })
 

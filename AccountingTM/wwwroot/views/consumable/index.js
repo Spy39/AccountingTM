@@ -107,6 +107,27 @@ $("#create-btn").click(function () {
     })
 })
 
+//Редактирование информации о расходном материале
+$("#editAdditionalBtn").click(function () {
+    let id = this.dataset.id;
+    axios.get('/ConsumableHistory/Get', {
+        params: {
+            id
+        }
+    }).then(function (response) {
+        const technicalEquipment = response.data;
+        $("#typeConsumable").val(technicalEquipment.typeConsumable);
+        $("#typeConsumable").trigger("change");
+        $("#brand").val(technicalEquipment.brand);
+        $("#brand").trigger("change");
+        $("#model").val(technicalEquipment.model);
+        $("#location").val(technicalEquipment.location);
+        $("#location").trigger("change");
+        $("#unit").val(technicalEquipment.unit);
+        $("#unit").trigger("change");
+        $("#EditConsumableModal").modal("show");
+    })
+})
 
 //Удаление
 $(document).on("click", ".delete.consumable", function () {

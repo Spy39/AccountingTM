@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AccountingTM.Domain.Authorization
+﻿namespace AccountingTM.Domain.Authorization
 {
     public static class StaticRoleNames
     {

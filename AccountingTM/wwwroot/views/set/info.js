@@ -1,6 +1,4 @@
-﻿//Информация о расходных материалах
-
-//Вывод данных в таблицу
+﻿//Информация о комплекте
 
 //Вывод данных в таблицу с составом комплекта
 let tableCompoundSets = new DataTable('#compoundSetTable', {
@@ -160,16 +158,6 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
     fixedColumns: {
         start: 2
     },
-    aoColumns: [
-        { sWidth: '14%' },
-        { sWidth: '14%' },
-        { sWidth: '14%' },
-        { sWidth: '14%' },
-        { sWidth: '10%' },
-        { sWidth: '17%' },
-        { sWidth: '10%' },
-        { sWidth: '7%' }
-    ],
     ajax: function (data, callback, settings) {
         var filter = {};
         filter.searchQuery = $("#search-input").val()
@@ -293,71 +281,8 @@ $(document).on("click", ".delete.compoundSet", function () {
         }
     });
 })
+
 //Select
-
-//Тип расходного материала
-$("#typeConsumable").select2({
-    width: '100%',
-    allowClear: true,
-    placeholder: 'Наименование типа',
-    ajax: {
-        transport: (data, success, failure) => {
-            let params = data.data;
-            let maxResultCount = 30;
-
-            params.page = params.page || 1;
-
-            let filter = {};
-            filter.maxResultCount = maxResultCount;
-            filter.skipCount = (params.page - 1) * maxResultCount;
-            filter.keyword = params.term
-            axios.get("/TypeConsumable/GetAll", { params: filter }).then(function (result) {
-
-                success({
-                    results: result.data.items,
-                    pagination: {
-                        more: (params.page * maxResultCount) < result.data.totalCount
-                    }
-                });
-            });
-        },
-        cache: true
-    },
-    templateResult: (data) => data.name,
-    templateSelection: (data) => data.name
-})
-
-//Бренд техниеского средства
-$("#brand").select2({
-    width: '100%',
-    allowClear: true,
-    placeholder: 'Наименование бренда',
-    ajax: {
-        transport: (data, success, failure) => {
-            let params = data.data;
-            let maxResultCount = 30;
-
-            params.page = params.page || 1;
-
-            let filter = {};
-            filter.maxResultCount = maxResultCount;
-            filter.skipCount = (params.page - 1) * maxResultCount;
-            filter.keyword = params.term
-            axios.get("/Brand/GetAll", { params: filter }).then(function (result) {
-
-                success({
-                    results: result.data.items,
-                    pagination: {
-                        more: (params.page * maxResultCount) < result.data.totalCount
-                    }
-                });
-            });
-        },
-        cache: true
-    },
-    templateResult: (data) => data.name,
-    templateSelection: (data) => data.name
-})
 
 //Помещение
 $("#location").select2({
@@ -407,7 +332,7 @@ $("#employee").select2({
             filter.maxResultCount = maxResultCount;
             filter.skipCount = (params.page - 1) * maxResultCount;
             filter.keyword = params.term
-            axios.get("/Employee/GetAll", { params: filter }).then(function (result) {
+            axios.get("Employee/GetAll", { params: filter }).then(function (result) {
 
                 success({
                     results: result.data.items,
@@ -422,36 +347,4 @@ $("#employee").select2({
     templateResult: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
     templateSelection: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
 
-})
-
-//Единица измерения
-$("#unit").select2({
-    width: '100%',
-    allowClear: true,
-    placeholder: 'Единица измерения',
-    ajax: {
-        transport: (data, success, failure) => {
-            let params = data.data;
-            let maxResultCount = 30;
-
-            params.page = params.page || 1;
-
-            let filter = {};
-            filter.maxResultCount = maxResultCount;
-            filter.skipCount = (params.page - 1) * maxResultCount;
-            filter.keyword = params.term
-            axios.get("/Unit/GetAll", { params: filter }).then(function (result) {
-
-                success({
-                    results: result.data.items,
-                    pagination: {
-                        more: (params.page * maxResultCount) < result.data.totalCount
-                    }
-                });
-            });
-        },
-        cache: true
-    },
-    templateResult: (data) => data.name,
-    templateSelection: (data) => data.name
 })

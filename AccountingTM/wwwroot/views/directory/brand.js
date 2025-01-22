@@ -51,12 +51,24 @@ const initTableBrands = () => {
 
     //Добавление
     $("#createBrandBtn").click(function () {
-
         axios.post("Brand/Create", {
             name: $("#brand").val(),
-
         }).then(function () {
             location.reload()
+        })
+    })
+
+    //Редактирование
+    $(document).on("click", ".edit.brand", function () {
+        let id = this.dataset.id;
+        axios.get('/Brand/Get', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const brand = response.data;
+            $("#brand").val(brand.name);
+            $("#createBrand").modal("show");
         })
     })
 

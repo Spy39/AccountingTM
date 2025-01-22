@@ -51,12 +51,24 @@ const initTableCategories = () => {
 
     //Добавление
     $("#createCategoryBtn").click(function () {
-
         axios.post("Category/Create", {
             name: $("#category").val(),
-
         }).then(function () {
             location.reload()
+        })
+    })
+
+    //Редактирование
+    $(document).on("click", ".edit.category", function () {
+        let id = this.dataset.id;
+        axios.get('/Category/Get', {
+            params: {
+                id
+            }
+        }).then(function (response) {
+            const category = response.data;
+            $("#category").val(category.name);
+            $("#createCategory").modal("show");
         })
     })
 

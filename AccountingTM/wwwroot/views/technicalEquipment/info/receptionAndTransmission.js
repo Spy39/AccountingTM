@@ -8,6 +8,7 @@ let tableReceptionAndTransmissions = new DataTable('#receptionAndTransmissionTab
     filter.searchQuery = $("#search-input").val()
     filter.maxResultCount = data.length || 10;
     filter.skipCount = data.start;
+    filter.technicalEquipmentId = +$("#technicalEquipmentId").val();
     axios.get('/TechnicalEquipmentInfo/GetAllReceptionAndTransmission', {
         params: filter
     })

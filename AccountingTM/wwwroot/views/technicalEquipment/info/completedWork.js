@@ -77,7 +77,8 @@ let tableCompletedWorks = new DataTable('#completedWorkTable', {
         targets: 5,
         data: null,
         render: (data, type, row, meta) => {
-            return `<button class="btn btn-danger delete completedWork" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
+            return `<a href="application/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о заявке"><i class="fa-solid fa-circle-info"></i></a>
+                    <button class="btn btn-danger delete completedWork" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
         }
     }]
 });
@@ -127,7 +128,7 @@ $(document).on("click", ".delete.completedWork", function () {
     }).then((result) => {
         if (result.isConfirmed) {
             let id = this.dataset.id;
-            axios.delete("/TechnicalEquipmentInfo/Delete?id=" + id).then(function () {
+            axios.delete("/Application/Delete?id=" + id).then(function () {
                 tableCompletedWorks.draw(false)
                 $(".tooltip").removeClass("show")
                 toastr.success('Запись удалена!')

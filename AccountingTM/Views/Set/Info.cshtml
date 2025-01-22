@@ -29,7 +29,7 @@
 		<div class="col-1">
 			<a class="btn btn-default" asp-area="" asp-controller="Set" asp-action="Index">Назад</a>
 		</div>
-		<div class="col-5">
+		<div class="col-3">
 			<div class="row">
 				<h3>@Model.Name</h3>
 			</div>
@@ -41,7 +41,10 @@
 			</div>
 		</div>
 
-		<div class="col-2">
+		<div class="col-4">
+			<div class="row">
+				Ответственный: @Model.Employee
+			</div>
 			<div class="row">
 				Местоположение: @Model.Location
 			</div>

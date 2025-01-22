@@ -1,24 +1,23 @@
 ﻿//Заявки - Информация
 
-let tableTechnicalEquipment = new DataTable('#technicalEquipmentTable', {
+//Вывод данных о техничесих средствах в таблицу
+let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
     paging: true,
     serverSide: true,
     bAutoWidth: false,
-    aoColumns: [
-        { sWidth: '14%' },
-        { sWidth: '14%' },
-        { sWidth: '14%' },
-        { sWidth: '14%' },
-        { sWidth: '10%' },
-        { sWidth: '17%' },
-        { sWidth: '10%' },
-        { sWidth: '7%' }
-    ],
+    select: {
+        selector: 'td:first-child',
+        style: 'multi'
+    },
+    fixedColumns: {
+        start: 2
+    },
     ajax: function (data, callback, settings) {
         var filter = {};
         filter.searchQuery = $("#search-input").val()
         filter.maxResultCount = data.length || 10;
         filter.skipCount = data.start;
+        filter.isWithoutSet = true;
         axios.get('/TechnicalEquipment/GetAll', {
             params: filter
         })
@@ -36,29 +35,41 @@ let tableTechnicalEquipment = new DataTable('#technicalEquipmentTable', {
         {
             name: 'refresh',
             text: '<i class="fas fa-redo-alt"></i>',
-            action: () => _$rolesTable.draw(false)
+            action: () => tableClients.draw(false)
         }
     ],
-    initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+    drawCallback: function () {
+        if ($('[data-bs-toggle="tooltip"]')) {
+            setTimeout(() => {
+                $('[data-bs-toggle="tooltip"]').tooltip();
+            }, 1000)
+        }
+
+    },
     columnDefs: [
         {
-            targets: 0,
-            data: 'type.name',
+            orderable: false,
+            render: DataTable.render.select(),
+            targets: 0
         },
         {
             targets: 1,
-            data: 'brand.name',
+            data: 'type.name',
         },
         {
             targets: 2,
-            data: 'model',
+            data: 'brand.name',
         },
         {
             targets: 3,
-            data: 'serialNumber',
+            data: 'model',
         },
         {
             targets: 4,
+            data: 'serialNumber',
+        },
+        {
+            targets: 5,
             data: 'state',
             render: (data, type, row, meta) => {
                 switch (data) {
@@ -71,24 +82,35 @@ let tableTechnicalEquipment = new DataTable('#technicalEquipmentTable', {
 
         },
         {
-            targets: 5,
+            targets: 6,
             data: 'employee',
             render: (data, type, row, meta) => {
                 return `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`;
             }
         },
         {
-            targets: 6,
+            targets: 7,
             data: 'location.name',
         },
         {
-            targets: 7,
-            data: null,
+            targets: 8,
+            data: ``,
             render: (data, type, row, meta) => {
-                return `<a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Прикрепить к заявке"><i class="fa-solid fa-circle-plus"></i></a>`;
+                return ``;
             }
         }]
 });
+
+//Добавление к ТС
+$("#create-btn").click(function () {
+    axios.post("/Set/CreateCompoundSet", {
+        setId: +$("#SetId").val(),
+        technicalEquipmentIds: tabletechnicalEquipments.rows({ selected: true }).data().map(x => x.id).toArray()
+    }).then(function () {
+        location.reload()
+    })
+})
+
 
 //Добавление комментария
 $("#create-btn").click(function () {

@@ -5,6 +5,8 @@ using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using AccountingTM.Domain;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace AccountingTM.Controllers.Directories
 {
@@ -62,6 +64,28 @@ namespace AccountingTM.Controllers.Directories
                 }
             }
             _context.Models.Add(input);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] Model input)
+        {
+            var model = _context.Models.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (model == null)
+            {
+                throw new Exception($"Модель с id = {input.Id} не найдена");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                if (_context.Models.Any(x => x.Name == input.Name && x.Id != model.Id))
+                {
+                    throw new UserFriendlyException("Модель с таким названием уже существует!");
+                }
+            }
+
+            _context.Models.Update(input);
             _context.SaveChanges();
             return Ok();
         }
