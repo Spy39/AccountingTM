@@ -13,11 +13,12 @@
 		</div>
 		<div class="col-3">
 			<div class="input-group mb-3">
-				<input type="search" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
-				<button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
+				<input type="search" id="search-input-brand" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
+				<button class="btn btn-outline-secondary" type="submit" id="button-search-brand"><i class="fas fa-search"></i></button>
 			</div>
 		</div>
 	</div>
+
 	<div class="row">
 		<table id="brands" class="table table-bordered align-middle table-hover table-striped" style="width:100%">
 			<thead class="table">
@@ -55,6 +56,33 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
 				<button id="createBrandBtn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="editBrand">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Изменение бренда технического средства</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input id="editBrandId" class="d-none" hidden />
+
+				<div class="form-floating  mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="editNameBrand"
+						   placeholder="Наименование бренда технического средства" />
+					<label for="floatingInput">Наименование бренда технического средства</label>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="editBrandBtn" class="btn btn-primary">Сохранить</button>
 			</div>
 		</div>
 	</div>

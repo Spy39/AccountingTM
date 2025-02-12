@@ -1,4 +1,6 @@
-﻿using AccountingTM.Models;
+﻿using AccountingTM.Domain.Enums;
+using AccountingTM.Models;
+using EnumsNET;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AccountingTM.Domain.Models.Tables
@@ -14,7 +16,7 @@ namespace AccountingTM.Domain.Models.Tables
         /// <summary>Дата</summary>
         public DateTime Date { get; set; }
         /// <summary>Состояние изделия</summary>
-        public string ProductCondition { get; set; }
+        public ConditionEquipment ProductCondition { get; set; }
         /// <summary>Основание</summary>
         public string Base { get; set; }
         /// <summary>Предприятие и ФИО сдавшего</summary>
@@ -23,5 +25,7 @@ namespace AccountingTM.Domain.Models.Tables
         public string Accepted { get; set; }
         /// <summary>Примечание</summary>
         public string? Note { get; set; }
+        [NotMapped]
+        public string ProductConditionText => ProductCondition.AsString(EnumFormat.Description);
     }
 }

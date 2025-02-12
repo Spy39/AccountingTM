@@ -66,6 +66,28 @@ namespace AccountingTM.Controllers.Directories
             return Ok();
         }
 
+        [HttpPost]
+        public IActionResult Update([FromBody] Brand input)
+        {
+            var brand = _context.Brands.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (brand == null)
+            {
+                throw new Exception($"Бренд с id = {input.Id} не найден");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                if (_context.Brands.Any(x => x.Name == input.Name && x.Id != brand.Id))
+                {
+                    throw new UserFriendlyException("Бренд с таким названием уже существует!");
+                }
+            }
+            
+            _context.Brands.Update(input);
+            _context.SaveChanges();
+            return Ok();
+        }
+
         [HttpDelete]
         public IActionResult Delete(int id)
         {

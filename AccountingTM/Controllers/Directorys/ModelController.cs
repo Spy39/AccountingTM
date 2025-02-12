@@ -28,7 +28,8 @@ namespace AccountingTM.Controllers.Directories
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
-                query = query.Where(x => x.Name.ToLower().Contains(keyword));
+                query = query.Where(x => x.Name.ToLower().Contains(keyword) ||
+                                         x.Description.ToLower().Contains(keyword));
             }
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();

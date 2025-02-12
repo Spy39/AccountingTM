@@ -1,5 +1,6 @@
 ﻿using Accounting.Data;
 using AccountingTM.Domain.Models;
+using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.Set;
 using AccountingTM.Dto.TechnicalEquipment;
@@ -143,6 +144,28 @@ namespace AccountingTM.Controllers
             }
 
             return Ok(entity);
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] Set input)
+        {
+            var set = _context.Sets.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (set == null)
+            {
+                throw new Exception($"Бренд с id = {input.Id} не найден");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                //if (_context.Sets.Any(x => x.Name == input.Name && x.Id != set.Id))
+                //{
+                //    throw new UserFriendlyException("Бренд с таким названием уже существует!");
+                //}
+            }
+
+            _context.Sets.Update(set);
+            _context.SaveChanges();
+            return Ok();
         }
 
         [HttpDelete]

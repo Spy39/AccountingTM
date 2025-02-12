@@ -4,6 +4,7 @@ using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers.Directories
 {
@@ -56,6 +57,28 @@ namespace AccountingTM.Controllers.Directories
                 }
             }
             _context.Categories.Add(input);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] Category input)
+        {
+            var category = _context.Categories.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (category == null)
+            {
+                throw new Exception($"Категория с id = {input.Id} не найдена");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                if (_context.Categories.Any(x => x.Name == input.Name && x.Id != category.Id))
+                {
+                    throw new UserFriendlyException("Категория с таким названием уже существует!");
+                }
+            }
+
+            _context.Categories.Update(input);
             _context.SaveChanges();
             return Ok();
         }

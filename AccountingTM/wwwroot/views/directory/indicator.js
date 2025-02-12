@@ -6,13 +6,14 @@ const initTableIndicators = () => {
         serverSide: true,
         bAutoWidth: false,
         aoColumns: [
-            { sWidth: '82%' },
-            { sWidth: '8%' }
+            { sWidth: '80%' },
+            { sWidth: '10%' }
         ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
+            filter.searchQuery = $("#search-input-indicator").val()
             axios.get('/Indicator/GetAll', {
                 params: filter
             })
@@ -24,7 +25,6 @@ const initTableIndicators = () => {
                         data: result.data.items
                     });
                 })
-
         },
         buttons: [
             {
@@ -49,14 +49,23 @@ const initTableIndicators = () => {
             }]
     });
 
+    $("#button-search-indicator").click(function () {
+        tableIndicators.ajax.reload()
+    })
+
     //Добавление
     $("#createIndicatorBtn").click(function () {
         axios.post("Indicator/Create", {
             name: $("#indicator").val(),
         }).then(function () {
-            location.reload()
+            tableIndicators.draw(false)
+            $("#createIndicator").modal("hide");
         })
     })
+
+    $("#createIndicator").on('hidden.bs.modal', () => {
+        $("#indicator").val("");
+    });
 
     //Редактирование
     $(document).on("click", ".edit.indicator", function () {
@@ -67,10 +76,26 @@ const initTableIndicators = () => {
             }
         }).then(function (response) {
             const indicator = response.data;
-            $("#indicator").val(indicator.name);
-            $("#createIndicator").modal("show");
+            $("#editNameIndicator").val(indicator.name);
+            $("#editIndicatorId").val(indicator.id);
+            $("#editIndicator").modal("show");
         })
     })
+
+    $("#editIndicatorBtn").click(function () {
+        axios.post("Indicator/Update", {
+            id: +$("#editIndicatorId").val(),
+            name: $("#editNameIndicator").val(),
+        }).then(function () {
+            tableIndicators.draw(false)
+            $("#editIndicator").modal("hide");
+        })
+    })
+
+    $("#editIndicator").on('hidden.bs.modal', () => {
+        $("#editNameIndicator").val("");
+        $("#editIndicatorId").val("");
+    });
 
     //Удаление
     $(document).on("click", ".delete.indicator", function () {
@@ -95,7 +120,6 @@ const initTableIndicators = () => {
             }
         });
     })
-
 }
 
 export default initTableIndicators;

@@ -12,8 +12,8 @@
 		</div>
 		<div class="col-3">
 			<div class="input-group mb-3">
-				<input type="search" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
-				<button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
+				<input type="search" id="search-input-employee" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
+				<button class="btn btn-outline-secondary" type="submit" id="button-search-employee"><i class="fas fa-search"></i></button>
 			</div>
 		</div>
 	</div>
@@ -79,6 +79,57 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
 				<button id="createEmployeeBtn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="editEmployee">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Изменение данных сотрудника</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<!-- Скрытый идентификатор сотрудника -->
+				<input id="editEmployeeId" type="hidden" class="d-none" />
+
+				<div class="form-floating mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="editLastName"
+						   placeholder="Фамилия" />
+					<label for="editLastName">Фамилия</label>
+				</div>
+
+				<div class="form-floating mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="editFirstName"
+						   placeholder="Имя" />
+					<label for="editFirstName">Имя</label>
+				</div>
+
+				<div class="form-floating mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="editFatherName"
+						   placeholder="Отчество" />
+					<label for="editFatherName">Отчество</label>
+				</div>
+
+				<div class="form-floating mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="editPosition"
+						   placeholder="Должность" />
+					<label for="editPosition">Должность</label>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="editEmployeeBtn" class="btn btn-primary">Сохранить</button>
 			</div>
 		</div>
 	</div>

@@ -8,11 +8,18 @@ import initTableConsumables from "./typeConsumable.js"
 import initTableTypes from "./typeEquipment.js"
 import initTableUnits from "./unit.js"
 
-$("#nav-page .nav-link").click(function () {
-    const url = $(this).data("url")
+
+$("#nav-page .nav-link").on("click", function () {
+    $("#nav-page .nav-link")
+        .removeClass("active bg-secondary  text-white border-start border-3 border-warning");
+    
+    $(this).addClass("active bg-secondary  text-white border-start border-3 border-warning");
+
+    // Получаем URL из data-атрибута ссылки и загружаем содержимое
+    const url = $(this).data("url");
     axios.get(url)
         .then(function (result) {
-            $("#page-content").html(result.data)
+            $("#page-content").html(result.data);
 
             //Типы технических средств
             initTableTypes();
@@ -41,7 +48,9 @@ $("#nav-page .nav-link").click(function () {
             //Категории заявок
             initTableCategories();
         })
-
-})
+        .catch(function (error) {
+            console.error("Ошибка при загрузке страницы:", error);
+        });
+});
 
 $('[data-url="Directory/TypeEquipment"]').trigger("click")

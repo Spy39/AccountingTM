@@ -6,13 +6,14 @@ const initTableBrands = () => {
         serverSide: true,
         bAutoWidth: false,
         aoColumns: [
-            { sWidth: '82%' },
-            { sWidth: '8%' }
+            { sWidth: '80%' },
+            { sWidth: '10%' }
         ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
+            filter.searchQuery = $("#search-input-brand").val()
             axios.get('/Brand/GetAll', {
                 params: filter
             })
@@ -24,7 +25,6 @@ const initTableBrands = () => {
                         data: result.data.items
                     });
                 })
-
         },
         buttons: [
             {
@@ -49,14 +49,23 @@ const initTableBrands = () => {
             }]
     });
 
+    $("#button-search-brand").click(function () {
+        tableBrands.ajax.reload()
+    })
+
     //Добавление
     $("#createBrandBtn").click(function () {
         axios.post("Brand/Create", {
             name: $("#brand").val(),
         }).then(function () {
-            location.reload()
+            tableBrands.draw(false)
+            $("#createBrand").modal("hide");
         })
     })
+
+    $("#createBrand").on('hidden.bs.modal', () => {
+        $("#brand").val("");
+    });
 
     //Редактирование
     $(document).on("click", ".edit.brand", function () {
@@ -67,10 +76,26 @@ const initTableBrands = () => {
             }
         }).then(function (response) {
             const brand = response.data;
-            $("#brand").val(brand.name);
-            $("#createBrand").modal("show");
+            $("#editNameBrand").val(brand.name);
+            $("#editBrandId").val(brand.id);
+            $("#editBrand").modal("show");
         })
     })
+
+    $("#editBrandBtn").click(function () {
+        axios.post("Brand/Update", {
+            id: +$("#editBrandId").val(),
+            name: $("#editNameBrand").val(),
+        }).then(function () {
+            tableBrands.draw(false)
+            $("#editBrand").modal("hide");
+        })
+    })
+
+    $("#editBrand").on('hidden.bs.modal', () => {
+        $("#editNameBrand").val("");
+        $("#editBrandId").val("");
+    });
 
     //Удаление
     $(document).on("click", ".delete.brand", function () {
@@ -95,8 +120,6 @@ const initTableBrands = () => {
             }
         });
     })
-
-
 }
 
 export default initTableBrands;

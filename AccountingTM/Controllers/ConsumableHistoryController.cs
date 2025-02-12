@@ -1,7 +1,9 @@
 ﻿using Accounting.Data;
 using AccountingTM.Domain.Models;
+using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.TechnicalEquipment;
+using AccountingTM.Exceptions;
 using AccountingTM.ViewModels.Consumable;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +46,28 @@ namespace AccountingTM.Controllers
             }
 
             return Ok(entity);
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] Unit input)
+        {
+            var consumable = _context.Consumables.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (consumable == null)
+            {
+                throw new Exception($"Единица измерения с id = {input.Id} не найдена");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                //if (_context.Consumables.Any(x => x.Name == input.Name && x.Id != consumable.Id))
+                //{
+                //    throw new UserFriendlyException("Единица измерения с таким названием уже существует!");
+                //}
+            }
+
+            _context.Consumables.Update(consumable);
+            _context.SaveChanges();
+            return Ok();
         }
 
         //Информация о расходном материале

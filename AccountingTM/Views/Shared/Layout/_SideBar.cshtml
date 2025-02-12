@@ -75,21 +75,40 @@
                     </a>
                 </li>
                 <li class="nav-line"></li>
+
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Administration" asp-action="Index">
-                        <i class="nav-icon fa-solid fa-user-tie"></i>
+                    <a href="#" class="nav-link">
+                        <i class="fa-solid fa-screwdriver-wrench"></i></i>
                         <p>
-                            Администрирование
+                            <ya-tr-span data-index="12-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Forms " data-translation=" Администрирование " data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Администрирование   </ya-tr-span><i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Directory" asp-action="Index">
-                        <i class="nav-icon fa-solid fa-folder-tree"></i>
-                        <p>
-                            Справочники
-                        </p>
-                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">
+                                <i class="nav-icon fa-solid fa-user-tie"></i>
+                                <p>
+                                    Пользователи
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Roles" asp-action="Index">
+                                <i class="nav-icon fa-solid fa-lock"></i>
+                                <p>
+                                    Права
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Directory" asp-action="Index">
+                                <i class="nav-icon fa-solid fa-folder-tree"></i>
+                                <p>
+                                    Справочники
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </nav>

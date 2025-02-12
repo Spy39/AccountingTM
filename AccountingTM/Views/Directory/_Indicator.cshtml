@@ -12,8 +12,8 @@
 		</div>
 		<div class="col-3">
 			<div class="input-group mb-3">
-				<input type="search" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
-				<button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="fas fa-search"></i></button>
+				<input type="search" id="search-input-indicator" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
+				<button class="btn btn-outline-secondary" type="submit" id="button-search-indicator"><i class="fas fa-search"></i></button>
 			</div>
 		</div>
 	</div>
@@ -53,6 +53,34 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
 				<button id="createIndicatorBtn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" tabindex="-1" id="editIndicator">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Изменение показателя характеристики технического средства</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<input id="editIndicatorId" class="d-none" hidden />
+
+				<div class="form-floating  mb-2">
+					<input type="text"
+						   class="form-control"
+						   id="editNameIndicator"
+						   name="indicator"
+						   placeholder="Наименование показателя" />
+					<label for="floatingInput">Наименование показателя</label>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="editIndicatorBtn" class="btn btn-primary">Сохранить</button>
 			</div>
 		</div>
 	</div>

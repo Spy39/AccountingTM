@@ -6,13 +6,14 @@ const initTableLocations = () => {
         serverSide: true,
         bAutoWidth: false,
         aoColumns: [
-            { sWidth: '82%' },
-            { sWidth: '8%' }
+            { sWidth: '80%' },
+            { sWidth: '10%' }
         ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
+            filter.searchQuery = $("#search-input-location").val()
             axios.get('/Location/GetAll', {
                 params: filter
             })
@@ -24,7 +25,6 @@ const initTableLocations = () => {
                         data: result.data.items
                     });
                 })
-
         },
         buttons: [
             {
@@ -49,14 +49,23 @@ const initTableLocations = () => {
             }]
     });
 
+    $("#button-search-location").click(function () {
+        tableLocations.ajax.reload()
+    })
+
     //Добавление
     $("#createLocationBtn").click(function () {
         axios.post("Location/Create", {
             name: $("#location").val(),
         }).then(function () {
-            location.reload()
+            tableLocations.draw(false)
+            $("#createLocation").modal("hide");
         })
     })
+
+    $("#createLocation").on('hidden.bs.modal', () => {
+        $("#location").val("");
+    });
 
     //Редактирование
     $(document).on("click", ".edit.location", function () {
@@ -67,10 +76,26 @@ const initTableLocations = () => {
             }
         }).then(function (response) {
             const location = response.data;
-            $("#location").val(location.name);
-            $("#createLocation").modal("show");
+            $("#editNameLocation").val(location.name);
+            $("#editLocationId").val(location.id);
+            $("#editLocation").modal("show");
         })
     })
+
+    $("#editLocationBtn").click(function () {
+        axios.post("Location/Update", {
+            id: +$("#editLocationId").val(),
+            name: $("#editNameLocation").val(),
+        }).then(function () {
+            tableLocations.draw(false)
+            $("#editLocation").modal("hide");
+        })
+    })
+
+    $("#editLocation").on('hidden.bs.modal', () => {
+        $("#editNameLocation").val("");
+        $("#editLocationId").val("");
+    });
 
     //Удаление
     $(document).on("click", ".delete.location", function () {
@@ -95,7 +120,6 @@ const initTableLocations = () => {
             }
         });
     })
-
 }
 
 export default initTableLocations;

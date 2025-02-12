@@ -4,10 +4,17 @@ const initTableModels = () => {
     let tableModels = new DataTable('#models', {
         paging: true,
         serverSide: true,
+        bAutoWidth: false,
+        aoColumns: [
+            { sWidth: '20%' },
+            { sWidth: '70%' },
+            { sWidth: '10%' }
+        ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
+            filter.searchQuery = $("#search-input-model").val()
             axios.get('/Model/GetAll', {
                 params: filter
             })
@@ -19,7 +26,6 @@ const initTableModels = () => {
                         data: result.data.items
                     });
                 })
-
         },
         buttons: [
             {
@@ -48,15 +54,25 @@ const initTableModels = () => {
             }]
     });
 
+    $("#button-search-model").click(function () {
+        tableModels.ajax.reload()
+    })
+
     //Добавление
     $("#createModelBtn").click(function () {
         axios.post("Model/Create", {
             name: $("#model").val(),
             description: $("#modelDescription").val(),
         }).then(function () {
-            location.reload()
+            tableModels.draw(false)
+            $("#createModel").modal("hide");
         })
     })
+
+    $("#createModel").on('hidden.bs.modal', () => {
+        $("#model").val("");
+        $("#modelDescription").val("");
+    });
 
     //Редактирование
     $(document).on("click", ".edit.model", function () {
@@ -80,9 +96,16 @@ const initTableModels = () => {
             name: $("#editNameModel").val(),
             description: $("#editModelDescription").val(),
         }).then(function () {
-            location.reload()
+            tableModels.draw(false)
+            $("#editModel").modal("hide");
         })
     })
+
+    $("#editModel").on('hidden.bs.modal', () => {
+        $("#editNameModel").val("");
+        $("#editModelDescription").val("");
+        $("#editModelId").val("");
+    });
 
     //Удаление
     $(document).on("click", ".delete.model", function () {
@@ -107,7 +130,6 @@ const initTableModels = () => {
             }
         });
     })
-
 }
 
 export default initTableModels;

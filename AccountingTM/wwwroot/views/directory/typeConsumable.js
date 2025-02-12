@@ -6,13 +6,14 @@ const initTableConsumables = () => {
         serverSide: true,
         bAutoWidth: false,
         aoColumns: [
-            { sWidth: '82%' },
-            { sWidth: '8%' }
+            { sWidth: '80%' },
+            { sWidth: '10%' }
         ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
+            filter.searchQuery = $("#search-input-typeConsumable").val()
             axios.get('/TypeConsumable/GetAll', {
                 params: filter
             })
@@ -48,16 +49,23 @@ const initTableConsumables = () => {
             }]
     });
 
+    $("#button-search-typeConsumable").click(function () {
+        tableTypeConsumables.ajax.reload()
+    })
+
     //Добавление
     $("#createTypeConsumableBtn").click(function () {
-
         axios.post("TypeConsumable/Create", {
             name: $("#typeConsumable").val(),
-
         }).then(function () {
-            location.reload()
+            tableTypeConsumables.draw(false)
+            $("#createTypeConsumable").modal("hide");
         })
     })
+
+    $("#createTypeConsumable").on('hidden.bs.modal', () => {
+        $("#typeConsumable").val("");
+    });
 
     //Редактирование
     $(document).on("click", ".edit.typeConsumable", function () {
@@ -68,10 +76,26 @@ const initTableConsumables = () => {
             }
         }).then(function (response) {
             const typeConsumable = response.data;
-            $("#typeConsumable").val(typeConsumable.name);
-            $("#createTypeConsumable").modal("show");
+            $("#editNameTypeConsumable").val(typeConsumable.name);
+            $("#editTypeConsumableId").val(typeConsumable.id);
+            $("#editTypeConsumable").modal("show");
         })
     })
+
+    $("#editTypeConsumableBtn").click(function () {
+        axios.post("TypeConsumable/Update", {
+            id: +$("#editTypeConsumableId").val(),
+            name: $("#editNameTypeConsumable").val(),
+        }).then(function () {
+            tableTypeConsumables.draw(false)
+            $("#editTypeConsumable").modal("hide");
+        })
+    })
+
+    $("#editTypeConsumable").on('hidden.bs.modal', () => {
+        $("#editNameTypeConsumable").val("");
+        $("#editTypeConsumableId").val("");
+    });
 
     //Удаление
     $(document).on("click", ".delete.typeConsumable", function () {
@@ -96,7 +120,6 @@ const initTableConsumables = () => {
             }
         });
     })
-
 }
 
 export default initTableConsumables;

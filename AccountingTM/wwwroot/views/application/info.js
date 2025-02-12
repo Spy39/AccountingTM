@@ -112,40 +112,124 @@ $("#create-btn").click(function () {
 })
 
 
-//Добавление комментария
-$("#create-btn").click(function () {
-    axios.post("Application/Create", {
-        categoryId: +$("#category").val(),
-        subject: $("#subject").val(),
-        description: $("#description").val(),
-        author: $("#author").val(),
-        locationId: +$("#location").val(),
-        priority: +$("#priority").val(),
-    }).then(function () {
-        location.reload()
-    })
-})
+////Добавление комментария
+//$("#create-btn").click(function () {
+//    axios.post("Application/Create", {
+//        categoryId: +$("#category").val(),
+//        subject: $("#subject").val(),
+//        description: $("#description").val(),
+//        author: $("#author").val(),
+//        locationId: +$("#location").val(),
+//        priority: +$("#priority").val(),
+//    }).then(function () {
+//        location.reload()
+//    })
+//})
 
-//Удаление комментария
-$(document).on("click", ".delete", function () {
-    let name = this.dataset.name;
-    Swal.fire({
-        title: "Вы уверены?",
-        text: `Комментарий  будет удален!`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Да",
-        cancelButtonText: "Нет",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            let id = this.dataset.id;
-            axios.delete("Application/Delete?id=" + id).then(function () {
-                tableClients.draw(false)
-                $(".tooltip").removeClass("show")
-                toastr.success('Комментарий успешно удален!')
+
+
+////Удаление комментария
+//$(document).on("click", ".delete", function () {
+//    let name = this.dataset.name;
+//    Swal.fire({
+//        title: "Вы уверены?",
+//        text: `Комментарий  будет удален!`,
+//        icon: "warning",
+//        showCancelButton: true,
+//        confirmButtonColor: "#3085d6",
+//        cancelButtonColor: "#d33",
+//        confirmButtonText: "Да",
+//        cancelButtonText: "Нет",
+//    }).then((result) => {
+//        if (result.isConfirmed) {
+//            let id = this.dataset.id;
+//            axios.delete("Application/Delete?id=" + id).then(function () {
+//                tableClients.draw(false)
+//                $(".tooltip").removeClass("show")
+//                toastr.success('Комментарий успешно удален!')
+//            })
+//        }
+//    });
+//})
+
+document.addEventListener('DOMContentLoaded', function () {
+    const applicationId = +$("#application").val(); // Убедитесь, что ApplicationId доступен в модели
+    const commentsList = document.getElementById('comments-list');
+    const commentInput = document.getElementById('comment');
+    const fileInput = document.getElementById('file');
+    const addCommentBtn = document.getElementById('add-comment-btn');
+
+    // Функция для загрузки комментариев
+    function loadComments() {
+        fetch(`/Application/GetComments?applicationId=${applicationId}`)
+            .then(response => response.json())
+            .then(comments => {
+                commentsList.innerHTML = comments.map(comment => `
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <p>${comment.text}</p>
+                            <small>${new Date(comment.date).toLocaleString()}</small>
+                            ${comment.pathToFile ? `<a href="${comment.pathToFile}" target="_blank">Скачать файл</a>` : ''}
+                            <button class="btn btn-danger btn-sm delete-comment" data-id="${comment.id}">Удалить</button>
+                        </div>
+                    </div>
+                `).join('');
+            });
+    }
+
+    // Функция для добавления комментария
+    addCommentBtn.addEventListener('click', function () {
+        const commentText = commentInput.value.trim();
+        const file = fileInput.files[0];
+
+        if (commentText) {
+            const formData = new FormData();
+            formData.append('ApplicationId', applicationId);
+            formData.append('Text', commentText);
+            if (file) {
+                formData.append('File', file);
+            }
+
+            fetch('/Application/AddComment', {
+                method: 'POST',
+                body: formData
             })
+                .then(response => response.json())
+                .then(comment => {
+                    commentInput.value = '';
+                    fileInput.value = '';
+                    loadComments();
+                });
         }
     });
-})
+
+    // Функция для удаления комментария
+    commentsList.addEventListener('click', function (e) {
+        if (e.target.classList.contains('delete-comment')) {
+            const commentId = e.target.dataset.id;
+            Swal.fire({
+                title: "Вы уверены?",
+                text: `Комментарий будет удален!`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Да",
+                cancelButtonText: "Нет",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/Application/DeleteComment?id=${commentId}`, {
+                        method: 'DELETE'
+                    })
+                        .then(() => {
+                            loadComments();
+                            toastr.success('Комментарий успешно удален!');
+                        });
+                }
+            });
+        }
+    });
+
+    // Загрузка комментариев при открытии страницы
+    loadComments();
+});

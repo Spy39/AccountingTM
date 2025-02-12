@@ -195,9 +195,11 @@ namespace Accounting.Controllers
 
                             var garantTime = row.Cell(11).GetValue<int>();
                             var state = row.Cell(12).GetValue<string>();
-                            var model = _context.Models.FirstOrDefault(x => x.Name == row.Cell(3).GetValue<string>());
+                            var modelName = row.Cell(3).GetValue<string>();
+                            var model = _context.Models.FirstOrDefault(x => x.Name == modelName);
                             if(model == null)
                             {
+                                model = new Model { Name = modelName };
                                 _context.Models.Add(model);
                                 _context.SaveChanges();
                             }

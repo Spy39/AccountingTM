@@ -37,12 +37,10 @@
       "destination": "wwwroot/lib/moment.js/"
     },
     {
-      "provider": "cdnjs",
       "library": "admin-lte@3.1.0",
       "destination": "wwwroot/lib/admin-lte/"
     },
     {
-      "provider": "cdnjs",
       "library": "Chart.js@4.4.1",
       "destination": "wwwroot/lib/Chart.js/"
     },
@@ -52,14 +50,17 @@
       "destination": "wwwroot/lib/sweetalert2/"
     },
     {
-      "provider": "cdnjs",
       "library": "select2@4.0.13",
       "destination": "wwwroot/lib/select2/"
     },
     {
-      "provider": "cdnjs",
       "library": "dayjs@1.11.13",
       "destination": "wwwroot/lib/dayjs/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "@widgetjs/tree@1.8.3",
+      "destination": "wwwroot/lib/widgetjs/tree/"
     }
   ]
 }

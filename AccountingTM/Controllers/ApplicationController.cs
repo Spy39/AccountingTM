@@ -132,5 +132,81 @@ namespace AccountingTM.Controllers
             };
             return View(model);
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> AddComment([FromBody] CommentDto input)
+        //{
+        //    var comment = new CommentsOnTheApplication
+        //    {
+        //        ApplicationId = input.ApplicationId,
+        //        Text = input.Text,
+        //        PathToFile = input.PathToFile, // Если файл прикрепляется
+        //        Date = DateTime.Now
+        //    };
+
+        //    _context.CommentsOnTheApplications.Add(comment);
+        //    await _context.SaveChangesAsync();
+
+        //    return Ok(comment);
+        //}
+
+        [HttpGet]
+        public async Task<IActionResult> GetComments(int applicationId)
+        {
+            var comments = await _context.CommentsOnTheApplications
+                .Where(c => c.ApplicationId == applicationId)
+                .OrderByDescending(c => c.Date)
+                .ToListAsync();
+
+            return Ok(comments);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteComment(int id)
+        {
+            var comment = await _context.CommentsOnTheApplications.FindAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+
+            _context.CommentsOnTheApplications.Remove(comment);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddComment([FromForm] CommentDto input, IFormFile file)
+        {
+            var comment = new CommentsOnTheApplication
+            {
+                ApplicationId = input.ApplicationId,
+                Text = input.Text,
+                Date = DateTime.Now
+            };
+
+            if (file != null)
+            {
+                var uploadsDir = Path.Combine("wwwroot", "uploads");
+                if (!Directory.Exists(uploadsDir))
+                {
+                    Directory.CreateDirectory(uploadsDir);
+                }
+
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                var filePath = Path.Combine("wwwroot/uploads", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(stream);
+                }
+                comment.PathToFile = $"/uploads/{fileName}";
+            }
+
+            _context.CommentsOnTheApplications.Add(comment);
+            await _context.SaveChangesAsync();
+
+            return Ok(comment);
+        }
     }
 }

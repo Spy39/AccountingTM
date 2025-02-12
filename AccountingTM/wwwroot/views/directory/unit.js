@@ -6,13 +6,14 @@ const initTableUnits = () => {
         serverSide: true,
         bAutoWidth: false,
         aoColumns: [
-            { sWidth: '82%' },
-            { sWidth: '8%' }
+            { sWidth: '80%' },
+            { sWidth: '10%' }
         ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
+            filter.searchQuery = $("#search-input-unit").val()
             axios.get('/Unit/GetAll', {
                 params: filter
             })
@@ -24,7 +25,6 @@ const initTableUnits = () => {
                         data: result.data.items
                     });
                 })
-
         },
         buttons: [
             {
@@ -49,14 +49,23 @@ const initTableUnits = () => {
             }]
     });
 
+    $("#button-search-unit").click(function () {
+        tableUnits.ajax.reload()
+    })
+
     //Добавление
     $("#createUnitBtn").click(function () {
         axios.post("Unit/Create", {
             name: $("#unit").val(),
         }).then(function () {
-            location.reload()
+            tableUnits.draw(false)
+            $("#createUnits").modal("hide");
         })
     })
+
+    $("#createUnits").on('hidden.bs.modal', () => {
+        $("#unit").val("");
+    });
 
     //Редактирование
     $(document).on("click", ".edit.unit", function () {
@@ -67,10 +76,26 @@ const initTableUnits = () => {
             }
         }).then(function (response) {
             const unit = response.data;
-            $("#unit").val(unit.name);
-            $("#createUnits").modal("show");
+            $("#editNameUnit").val(unit.name);
+            $("#editUnitId").val(unit.id);
+            $("#editUnit").modal("show");
         })
     })
+
+    $("#editUnitBtn").click(function () {
+        axios.post("Unit/Update", {
+            id: +$("#editUnitId").val(),
+            name: $("#editNameUnit").val(),
+        }).then(function () {
+            tableUnits.draw(false)
+            $("#editUnit").modal("hide");
+        })
+    })
+
+    $("#editUnit").on('hidden.bs.modal', () => {
+        $("#editNameUnit").val("");
+        $("#editUnitId").val("");
+    });
 
     //Удаление
     $(document).on("click", ".delete.unit", function () {
@@ -95,7 +120,6 @@ const initTableUnits = () => {
             }
         });
     })
-
 }
 
 export default initTableUnits;

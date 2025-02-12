@@ -4,6 +4,7 @@ using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers.Directories
 {
@@ -56,6 +57,28 @@ namespace AccountingTM.Controllers.Directories
                 }
             }
             _context.TypeEquipments.Add(input);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] TypeEquipment input)
+        {
+            var typeEquipment = _context.TypeEquipments.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (typeEquipment == null)
+            {
+                throw new Exception($"Тип технического средства с id = {input.Id} не найден");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                if (_context.TypeEquipments.Any(x => x.Name == input.Name && x.Id != typeEquipment.Id))
+                {
+                    throw new UserFriendlyException("Тип технического средства с таким названием уже существует!");
+                }
+            }
+
+            _context.TypeEquipments.Update(input);
             _context.SaveChanges();
             return Ok();
         }

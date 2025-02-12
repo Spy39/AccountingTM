@@ -46,16 +46,7 @@ let tableReceptionAndTransmissions = new DataTable('#receptionAndTransmissionTab
     },
     {
         targets: 1,
-        data: 'state',
-        render: (data, type, row, meta) => {
-            switch (data) {
-                case 0: return "Исправно";
-                case 1: return "Неисправно";
-                case 2: return "Работоспособно";
-                case 3: return "Неработоспособно";
-            }
-        }
-
+        data: 'productConditionText',
     },
     {
         targets: 2,
@@ -88,7 +79,7 @@ $("#createReceptionAndTransmissionBtn").click(function () {
     axios.post("/TechnicalEquipmentInfo/CreateReceptionAndTransmission", {
         technicalEquipmentId: +$("#technicalEquipmentId").val(),
         date: moment($("#dateReceptionAndTransmission").val(), 'DD.MM.YYYY').toDate(),
-        productCondition: $("#state").val(),
+        productCondition: +$("#state").val(),
         base: $("#base").val(),
         passed: $("#passed").val(),
         accepted: $("#accepted").val(),

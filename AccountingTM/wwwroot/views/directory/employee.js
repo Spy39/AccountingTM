@@ -9,13 +9,14 @@ const initTableEmployees = () => {
             { sWidth: '22%' },
             { sWidth: '22%' },
             { sWidth: '22%' },
-            { sWidth: '25%' },
-            { sWidth: '9%' }
+            { sWidth: '22%' },
+            { sWidth: '12%' }
         ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
+            filter.searchQuery = $("#search-input-employee").val()
             axios.get('/Employee/GetAll', {
                 params: filter
             })
@@ -27,7 +28,6 @@ const initTableEmployees = () => {
                         data: result.data.items
                     });
                 })
-
         },
         buttons: [
             {
@@ -64,6 +64,10 @@ const initTableEmployees = () => {
             }]
     });
 
+    $("#button-search-employee").click(function () {
+        tableEmployees.ajax.reload()
+    })
+
     //Добавление
     $("#createEmployeeBtn").click(function () {
         axios.post("Employee/Create", {
@@ -72,9 +76,17 @@ const initTableEmployees = () => {
             fatherName: $("#fatherName").val(),
             position: $("#position").val(),
         }).then(function () {
-            location.reload()
+            tableEmployees.draw(false)
+            $("#createEmployee").modal("hide");
         })
     })
+
+    $("#createEmployee").on('hidden.bs.modal', () => {
+        $("#lastName").val("");
+        $("#firstName").val("");
+        $("#fatherName").val("");
+        $("#position").val("");
+    });
 
     //Редактирование
     $(document).on("click", ".edit.employee", function () {
@@ -85,13 +97,35 @@ const initTableEmployees = () => {
             }
         }).then(function (response) {
             const employee = response.data;
-            $("#lastName").val(employee.lastName);
-            $("#firstName").val(employee.firstName);
-            $("#fatherName").val(employee.fatherName);
-            $("#position").val(employee.position);
-            $("#createEmployee").modal("show");
+            $("#editEmployeeId").val(employee.id);
+            $("#editLastName").val(employee.lastName);
+            $("#editFirstName").val(employee.firstName);
+            $("#editFatherName").val(employee.fatherName);
+            $("#editPosition").val(employee.position);
+            $("#editEmployee").modal("show");
         })
     })
+
+    $("#editEmployeeBtn").click(function () {
+        axios.post("Employee/Update", {
+            id: +$("#editEmployeeId").val(),
+            lastName: $("#editLastName").val(),
+            firstName: $("#editFirstName").val(),
+            fatherName: $("#editFatherName").val(),
+            position: $("#editPosition").val()
+        }).then(function () {
+            tableEmployees.draw(false)
+            $("#editEmployee").modal("hide");
+        })
+    })
+
+    $("#editEmployee").on('hidden.bs.modal', () => {
+        $("#editLastName").val("");
+        $("#editFirstName").val("");
+        $("#editFatherName").val("");
+        $("#editPosition").val("");
+        $("#editEmployeeId").val("");
+    });
 
     //Удаление
     $(document).on("click", ".delete.employee", function () {
@@ -116,7 +150,6 @@ const initTableEmployees = () => {
             }
         });
     })
-
 }
 
 export default initTableEmployees;

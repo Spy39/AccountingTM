@@ -46,7 +46,7 @@ let tableConservations = new DataTable('#conservationTable', {
     },
     {
         targets: 1,
-        data: 'nameOfWork',
+        data: 'nameOfWorks',
     },
     {
         targets: 2,
@@ -76,7 +76,7 @@ $("#createConservationBtn").click(function () {
         date: moment($("#dateConservation").val(), 'DD.MM.YYYY').toDate(),
         validity: moment($("#datePeriod").val(), 'DD.MM.YYYY').toDate(),
         nameOfWorks: $("#nameOfWork").val(),
-        employee: $("#employee").val()
+        employeeId: +$("#employee").val()  
     }).then(function () {
         tableConservations.draw(false);
         $("#addConservationModal").modal("hide")

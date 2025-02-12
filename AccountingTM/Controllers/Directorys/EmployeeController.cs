@@ -4,6 +4,7 @@ using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers.Directories
 {
@@ -50,7 +51,9 @@ namespace AccountingTM.Controllers.Directories
         [HttpPost]
         public IActionResult Create([FromBody] Employee input)
         {
-            if (!string.IsNullOrWhiteSpace(input.LastName) && !string.IsNullOrWhiteSpace(input.FirstName) && !string.IsNullOrWhiteSpace(input.FatherName))
+            if (!string.IsNullOrWhiteSpace(input.LastName) && 
+                !string.IsNullOrWhiteSpace(input.FirstName) && 
+                !string.IsNullOrWhiteSpace(input.FatherName))
             {
                 if (_context.Employees.Any(x => x.LastName == input.LastName) &&
                     _context.Employees.Any(x => x.FirstName == input.FirstName) &&
@@ -60,6 +63,32 @@ namespace AccountingTM.Controllers.Directories
                 }
             }
             _context.Employees.Add(input);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] Employee input)
+        {
+            var employee = _context.Employees.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (employee == null)
+            {
+                throw new Exception($"Сотрудник с id = {input.Id} не найден");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.LastName) && 
+                !string.IsNullOrWhiteSpace(input.FirstName) && 
+                !string.IsNullOrWhiteSpace(input.FatherName))
+            {
+                if (_context.Employees.Any(x => x.LastName == input.LastName && x.Id != employee.Id) &&
+                    _context.Employees.Any(x => x.FirstName == input.FirstName && x.Id != employee.Id) &&
+                    _context.Employees.Any(x => x.FatherName == input.FatherName && x.Id != employee.Id))
+                {
+                    throw new UserFriendlyException("Данный сотрудник уже существует!");
+                }
+            }
+
+            _context.Employees.Update(input);
             _context.SaveChanges();
             return Ok();
         }

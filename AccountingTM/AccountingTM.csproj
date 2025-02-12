@@ -9,7 +9,8 @@
   <ItemGroup>
     <Content Remove="Views\Account\UserPage.cshtml" />
     <Content Remove="Views\Shared\Layout\_Header.LeftNavbar.cshtml" />
-    <Content Remove="wwwroot\views\administration\index.js" />
+    <Content Remove="wwwroot\views\roles\index.js" />
+    <Content Remove="wwwroot\views\users\index.js" />
     <Content Remove="wwwroot\views\analysis\index.js" />
     <Content Remove="wwwroot\views\application\index.js" />
     <Content Remove="wwwroot\views\application\info.js" />
@@ -63,7 +64,8 @@
   <ItemGroup>
     <None Include="Views\Account\UserPage.cshtml" />
     <None Include="Views\Shared\Layout\_Header.LeftNavbar.cshtml" />
-    <None Include="wwwroot\views\administration\index.js" />
+    <None Include="wwwroot\views\roles\index.js" />
+    <None Include="wwwroot\views\users\index.js" />
     <None Include="wwwroot\views\analysis\index.js" />
     <None Include="wwwroot\views\application\info.js" />
     <None Include="wwwroot\views\application\index.js" />

@@ -4,6 +4,7 @@ using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers.Directories
 {
@@ -56,6 +57,28 @@ namespace AccountingTM.Controllers.Directories
                 }
             }
             _context.Locations.Add(input);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] Location input)
+        {
+            var location = _context.Locations.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (location == null)
+            {
+                throw new Exception($"Помещение с id = {input.Id} не найдено");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                if (_context.Locations.Any(x => x.Name == input.Name && x.Id != location.Id))
+                {
+                    throw new UserFriendlyException("Помещение с таким названием уже существует!");
+                }
+            }
+
+            _context.Locations.Update(input);
             _context.SaveChanges();
             return Ok();
         }

@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Users";
+    Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+
+@section LeftNavbar {
+    <ol class="breadcrumb float-sm-right m-0 bg-white">
+        <li class="breadcrumb-item">
+            <a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Users</li>
+    </ol>
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Пользователи</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="row">
+    <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded col-12">
+        <div class="row align-items-center mb-3">
+            <div class="col-md-8">
+                <h5>Пользователи</h5>
+            </div>
+            <div class="col-md-1 text-end">
+                <button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#createUser">
+                    <i class="fa-solid fa-plus"></i>
+                </button>
+            </div>
+            <div class="col-md-3">
+                <div class="input-group">
+                    <input id="search-input" type="search" class="form-control" placeholder="Поиск" aria-label="Search">
+                    <button class="btn btn-outline-secondary" id="search-btn" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <table id="administrationTable" class="table table-bordered align-middle table-hover table-striped w-100">
+                <thead>
+                    <tr>
+                        <th>Фамилия, имя, отчество</th>
+                        <th>Логин</th>
+                        <th>Пароль</th>
+                        <th>Права</th>
+                        <th>Сотрудник</th>
+                        <th>Действия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Данные заполняются через DataTables -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_AddUserModal.cshtml")
+
+@section Scripts {
+    <script src="~/views/users/index.js" asp-append-version="true"></script>
+}

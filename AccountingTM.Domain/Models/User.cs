@@ -6,6 +6,8 @@ namespace Accounting.Models
 {
     public class User : Entity
     {
+        public int RoleId { get; set; }
+        public Role Role { get; set; }
         public int? EmployeeId { get; set; }
         public Employee Employee { get; set; }
         public string Login { get; set; }

@@ -53,9 +53,14 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -176,7 +181,6 @@ namespace AccountingTM.Domain.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("PathToFile")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Text")
@@ -379,7 +383,6 @@ namespace AccountingTM.Domain.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -648,9 +651,8 @@ namespace AccountingTM.Domain.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("ProductCondition")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("ProductCondition")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TechnicalEquipmentId")
                         .HasColumnType("integer");
@@ -908,7 +910,15 @@ namespace AccountingTM.Domain.Migrations
                         .WithMany()
                         .HasForeignKey("EmployeeId");
 
+                    b.HasOne("AccountingTM.Domain.Models.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Employee");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Application", b =>

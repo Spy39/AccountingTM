@@ -4,6 +4,7 @@ using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers.Directories
 {
@@ -56,6 +57,28 @@ namespace AccountingTM.Controllers.Directories
                 }
             }
             _context.Units.Add(input);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] Unit input)
+        {
+            var unit = _context.Units.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (unit == null)
+            {
+                throw new Exception($"Единица измерения с id = {input.Id} не найдена");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                if (_context.Units.Any(x => x.Name == input.Name && x.Id != unit.Id))
+                {
+                    throw new UserFriendlyException("Единица измерения с таким названием уже существует!");
+                }
+            }
+
+            _context.Units.Update(input);
             _context.SaveChanges();
             return Ok();
         }

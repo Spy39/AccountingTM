@@ -6,13 +6,14 @@ const initTableCategories = () => {
         serverSide: true,
         bAutoWidth: false,
         aoColumns: [
-            { sWidth: '82%' },
-            { sWidth: '8%' }
+            { sWidth: '80%' },
+            { sWidth: '10%' }
         ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
+            filter.searchQuery = $("#search-input-category").val()
             axios.get('/Category/GetAll', {
                 params: filter
             })
@@ -24,7 +25,6 @@ const initTableCategories = () => {
                         data: result.data.items
                     });
                 })
-
         },
         buttons: [
             {
@@ -49,14 +49,23 @@ const initTableCategories = () => {
             }]
     });
 
+    $("#button-search-category").click(function () {
+        tableCategories.ajax.reload()
+    })
+
     //Добавление
     $("#createCategoryBtn").click(function () {
         axios.post("Category/Create", {
             name: $("#category").val(),
         }).then(function () {
-            location.reload()
+            tableCategories.draw(false)
+            $("#createCategory").modal("hide");
         })
     })
+
+    $("#createCategory").on('hidden.bs.modal', () => {
+        $("#category").val("");
+    });
 
     //Редактирование
     $(document).on("click", ".edit.category", function () {
@@ -67,10 +76,26 @@ const initTableCategories = () => {
             }
         }).then(function (response) {
             const category = response.data;
-            $("#category").val(category.name);
-            $("#createCategory").modal("show");
+            $("#editNameCategory").val(category.name);
+            $("#editCategoryId").val(category.id);
+            $("#editCategory").modal("show");
         })
     })
+
+    $("#editCategoryBtn").click(function () {
+        axios.post("Category/Update", {
+            id: +$("#editCategoryId").val(),
+            name: $("#editNameCategory").val(),
+        }).then(function () {
+            tableCategories.draw(false)
+            $("#editCategory").modal("hide");
+        })
+    })
+
+    $("#editCategory").on('hidden.bs.modal', () => {
+        $("#editNameCategory").val("");
+        $("#editCategoryId").val("");
+    });
 
     //Удаление
     $(document).on("click", ".delete.category", function () {
@@ -95,7 +120,6 @@ const initTableCategories = () => {
             }
         });
     })
-
 }
 
 export default initTableCategories;

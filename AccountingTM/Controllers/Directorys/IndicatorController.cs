@@ -4,6 +4,7 @@ using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers.Directories
 {
@@ -56,6 +57,28 @@ namespace AccountingTM.Controllers.Directories
                 }
             }
             _context.Indicators.Add(input);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] Indicator input)
+        {
+            var indicator = _context.Indicators.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (indicator == null)
+            {
+                throw new Exception($"Показатель с id = {input.Id} не найден");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                if (_context.Indicators.Any(x => x.Name == input.Name && x.Id != indicator.Id))
+                {
+                    throw new UserFriendlyException("Показатель с таким названием уже существует!");
+                }
+            }
+
+            _context.Indicators.Update(input);
             _context.SaveChanges();
             return Ok();
         }

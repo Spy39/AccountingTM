@@ -12,6 +12,6 @@ namespace AccountingTM.Domain.Models
         /// <summary>Текст комментария</summary>
         public string Text { get; set; }
         /// <summary>Путь до файла</summary>
-        public string PathToFile { get; set; }
+        public string? PathToFile { get; set; }
     }
 }

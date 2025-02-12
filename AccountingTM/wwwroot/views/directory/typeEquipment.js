@@ -6,13 +6,14 @@ const initTableTypes = () => {
         serverSide: true,
         bAutoWidth: false,
         aoColumns: [
-            { sWidth: '82%' },
-            { sWidth: '8%' }
+            { sWidth: '80%' },
+            { sWidth: '10%' }
         ],
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
             filter.skipCount = data.start;
+            filter.searchQuery = $("#search-input-typeEquipment").val()
             axios.get('/TypeEquipment/GetAll', {
                 params: filter
             })
@@ -42,20 +43,29 @@ const initTableTypes = () => {
                 targets: 1,
                 data: null,
                 render: (data, type, row, meta) => {
-                    return `<button class="btn btn-secondary typeEquipment brand" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-title="Редактировать"><i class="fa-solid fa-pen"></i></button>
+                    return `<button class="btn btn-secondary edit typeEquipment" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-title="Редактировать"><i class="fa-solid fa-pen"></i></button>
                             <button class="btn btn-danger delete typeEquipment" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
                 }
             }]
     });
+
+    $("#button-search-typeEquipment").click(function () {
+        tableTypes.ajax.reload()
+    })
 
     //Добавление
     $("#createTypeEquipmentBtn").click(function () {
         axios.post("TypeEquipment/Create", {
             name: $("#typeEquipment").val(),
         }).then(function () {
-            location.reload()
+            tableTypes.draw(false)
+            $("#createType").modal("hide");
         })
     })
+
+    $("#createType").on('hidden.bs.modal', () => {
+        $("#typeEquipment").val("");
+    });
 
     //Редактирование
     $(document).on("click", ".edit.typeEquipment", function () {
@@ -66,10 +76,26 @@ const initTableTypes = () => {
             }
         }).then(function (response) {
             const typeEquipment = response.data;
-            $("#typeEquipment").val(typeEquipment.name);
-            $("#createType").modal("show");
+            $("#editNameTypeEquipment").val(typeEquipment.name);
+            $("#editTypeEquipmentId").val(typeEquipment.id);
+            $("#editTypeEquipment").modal("show");
         })
     })
+
+    $("#editTypeEquipmentBtn").click(function () {
+        axios.post("TypeEquipment/Update", {
+            id: +$("#editTypeEquipmentId").val(),
+            name: $("#editNameTypeEquipment").val(),
+        }).then(function () {
+            tableTypes.draw(false)
+            $("#editTypeEquipment").modal("hide");
+        })
+    })
+
+    $("#editTypeEquipment").on('hidden.bs.modal', () => {
+        $("#editNameTypeEquipment").val("");
+        $("#editTypeEquipmentId").val("");
+    });
 
     //Удаление
     $(document).on("click", ".delete.typeEquipment", function () {
@@ -94,7 +120,6 @@ const initTableTypes = () => {
             }
         });
     })
-
 }
 
 export default initTableTypes;

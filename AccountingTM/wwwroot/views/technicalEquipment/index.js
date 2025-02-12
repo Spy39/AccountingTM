@@ -106,7 +106,7 @@
         axios.post("TechnicalEquipment/Create", {
             typeId: +$("#typeEquipment").val(),
             brandId: +$("#brand").val(),
-            model: $("#model").val(),
+            modelId: +$("#model").val(),
             serialNumber: $("#serialNumber").val(),
             inventoryNumber: $("#inventoryNumber").val(),
             state: +$("#state").val(),
@@ -222,6 +222,38 @@
             templateResult: (data) => data.name,
             templateSelection: (data) => data.name
         })
+
+    //Модель техниеского средства
+    $("#model").select2({
+        width: '100%',
+        allowClear: true,
+        placeholder: 'Наименование модели',
+        ajax: {
+            transport: (data, success, failure) => {
+                let params = data.data;
+                let maxResultCount = 30;
+
+                params.page = params.page || 1;
+
+                let filter = {};
+                filter.maxResultCount = maxResultCount;
+                filter.skipCount = (params.page - 1) * maxResultCount;
+                filter.keyword = params.term
+                axios.get("Model/GetAll", { params: filter }).then(function (result) {
+
+                    success({
+                        results: result.data.items,
+                        pagination: {
+                            more: (params.page * maxResultCount) < result.data.totalCount
+                        }
+                    });
+                });
+            },
+            cache: true
+        },
+        templateResult: (data) => data.name,
+        templateSelection: (data) => data.name
+    })
 
     //Помещение
     $("#location").select2({

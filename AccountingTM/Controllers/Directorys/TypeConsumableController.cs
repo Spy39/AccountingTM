@@ -4,6 +4,7 @@ using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers.Directories
 {
@@ -56,6 +57,28 @@ namespace AccountingTM.Controllers.Directories
                 }
             }
             _context.TypeConsumables.Add(input);
+            _context.SaveChanges();
+            return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] TypeConsumable input)
+        {
+            var typeConsumable = _context.TypeConsumables.AsNoTracking().FirstOrDefault(x => x.Id == input.Id);
+            if (typeConsumable == null)
+            {
+                throw new Exception($"Тип расходного материала с id = {input.Id} не найден");
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Name))
+            {
+                if (_context.TypeConsumables.Any(x => x.Name == input.Name && x.Id != typeConsumable.Id))
+                {
+                    throw new UserFriendlyException("Тип расходного материала с таким названием уже существует!");
+                }
+            }
+
+            _context.TypeConsumables.Update(input);
             _context.SaveChanges();
             return Ok();
         }
