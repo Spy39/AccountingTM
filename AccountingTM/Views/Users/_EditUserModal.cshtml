@@ -1,0 +1,51 @@
+﻿<div class="modal fade" tabindex="-1" id="editUser">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Редактирование пользователя</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Фамилия</label>
+					<input type="text" class="form-control" id="editLastName" name="lastName" placeholder="Фамилия" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Имя</label>
+					<input type="text" class="form-control" id="editFirstName" name="firstName" placeholder="Имя" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Отчество</label>
+					<input type="text" class="form-control" id="editFatherName" name="fatherName" placeholder="Отчество" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Логин</label>
+					<input type="text" class="form-control" id="editLogin" name="login" placeholder="Логин" />
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Пароль</label>
+					<input type="text" class="form-control" id="editPassword" name="password" placeholder="Пароль" />
+				</div>
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Роли</label>
+					<select id="editUserRoles"></select>
+				</div>
+
+				<div class="mb-1">
+					<label class="form-label" for="floatingInput">Сотрудник</label>
+					<select id="editEmployee"></select>
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+				<button id="editUserBtn" class="btn btn-primary">Добавить</button>
+			</div>
+		</div>
+	</div>
+</div>

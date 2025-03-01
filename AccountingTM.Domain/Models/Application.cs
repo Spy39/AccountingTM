@@ -28,6 +28,8 @@ namespace AccountingTM.Domain.Models
         public DateTime DateOfChange { get; set; }
         /// <summary>Срок истечения</summary>
         public DateTime? ExpirationDate { get; set; }
+        /// <summary>Дата закрытия заявки</summary>
+        public DateTime? DateOfClosing { get; set; }
         /// <summary>Тема</summary>
         public string Subject { get; set; }
         ///<summary>Описание</summary>

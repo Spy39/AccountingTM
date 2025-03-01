@@ -4,11 +4,7 @@ const initTableBrands = () => {
     let tableBrands = new DataTable('#brands', {
         paging: true,
         serverSide: true,
-        bAutoWidth: false,
-        aoColumns: [
-            { sWidth: '80%' },
-            { sWidth: '10%' }
-        ],
+        responsive: true,
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
@@ -42,6 +38,10 @@ const initTableBrands = () => {
             {
                 targets: 1,
                 data: null,
+                orderable: false,
+                searchable: false,
+                className: 'text-nowrap',
+                width: '1%',
                 render: (data, type, row, meta) => {
                     return `<button class="btn btn-secondary edit brand" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-title="Редактировать"><i class="fa-solid fa-pen"></i></button>
                             <button class="btn btn-danger delete brand" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;

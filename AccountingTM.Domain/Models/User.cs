@@ -1,6 +1,7 @@
 ﻿using AccountingTM.Domain;
 using AccountingTM.Domain.Models;
 using AccountingTM.Domain.Models.Directory;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Accounting.Models
 {
@@ -15,6 +16,8 @@ namespace Accounting.Models
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string FatherName { get; set; }
-        public ICollection<UserRole> UserRoles { get; set; }
+        
+        [NotMapped]
+        public string FullName => $"{LastName} {FirstName} {FatherName}";
     }
 }

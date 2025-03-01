@@ -4,11 +4,7 @@ const initTableConsumables = () => {
     let tableTypeConsumables = new DataTable('#typeConsumables', {
         paging: true,
         serverSide: true,
-        bAutoWidth: false,
-        aoColumns: [
-            { sWidth: '80%' },
-            { sWidth: '10%' }
-        ],
+        responsive: true,
         ajax: function (data, callback, settings) {
             var filter = {};
             filter.maxResultCount = data.length || 10;
@@ -42,6 +38,10 @@ const initTableConsumables = () => {
             {
                 targets: 1,
                 data: null,
+                orderable: false,
+                searchable: false,
+                className: 'text-nowrap',
+                width: '1%',
                 render: (data, type, row, meta) => {
                     return `<button class="btn btn-secondary edit typeConsumable" data-id="${row.id}" data-bs-toggle="tooltip" data-bs-title="Редактировать"><i class="fa-solid fa-pen"></i></button>
                             <button class="btn btn-danger delete typeConsumable" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;

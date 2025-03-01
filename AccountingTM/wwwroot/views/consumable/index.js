@@ -4,33 +4,31 @@
 let tableConsumables = new DataTable('#consumableTable', {
     paging: true,
     serverSide: true,
-    bAutoWidth: false,
-    //aoColumns: [
-    //    //{ sWidth: '19%' },
-    //    //{ sWidth: '19%' },
-    //    //{ sWidth: '19%' },
-    //    //{ sWidth: '19%' },
-    //    //{ sWidth: '11%' },
-    //    //{ sWidth: '6%' },
-    //    //{ sWidth: '7%' }
-    //],
-    ajax: function (data, callback, settings) {
-        var filter = {};
-        filter.searchQuery = $("#search-input").val()
-        filter.maxResultCount = data.length || 10;
-        filter.skipCount = data.start;
-        axios.get('/Consumable/GetAll', {
-            params: filter
-        })
+    responsive: true,
+    ajax: function (data, callback) {
+        let filter = {
+            searchQuery: $("#search-input").val(),
+            maxResultCount: data.length || 10,
+            skipCount: data.start
+        };
+
+        console.log("Отправка запроса с параметрами:", filter);
+
+        axios.get('/Consumable/GetAll', { params: filter })
             .then(function (result) {
-                console.log(result);
+                if (!result.data || !result.data.items) {
+                    throw new Error("Некорректные данные от сервера");
+                }
                 callback({
                     recordsTotal: result.data.totalCount,
                     recordsFiltered: result.data.totalCount,
                     data: result.data.items
                 });
             })
-
+            .catch(function (error) {
+                console.error("Ошибка загрузки данных:", error);
+                toastr.error("Ошибка загрузки данных", "Ошибка!");
+            });
     },
     buttons: [
         {
@@ -39,99 +37,71 @@ let tableConsumables = new DataTable('#consumableTable', {
             action: () => tableConsumables.draw(false)
         }
     ],
-    initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+    // Подсветка строк по статусу
+    rowCallback: function (row, data, index) {
+        if (data.status === "В наличии") {
+            $(row).addClass("table-success");
+        } else if (data.status === "Отсутствует") {
+            $(row).addClass("table-danger");
+        } else if (data.status === "Малый запас") {
+            $(row).addClass("table-warning");
+        }
+    },
     columnDefs: [
-        {
-            targets: 0,
-            data: 'typeConsumable.name',
-        },
-        {
-            targets: 1,
-            data: 'brand.name',
-        },
-        {
-            targets: 2,
-            data: 'model',
-        },
-        {
-            targets: 3,
-            data: 'location.name',
-        },
-        {
-            targets: 4,
-            data: 'quantity',
-        },
-        {
-            targets: 5,
-            data: 'unit.name',
-        },
-        {
-            targets: 6,
-            data: 'status',
-        },
+        { targets: 0, data: 'typeConsumable.name', defaultContent: "—" },
+        { targets: 1, data: 'brand.name', defaultContent: "—" },
+        { targets: 2, data: 'model', defaultContent: "—" },
+        { targets: 3, data: 'location.name', defaultContent: "—" },
+        { targets: 4, data: 'quantity', defaultContent: "0" },
+        { targets: 5, data: 'unit.name', defaultContent: "—" },
+        { targets: 6, data: 'status', defaultContent: "—" },
         {
             targets: 7,
             data: 'dateLatestAddition',
-            render: (data, type, row, meta) => {
-                return data ? dayjs(data).format("DD.MM.YYYY HH:mm") : "";
-            }
-
+            render: (data) => data ? dayjs(data).format("DD.MM.YYYY HH:mm") : "Нет данных"
         },
         {
             targets: 8,
             data: null,
-            render: (data, type, row, meta) => {
-                return `<a href="/ConsumableHistory/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о РМ"><i class="fa-solid fa-circle-info"></i></a>
-                        <button class="btn btn-danger delete consumable" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
-            }
-        }]
+            orderable: false,
+            searchable: false,
+            className: 'text-nowrap',
+            render: (data) => `
+                <a href="/ConsumableHistory/${data.id}" class="btn btn-secondary" data-bs-toggle="tooltip" title="Информация о РМ">
+                    <i class="fa-solid fa-circle-info"></i>
+                </a>
+                <button class="btn btn-danger delete-consumable" data-id="${data.id}" data-name="${data.model || "Неизвестно"}" data-bs-toggle="tooltip" title="Удалить">
+                    <i class="fa-solid fa-trash"></i>
+                </button>`
+        }
+    ]
 });
 
-$("#searchConsumableBtn").click(function () {
-    tableConsumables.ajax.reload()
-})
 
 
-//Добавление
+// Поиск
+$("#searchConsumableBtn").click(() => tableConsumables.ajax.reload());
+
+// Добавление нового расходного материала
 $("#create-btn").click(function () {
-    axios.post("Consumable/Create", {
+    axios.post("/Consumable/Create", {
         typeConsumableId: +$("#typeConsumable").val(),
         brandId: +$("#brand").val(),
         model: $("#model").val(),
         locationId: +$("#location").val(),
-        unitId: +$("#unit").val(),
+        unitId: +$("#unit").val()
+    }).then(() => location.reload())
+        .catch(error => {
+            console.error("Ошибка добавления:", error);
+            toastr.error("Ошибка добавления расходного материала");
+        });
+});
 
-        isDeleted: false
-    }).then(function () {
-        location.reload()
-    })
-})
+// Удаление расходного материала
+$(document).on("click", ".delete-consumable", function () {
+    let id = $(this).data("id");
+    let name = $(this).data("name");
 
-//Редактирование информации о расходном материале
-$("#editAdditionalBtn").click(function () {
-    let id = this.dataset.id;
-    axios.get('/ConsumableHistory/Get', {
-        params: {
-            id
-        }
-    }).then(function (response) {
-        const technicalEquipment = response.data;
-        $("#typeConsumable").val(technicalEquipment.typeConsumable);
-        $("#typeConsumable").trigger("change");
-        $("#brand").val(technicalEquipment.brand);
-        $("#brand").trigger("change");
-        $("#model").val(technicalEquipment.model);
-        $("#location").val(technicalEquipment.location);
-        $("#location").trigger("change");
-        $("#unit").val(technicalEquipment.unit);
-        $("#unit").trigger("change");
-        $("#EditConsumableModal").modal("show");
-    })
-})
-
-//Удаление
-$(document).on("click", ".delete.consumable", function () {
-    let name = this.dataset.name;
     Swal.fire({
         title: "Вы уверены?",
         text: `Расходный материал ${name} будет удален!`,
@@ -140,18 +110,21 @@ $(document).on("click", ".delete.consumable", function () {
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Да",
-        cancelButtonText: "Нет",
+        cancelButtonText: "Нет"
     }).then((result) => {
         if (result.isConfirmed) {
-            let id = this.dataset.id;
-            axios.delete("Consumable/Delete?id=" + id).then(function () {
-                tableConsumables.draw(false)
-                $(".tooltip").removeClass("show")
-                toastr.success(`Расходный материал успешно удален!`)
-            })
+            axios.delete(`/Consumable/Delete?id=${id}`)
+                .then(() => {
+                    tableConsumables.draw(false);
+                    toastr.success(`Расходный материал ${name} успешно удален!`);
+                })
+                .catch(error => {
+                    console.error("Ошибка удаления:", error);
+                    toastr.error("Ошибка удаления расходного материала");
+                });
         }
     });
-})
+});
 
 //Select
 

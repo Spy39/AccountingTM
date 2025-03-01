@@ -2,27 +2,16 @@
 let tableClients = new DataTable('#applicationsTable', {
     paging: true,
     serverSide: true,
+    responsive: true,
     bAutoWidth: false,
-    aoColumns: [
-        { sWidth: '11%' },
-        { sWidth: '10%' },
-        { sWidth: '10%' },
-        { sWidth: '9%' },
-        { sWidth: '16%' },
-        { sWidth: '8%' },
-        { sWidth: '11%' },
-        { sWidth: '9%' },
-        { sWidth: '9%' },
-        { sWidth: '7%' },
-    ],
+    order: [],
     ajax: function (data, callback, settings) {
-        var filter = {};
-        filter.searchQuery = $("#search-input").val()
-        filter.maxResultCount = data.length || 10;
-        filter.skipCount = data.start;
-        axios.get('/Application/GetAll', {
-            params: filter
-        })
+        var filter = {
+            searchQuery: $("#search-input").val(),
+            maxResultCount: data.length || 10,
+            skipCount: data.start
+        };
+        axios.get('/Application/GetAll', { params: filter })
             .then(function (result) {
                 console.log(result);
                 callback({
@@ -31,43 +20,64 @@ let tableClients = new DataTable('#applicationsTable', {
                     data: result.data.items
                 });
             })
-
+            .catch(function (error) {
+                console.error("Ошибка загрузки данных:", error);
+            });
     },
     buttons: [
         {
             name: 'refresh',
             text: '<i class="fas fa-redo-alt"></i>',
-            action: () => _$rolesTable.draw(false)
+            action: () => tableClients.draw(false)
         }
     ],
-    initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+    initComplete: function () {
+        $('[data-bs-toggle="tooltip"]').tooltip();
+    },
+    // Подсветка строк: если статус решена (4) – зеленый, иначе по приоритету
+    rowCallback: function (row, data, index) {
+        if (data.status === 4) {
+            // Если заявка решена, выделяем строку зеленым
+            $(row).addClass("table-success");
+        } else {
+            // Иначе подсвечиваем по приоритету:
+            // 0 - Критический: красный (table-danger)
+            // 1 - Высокий: желтый (table-warning)
+            // 2 - Нормальный: голубой (table-info)
+            // 3 - Низкий: серый (table-secondary)
+            if (data.priority === 0) {
+                $(row).addClass("table-danger");
+            } else if (data.priority === 1) {
+                $(row).addClass("table-warning");
+            } else if (data.priority === 2) {
+                $(row).addClass("table-info");
+            } else if (data.priority === 3) {
+                $(row).addClass("table-secondary");
+            }
+        }
+    },
     columnDefs: [
         {
             targets: 0,
-            data: 'applicationNumber',
+            data: 'applicationNumber'
         },
         {
             targets: 1,
             data: 'dateOfCreation',
-            render: (data, type, row, meta) => {
-                return data ? dayjs(data).format("DD.MM.YYYY HH:mm") : "";
-            }
-
+            render: (data, type, row, meta) => data ? dayjs(data).format("DD.MM.YYYY HH:mm") : ""
         },
         {
             targets: 2,
             data: 'dateOfChange',
-            render: (data, type, row, meta) => {
-                return data ? dayjs(data).format("DD.MM.YYYY HH:mm") : "";
-            }
+            render: (data, type, row, meta) => data ? dayjs(data).format("DD.MM.YYYY HH:mm") : ""
         },
         {
             targets: 3,
-            data: 'category.name',
+            data: 'category.name'
         },
         {
             targets: 4,
-            data: 'subject',
+            data: 'subject'
         },
         {
             targets: 5,
@@ -79,16 +89,17 @@ let tableClients = new DataTable('#applicationsTable', {
                     case 2: return "Приостановлена";
                     case 3: return "Передана";
                     case 4: return "Решена";
+                    default: return "Неизвестно";
                 }
             }
         },
         {
             targets: 6,
-            data: 'author',
+            data: 'author'
         },
         {
             targets: 7,
-            data: 'location.name',
+            data: 'location.name'
         },
         {
             targets: 8,
@@ -99,17 +110,23 @@ let tableClients = new DataTable('#applicationsTable', {
                     case 1: return "Высокий";
                     case 2: return "Нормальный";
                     case 3: return "Низкий";
+                    default: return "";
                 }
             }
         },
         {
             targets: 9,
             data: null,
+            orderable: false,
+            searchable: false,
+            className: 'text-nowrap',
+            width: '1%',
             render: (data, type, row, meta) => {
                 return `<a href="application/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о заявке"><i class="fa-solid fa-circle-info"></i></a>
-                        <button class="btn btn-danger delete" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
+                            <button class="btn btn-danger delete" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
             }
-        }]
+        }
+    ]
 });
 
 $("#searchApplicationBtn").click(function () {

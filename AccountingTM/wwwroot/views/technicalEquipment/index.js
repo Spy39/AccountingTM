@@ -1,15 +1,8 @@
-﻿$(function () {
-    $('#calendar').datepicker({
-        range: true,
-        multipleDatesSeparator: ' - ',
-    });
-
-    $('#AddOrderDate').datepicker({ container: '#AddOrderModal .modal-body', dateFormat: "dd.mm.yyyy" });
-
-    //Вывод данных о техничесих средствах в таблицу
+﻿$(document).ready(function () {
     let tableClients = new DataTable('#technicalEquipmentTable', {
         paging: true,
         serverSide: true,
+        responsive: true,
         bAutoWidth: false,
         aoColumns: [
             { sWidth: '14%' },
@@ -21,23 +14,23 @@
             { sWidth: '10%' },
             { sWidth: '7%' }
         ],
-        ajax: function (data, callback, settings) {
-            var filter = {};
-            filter.searchQuery = $("#search-input").val()
-            filter.maxResultCount = data.length || 10;
-            filter.skipCount = data.start;
-            axios.get('/TechnicalEquipment/GetAll', {
-                params: filter
-            })
+        ajax: function (data, callback) {
+            let filter = {
+                searchQuery: $("#search-input").val(),
+                maxResultCount: data.length || 10,
+                skipCount: data.start
+            };
+            axios.get('/TechnicalEquipment/GetAll', { params: filter })
                 .then(function (result) {
-                    console.log(result);
                     callback({
                         recordsTotal: result.data.totalCount,
                         recordsFiltered: result.data.totalCount,
                         data: result.data.items
                     });
                 })
-
+                .catch(function (error) {
+                    console.error("Ошибка загрузки данных:", error);
+                });
         },
         buttons: [
             {
@@ -46,62 +39,132 @@
                 action: () => tableClients.draw(false)
             }
         ],
-        initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+        initComplete: function () {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        },
+        // Выделение строк в зависимости от состояния
+        rowCallback: function (row, data, index) {
+            // Предполагается, что data.state — числовое значение:
+            // 0 - "Исправно", 1 - "Неисправно", 2 - "Работоспособно", 3 - "Неработоспособно"
+            if (data.state === 1) {
+                $(row).addClass("table-warning");
+            } else if (data.state === 3) {
+                $(row).addClass("table-danger");
+            }
+        },
         columnDefs: [
-            {
-                targets: 0,
-                data: 'type.name',
-            },
-            {
-                targets: 1,
-                data: 'brand.name',
-            },
-            {
-                targets: 2,
-                data: 'model.name',
-            },
-            {
-                targets: 3,
-                data: 'serialNumber',
-            },
+            { targets: 0, data: 'type.name' },
+            { targets: 1, data: 'brand.name' },
+            { targets: 2, data: 'model.name' },
+            { targets: 3, data: 'serialNumber' },
             {
                 targets: 4,
                 data: 'state',
-                render: (data, type, row, meta) => {
-                    switch (data) {
-                        case 0: return "Исправно";
-                        case 1: return "Неисправно";
-                        case 2: return "Работоспособно";
-                        case 3: return "Неработоспособно";
-                    }
+                render: function (data) {
+                    const states = ["Исправно", "Неисправно", "Работоспособно", "Неработоспособно"];
+                    return states[data] || "Неизвестно";
                 }
-
             },
             {
                 targets: 5,
                 data: 'employee',
-                render: (data, type, row, meta) => {
-                    return `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`;
+                render: function (data) {
+                    return `${data?.lastName || ''} ${data?.firstName || ''} ${data?.fatherName || ''}`;
                 }
             },
-            {
-                targets: 6,
-                data: 'location.name',
-            },
+            { targets: 6, data: 'location.name' },
             {
                 targets: 7,
                 data: null,
-                render: (data, type, row, meta) => {
-                    return `<a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС"><i class="fa-solid fa-circle-info"></i></a>
-                            <button class="btn btn-danger delete technicalEquipment" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
+                orderable: false,
+                searchable: false,
+                className: 'text-nowrap',
+                width: '1%',
+                render: function (data, type, row) {
+                    return `
+                        <a href="technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </a>
+                        <button class="btn btn-danger delete technicalEquipment" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    `;
                 }
-            }]
+            }
+        ]
     });
-    $("#search-btn").click(function () {
-        tableClients.ajax.reload()
-    })
 
-    //Добавление нового технического средства
+    // Обновление таблицы при поиске
+    $("#search-btn").click(function () {
+        tableClients.ajax.reload();
+    });
+
+    // Экспорт данных в Excel
+    $('#exportExcelBtn').on('click', function () {
+        try {
+            // Получаем заголовки таблицы из thead
+            const headers = [];
+            $('#technicalEquipmentTable thead tr th').each(function () {
+                headers.push($(this).text().trim());
+            });
+
+            // Получаем данные из tbody
+            const tableData = [];
+            $('#technicalEquipmentTable tbody tr').each(function () {
+                const row = [];
+                $(this).find('td').each(function () {
+                    row.push($(this).text().trim());
+                });
+                tableData.push(row);
+            });
+
+            if (tableData.length === 0) {
+                alert("Нет данных для экспорта!");
+                return;
+            }
+
+            // Формируем рабочий лист Excel с помощью библиотеки XLSX
+            const ws = XLSX.utils.aoa_to_sheet([headers, ...tableData]);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "TechnicalEquipment");
+            XLSX.writeFile(wb, "technical_equipment.xlsx");
+        } catch (ex) {
+            console.error("Ошибка экспорта в Excel:", ex);
+        }
+    });
+
+    // Печать PDF
+    $('#printTableBtn').on('click', function () {
+        let printWindow = window.open('', '', 'width=900,height=700');
+        printWindow.document.write(`
+        <html>
+            <head>
+                <title>Печать таблицы</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+                    th, td { border: 1px solid black; padding: 8px; text-align: left; }
+                    th { background-color: #f2f2f2; }
+                </style>
+            </head>
+            <body>
+                <h2>Учет технических средств</h2>
+                <table>
+                    <thead>${$('#technicalEquipmentTable thead').html()}</thead>
+                    <tbody>${$('#technicalEquipmentTable tbody').html()}</tbody>
+                </table>
+            </body>
+        </html>
+        `);
+        printWindow.document.close();
+        printWindow.onload = function () {
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        };
+    });
+
+    // Создание нового технического средства
     $("#create-btn").click(function () {
         axios.post("TechnicalEquipment/Create", {
             typeId: +$("#typeEquipment").val(),
@@ -114,11 +177,11 @@
             locationId: +$("#location").val(),
             isDeleted: false
         }).then(function () {
-            location.reload()
-        })
-    })
+            location.reload();
+        });
+    });
 
-    //Удаление технического средства
+    // Удаление технического средства
     $(document).on("click", ".delete.technicalEquipment", function () {
         let name = this.dataset.name;
         Swal.fire({
@@ -134,28 +197,29 @@
             if (result.isConfirmed) {
                 let id = this.dataset.id;
                 axios.delete("TechnicalEquipment/Delete?id=" + id).then(function () {
-                    tableClients.draw(false)
-                    $(".tooltip").removeClass("show")
-                    toastr.success(`ТС ${name} успешно удалено!`)
-                })
+                    tableClients.draw(false);
+                    $(".tooltip").removeClass("show");
+                    toastr.success(`ТС ${name} успешно удалено!`);
+                });
             }
         });
-    })
+    });
 
-    //Импорт технического средства
+    // Импорт технического средства
     $("#upload-btn").click(function () {
         const formData = new FormData();
         formData.append('file', document.getElementById("formFile").files[0]);
-        axios.post("TechnicalEquipment/UploadExcel", 
-            formData, {
+        axios.post("TechnicalEquipment/UploadExcel", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
         }).then(function () {
+            location.reload();
+        });
+    });
+});
 
-            location.reload(formData)
-        })
-    })
+
 
     //Вывод Select
 
@@ -320,4 +384,3 @@
 
     })
 
-})

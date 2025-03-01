@@ -1,4 +1,5 @@
 ﻿using Accounting.Data;
+using AccountingTM.Domain.Enums;
 using AccountingTM.Domain.Models;
 using AccountingTM.Dto.Application;
 using AccountingTM.Dto.Common;
@@ -133,22 +134,202 @@ namespace AccountingTM.Controllers
             return View(model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddComment([FromBody] CommentDto input)
-        //{
-        //    var comment = new CommentsOnTheApplication
-        //    {
-        //        ApplicationId = input.ApplicationId,
-        //        Text = input.Text,
-        //        PathToFile = input.PathToFile, // Если файл прикрепляется
-        //        Date = DateTime.Now
-        //    };
+        [HttpPost]
+        public async Task<IActionResult> Update([FromBody] UpdateApplicationDto input)
+        {
+            var application = await _context.Applications
+                .FirstOrDefaultAsync(x => x.Id == input.ApplicationId);
 
-        //    _context.CommentsOnTheApplications.Add(comment);
-        //    await _context.SaveChangesAsync();
+            if (application == null)
+            {
+                return NotFound("Заявка не найдена");
+            }
 
-        //    return Ok(comment);
-        //}
+            // Запоминаем старые значения (для истории)
+            var oldStatus = application.Status;
+            var oldPriority = application.Priority;
+            var oldCategoryId = application.CategoryId;
+
+            // Обновляем поля
+            application.Status = input.Status;
+            application.Priority = input.Priority;
+            application.CategoryId = input.CategoryId;
+            application.DateOfChange = DateTime.Now;
+
+            // Сохраняем и фиксируем изменения
+            await _context.SaveChangesAsync();
+
+            // Записываем историю изменений (примеры)
+            var historyEntries = new List<ApplicationHistory>();
+
+            if (oldStatus != application.Status)
+            {
+                historyEntries.Add(new ApplicationHistory
+                {
+                    ApplicationId = application.Id,
+                    EmployeeId = GetCurrentEmployeeId(), // метод ниже
+                    Date = DateTime.Now,
+                    TypeOfOperation = "Изменение статуса",
+                    Name = $"Статус: {oldStatus} -> {application.Status}"
+                });
+            }
+
+            if (oldPriority != application.Priority)
+            {
+                historyEntries.Add(new ApplicationHistory
+                {
+                    ApplicationId = application.Id,
+                    EmployeeId = GetCurrentEmployeeId(),
+                    Date = DateTime.Now,
+                    TypeOfOperation = "Изменение приоритета",
+                    Name = $"Приоритет: {oldPriority} -> {application.Priority}"
+                });
+            }
+
+            if (oldCategoryId != application.CategoryId)
+            {
+                historyEntries.Add(new ApplicationHistory
+                {
+                    ApplicationId = application.Id,
+                    EmployeeId = GetCurrentEmployeeId(),
+                    Date = DateTime.Now,
+                    TypeOfOperation = "Изменение категории",
+                    Name = $"Категория: {oldCategoryId} -> {application.CategoryId}"
+                });
+            }
+
+            if (historyEntries.Any())
+            {
+                await _context.ApplicationHistories.AddRangeAsync(historyEntries);
+                await _context.SaveChangesAsync();
+            }
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AssignToMe([FromBody] int applicationId)
+        {
+            var application = await _context.Applications.FindAsync(applicationId);
+            if (application == null)
+            {
+                return NotFound("Заявка не найдена");
+            }
+
+            var user = _context.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+            if (user == null)
+            {
+                return BadRequest("Пользователь не найден");
+            }
+
+            application.EmployeeId = user.EmployeeId;
+            application.DateOfChange = DateTime.Now;
+
+            // История
+            _context.ApplicationHistories.Add(new ApplicationHistory
+            {
+                ApplicationId = application.Id,
+                EmployeeId = user.EmployeeId,
+                Date = DateTime.Now,
+                TypeOfOperation = "Назначение исполнителя",
+                Name = "Заявка назначена на сотрудника " + user.EmployeeId
+            });
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkAsSolved([FromBody] int applicationId)
+        {
+            var application = await _context.Applications.FindAsync(applicationId);
+            if (application == null)
+            {
+                return NotFound("Заявка не найдена");
+            }
+
+            application.Status = ApplicationStatus.Solved;
+            application.DateOfChange = DateTime.Now;
+            application.DateOfClosing = DateTime.Now;
+
+            // Сохраняем и добавляем запись в историю
+            _context.ApplicationHistories.Add(new ApplicationHistory
+            {
+                ApplicationId = application.Id,
+                EmployeeId = GetCurrentEmployeeId(),
+                Date = DateTime.Now,
+                TypeOfOperation = "Решение заявки",
+                Name = "Заявка помечена как решённая"
+            });
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AttachTechnicalEquipment([FromBody] AttachEquipmentDto input)
+        {
+            var application = await _context.Applications.FindAsync(input.ApplicationId);
+            if (application == null)
+            {
+                return NotFound("Заявка не найдена");
+            }
+            var te = await _context.TechnicalEquipment.FindAsync(input.TechnicalEquipmentId);
+            if (te == null)
+            {
+                return NotFound("Техническое средство не найдено");
+            }
+
+            application.TechnicalEquipmentId = input.TechnicalEquipmentId;
+            application.DateOfChange = DateTime.Now;
+            await _context.SaveChangesAsync();
+
+            // Запись в историю
+            _context.ApplicationHistories.Add(new ApplicationHistory
+            {
+                ApplicationId = application.Id,
+                EmployeeId = GetCurrentEmployeeId(),
+                Date = DateTime.Now,
+                TypeOfOperation = "Прикрепление к ТС",
+                Name = $"Прикреплено ТС: {te.InventoryNumber} (ID={te.Id})"
+            });
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        public class AttachEquipmentDto
+        {
+            public int ApplicationId { get; set; }
+            public int TechnicalEquipmentId { get; set; }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetHistory(int applicationId)
+        {
+            var history = await _context.ApplicationHistories
+                .Include(h => h.Employee)
+                .Where(h => h.ApplicationId == applicationId)
+                .OrderByDescending(h => h.Date)
+                .ToListAsync();
+
+            // Можно сразу вернуть DTO, если нужно
+            return Ok(history);
+        }
+
+
+
+        // Метод, возвращающий Id сотрудника, 
+        // который сейчас авторизован (зависит от логики авторизации в вашем проекте).
+        private int? GetCurrentEmployeeId()
+        {
+            // Предположим, что у вас есть связь User -> EmployeeId
+            var user = _context.Users.FirstOrDefault(x => x.Login == User.Identity.Name);
+            return user?.EmployeeId;
+        }
+
 
         [HttpGet]
         public async Task<IActionResult> GetComments(int applicationId)

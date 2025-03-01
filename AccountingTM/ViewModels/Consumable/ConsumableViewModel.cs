@@ -10,12 +10,13 @@ namespace AccountingTM.ViewModels.Consumable
 		public int BrandId { get; set; }
 		public int LocationId { get; set; }
 		public int UnitId { get; set; }
-		public string TypeConsumable { get; set; }
+        public int? TechnicalEquipmentId { get; set; }
+        public string TypeConsumable { get; set; }
 		public string Brand { get; set; }
 		public string Model { get; set; }
 		public string Location { get; set; }
 		public string Unit { get; set; }
-		public double Quantity { get; set; }
+		public double? Quantity { get; set; }
 		public string? Status { get; set; }
 		public DateTime? DateLatestAddition { get; set; }
 	}

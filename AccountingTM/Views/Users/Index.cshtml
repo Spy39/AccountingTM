@@ -22,47 +22,44 @@
     </div>
 </section>
 
-<div class="row">
-    <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded col-12">
-        <div class="row align-items-center mb-3">
-            <div class="col-md-8">
-                <h5>Пользователи</h5>
-            </div>
-            <div class="col-md-1 text-end">
-                <button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#createUser">
-                    <i class="fa-solid fa-plus"></i>
+<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+    <div class="row align-items-center">
+        <!-- Поле поиска -->
+        <div class="col-md-3">
+            <div class="input-group">
+                <input id="search-input" type="search" class="form-control" placeholder="Поиск" aria-label="Поиск">
+                <button class="btn btn-outline-secondary" type="submit" id="search-btn">
+                    <i class="fas fa-search"></i>
                 </button>
             </div>
-            <div class="col-md-3">
-                <div class="input-group">
-                    <input id="search-input" type="search" class="form-control" placeholder="Поиск" aria-label="Search">
-                    <button class="btn btn-outline-secondary" id="search-btn" type="button">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </div>
-            </div>
         </div>
-        <div class="row">
-            <table id="administrationTable" class="table table-bordered align-middle table-hover table-striped w-100">
-                <thead>
-                    <tr>
-                        <th>Фамилия, имя, отчество</th>
-                        <th>Логин</th>
-                        <th>Пароль</th>
-                        <th>Права</th>
-                        <th>Сотрудник</th>
-                        <th>Действия</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Данные заполняются через DataTables -->
-                </tbody>
-            </table>
+
+        <!-- Кнопки действий -->
+        <div class="col-md-9 d-flex justify-content-md-end justify-content-start gap-2 flex-wrap">
+            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#createUser">
+                <i class="fa-solid fa-plus"></i> Добавить
+            </button>
         </div>
     </div>
 </div>
 
+
+<table id="usersTable" class="table table-bordered align-middle table-hover table-striped w-100">
+    <thead>
+        <tr>
+            <th>Фамилия, имя, отчество</th>
+            <th>Логин</th>
+            <th>Роль</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
 @await Html.PartialAsync("_AddUserModal.cshtml")
+@await Html.PartialAsync("_EditUserModal.cshtml")
 
 @section Scripts {
     <script src="~/views/users/index.js" asp-append-version="true"></script>

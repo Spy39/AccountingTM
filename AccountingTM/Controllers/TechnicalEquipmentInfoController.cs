@@ -1,6 +1,8 @@
 ﻿using Accounting.Data;
+using AccountingTM.Domain;
 using AccountingTM.Domain.Models.Tables;
 using AccountingTM.Dto.Common;
+using AccountingTM.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +24,7 @@ namespace AccountingTM.Controllers
         [HttpGet]
         public IActionResult Get(int id)
         {
-            var entity = _context.TechnicalEquipment.Find(id);
+            var entity = _context.TechnicalEquipment.FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 throw new Exception($"ТС с id = {id} не найдено");
@@ -30,6 +32,32 @@ namespace AccountingTM.Controllers
 
             return Ok(entity);
         }
+
+        [HttpPost]
+        public IActionResult Update([FromBody] TechnicalEquipment input)
+        {
+            // Находим объект в БД (теперь без AsNoTracking)
+            var entity = _context.TechnicalEquipment
+                .FirstOrDefault(x => x.Id == input.Id);
+
+            if (entity == null)
+            {
+                throw new Exception($"ТС с id = {input.Id} не найдено");
+            }
+
+            // Теперь переносим нужные поля из input 
+            // (то, что пользователь реально редактирует)
+            entity.TypeId = input.TypeId;
+            entity.BrandId = input.BrandId;
+            entity.ModelId = input.ModelId;
+            entity.State = input.State;
+
+            // Сохраняем
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
 
         //Редактирование дополнительной информации ТС
         [HttpGet]
@@ -44,11 +72,37 @@ namespace AccountingTM.Controllers
             return Ok(entity);
         }
 
+        [HttpPost]
+        public IActionResult UpdateAditional([FromBody] TechnicalEquipment input)
+        {
+            var entity = _context.TechnicalEquipment
+                .FirstOrDefault(x => x.Id == input.Id);
+
+            if (entity == null)
+                throw new Exception($"ТС с id = {input.Id} не найдено");
+
+            // Копируем нужные поля
+            entity.SerialNumber = input.SerialNumber;
+            entity.InventoryNumber = input.InventoryNumber;
+            entity.EmployeeId = input.EmployeeId;
+            entity.LocationId = input.LocationId;
+            entity.Date = input.Date;
+            entity.DateStart = input.DateStart;
+            entity.DateEnd = input.DateEnd;
+            entity.DateGarant = input.DateGarant;
+            // и т.д.
+
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+
         //Характеристики технического средства
         [HttpGet]
-        public IActionResult GetAllCharacteristic([FromQuery] SearchPagedRequestDto input)
+        public IActionResult GetAllCharacteristic([FromQuery] SearchPagedRequestDto input, int technicalEquipmentId)
         {
-            IQueryable<Characteristic> query = _context.Characteristics.Include(x => x.Unit).Include(x => x.Indicator)/*.Where(x => x.TechnicalEquipmentId == input.)*/;
+            IQueryable<Characteristic> query = _context.Characteristics.Include(x => x.Unit).Include(x => x.Indicator).Where(x => x.TechnicalEquipmentId == technicalEquipmentId);
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
@@ -80,9 +134,9 @@ namespace AccountingTM.Controllers
 
         //Консервация
         [HttpGet]
-        public IActionResult GetAllConservation([FromQuery] SearchPagedRequestDto input)
+        public IActionResult GetAllConservation([FromQuery] SearchPagedRequestDto input, int technicalEquipmentId)
         {
-            IQueryable<Conservation> query = _context.Conservations.Include(x => x.Employee);
+            IQueryable<Conservation> query = _context.Conservations.Include(x => x.Employee).Where(x => x.TechnicalEquipmentId == technicalEquipmentId);
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
@@ -115,9 +169,9 @@ namespace AccountingTM.Controllers
 
         //Прием и передача изделия
         [HttpGet]
-        public IActionResult GetAllReceptionAndTransmission([FromQuery] SearchPagedRequestDto input)
+        public IActionResult GetAllReceptionAndTransmission([FromQuery] SearchPagedRequestDto input, int technicalEquipmentId)
         {
-            IQueryable<ReceptionAndTransmission> query = _context.ReceptionAndTransmissions;
+            IQueryable<ReceptionAndTransmission> query = _context.ReceptionAndTransmissions.Where(x => x.TechnicalEquipmentId == technicalEquipmentId); ;
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
@@ -150,9 +204,9 @@ namespace AccountingTM.Controllers
 
         //Ремонт
         [HttpGet]
-        public IActionResult GetAllRepair([FromQuery] SearchPagedRequestDto input)
+        public IActionResult GetAllRepair([FromQuery] SearchPagedRequestDto input, int technicalEquipmentId)
         {
-            IQueryable<Repair> query = _context.Repairs;
+            IQueryable<Repair> query = _context.Repairs.Where(x => x.TechnicalEquipmentId == technicalEquipmentId); ;
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 
@@ -185,9 +239,9 @@ namespace AccountingTM.Controllers
 
         //Хранение
         [HttpGet]
-        public IActionResult GetAllStorage([FromQuery] SearchPagedRequestDto input)
+        public IActionResult GetAllStorage([FromQuery] SearchPagedRequestDto input, int technicalEquipmentId)
         {
-            IQueryable<Storage> query = _context.Storages;
+            IQueryable<Storage> query = _context.Storages.Where(x => x.TechnicalEquipmentId == technicalEquipmentId); ;
 
             var entities = query.Skip(input.SkipCount).Take(input.MaxResultCount).ToList();
 

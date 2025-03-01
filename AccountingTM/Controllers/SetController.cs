@@ -1,6 +1,5 @@
 ﻿using Accounting.Data;
 using AccountingTM.Domain.Models;
-using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.Set;
 using AccountingTM.Dto.TechnicalEquipment;
@@ -32,10 +31,10 @@ namespace AccountingTM.Controllers
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
-                query = query.Where(x => x.Name.ToLower().Contains(keyword) || 
+                query = query.Where(x => x.Name.ToLower().Contains(keyword) ||
                                          x.StatusSet.ToLower().Contains(keyword) ||
                                          x.Employee.FirstName.ToLower().Contains(keyword) ||
-                                         x.Employee.FatherName.ToLower().Contains(keyword) || 
+                                         x.Employee.FatherName.ToLower().Contains(keyword) ||
                                          x.Employee.LastName.ToLower().Contains(keyword) ||
                                          x.Location.Name.ToLower().Contains(keyword));
             }

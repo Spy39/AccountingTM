@@ -83,10 +83,6 @@ namespace AccountingTM.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        [HttpGet]
-        public IActionResult UserPage()
-        {
-            return View();
-        }
+
     }
 }

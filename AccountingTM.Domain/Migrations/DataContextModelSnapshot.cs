@@ -87,6 +87,9 @@ namespace AccountingTM.Domain.Migrations
                     b.Property<DateTime>("DateOfChange")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<DateTime?>("DateOfClosing")
+                        .HasColumnType("timestamp without time zone");
+
                     b.Property<DateTime>("DateOfCreation")
                         .HasColumnType("timestamp without time zone");
 
@@ -221,6 +224,9 @@ namespace AccountingTM.Domain.Migrations
                     b.Property<double>("SmallStockValue")
                         .HasColumnType("double precision");
 
+                    b.Property<int?>("TechnicalEquipmentId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("TypeConsumableId")
                         .HasColumnType("integer");
 
@@ -232,6 +238,8 @@ namespace AccountingTM.Domain.Migrations
                     b.HasIndex("BrandId");
 
                     b.HasIndex("LocationId");
+
+                    b.HasIndex("TechnicalEquipmentId");
 
                     b.HasIndex("TypeConsumableId");
 
@@ -269,11 +277,16 @@ namespace AccountingTM.Domain.Migrations
                     b.Property<double>("QuantityAfterOperation")
                         .HasColumnType("double precision");
 
+                    b.Property<int?>("TechnicalEquipmentId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ConsumableId");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("TechnicalEquipmentId");
 
                     b.ToTable("ConsumableHistories");
                 });
@@ -443,6 +456,32 @@ namespace AccountingTM.Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Units");
+                });
+
+            modelBuilder.Entity("AccountingTM.Domain.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Role", b =>
@@ -625,6 +664,35 @@ namespace AccountingTM.Domain.Migrations
                     b.ToTable("Conservations");
                 });
 
+            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.EquipmentConsumableUsage", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConsumableId")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("QuantityUsed")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("TechnicalEquipmentId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UsageDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConsumableId");
+
+                    b.HasIndex("TechnicalEquipmentId");
+
+                    b.ToTable("EquipmentConsumableUsages");
+                });
+
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.ReceptionAndTransmission", b =>
                 {
                     b.Property<int>("Id")
@@ -762,21 +830,6 @@ namespace AccountingTM.Domain.Migrations
                     b.ToTable("TechnicalEquipmentHistories");
                 });
 
-            modelBuilder.Entity("AccountingTM.Domain.Models.UserRole", b =>
-                {
-                    b.Property<int>("RoleId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("RoleId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserRoles");
-                });
-
             modelBuilder.Entity("AccountingTM.Domain.Permissions.Permission", b =>
                 {
                     b.Property<int>("Id")
@@ -874,6 +927,88 @@ namespace AccountingTM.Domain.Migrations
                     b.HasIndex("TypeId");
 
                     b.ToTable("TechnicalEquipment");
+                });
+
+            modelBuilder.Entity("Z.EntityFramework.Plus.AuditEntry", b =>
+                {
+                    b.Property<int>("AuditEntryID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(0);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditEntryID"));
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnOrder(5);
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnOrder(6);
+
+                    b.Property<string>("EntitySetName")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("EntityTypeName")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("StateName")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnOrder(4);
+
+                    b.HasKey("AuditEntryID");
+
+                    b.ToTable("AuditEntries");
+                });
+
+            modelBuilder.Entity("Z.EntityFramework.Plus.AuditEntryProperty", b =>
+                {
+                    b.Property<int>("AuditEntryPropertyID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnOrder(0);
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("AuditEntryPropertyID"));
+
+                    b.Property<int>("AuditEntryID")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("NewValueFormatted")
+                        .HasColumnType("text")
+                        .HasColumnName("NewValue")
+                        .HasColumnOrder(5);
+
+                    b.Property<string>("OldValueFormatted")
+                        .HasColumnType("text")
+                        .HasColumnName("OldValue")
+                        .HasColumnOrder(4);
+
+                    b.Property<string>("PropertyName")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("RelationName")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("AuditEntryPropertyID");
+
+                    b.HasIndex("AuditEntryID");
+
+                    b.ToTable("AuditEntryProperties");
                 });
 
             modelBuilder.Entity("AccountingTM.Domain.Permissions.RolePermission", b =>
@@ -994,6 +1129,10 @@ namespace AccountingTM.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
+                        .WithMany()
+                        .HasForeignKey("TechnicalEquipmentId");
+
                     b.HasOne("AccountingTM.Domain.Models.Directory.TypeConsumable", "TypeConsumable")
                         .WithMany()
                         .HasForeignKey("TypeConsumableId")
@@ -1010,6 +1149,8 @@ namespace AccountingTM.Domain.Migrations
 
                     b.Navigation("Location");
 
+                    b.Navigation("TechnicalEquipment");
+
                     b.Navigation("TypeConsumable");
 
                     b.Navigation("Unit");
@@ -1023,15 +1164,21 @@ namespace AccountingTM.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AccountingTM.Domain.Models.Directory.Brand", "Employee")
+                    b.HasOne("AccountingTM.Domain.Models.Directory.Employee", "Employee")
                         .WithMany()
                         .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
+                        .WithMany()
+                        .HasForeignKey("TechnicalEquipmentId");
+
                     b.Navigation("Consumable");
 
                     b.Navigation("Employee");
+
+                    b.Navigation("TechnicalEquipment");
                 });
 
             modelBuilder.Entity("AccountingTM.Domain.Models.Set", b =>
@@ -1139,6 +1286,25 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("TechnicalEquipment");
                 });
 
+            modelBuilder.Entity("AccountingTM.Domain.Models.Tables.EquipmentConsumableUsage", b =>
+                {
+                    b.HasOne("AccountingTM.Domain.Models.Consumable", "Consumable")
+                        .WithMany()
+                        .HasForeignKey("ConsumableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
+                        .WithMany()
+                        .HasForeignKey("TechnicalEquipmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Consumable");
+
+                    b.Navigation("TechnicalEquipment");
+                });
+
             modelBuilder.Entity("AccountingTM.Domain.Models.Tables.ReceptionAndTransmission", b =>
                 {
                     b.HasOne("AccountingTM.Models.TechnicalEquipment", "TechnicalEquipment")
@@ -1189,25 +1355,6 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("TechnicalEquipment");
                 });
 
-            modelBuilder.Entity("AccountingTM.Domain.Models.UserRole", b =>
-                {
-                    b.HasOne("AccountingTM.Domain.Models.Role", "Role")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Accounting.Models.User", "User")
-                        .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("AccountingTM.Models.TechnicalEquipment", b =>
                 {
                     b.HasOne("AccountingTM.Domain.Models.Directory.Brand", "Brand")
@@ -1255,6 +1402,17 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("Type");
                 });
 
+            modelBuilder.Entity("Z.EntityFramework.Plus.AuditEntryProperty", b =>
+                {
+                    b.HasOne("Z.EntityFramework.Plus.AuditEntry", "Parent")
+                        .WithMany("Properties")
+                        .HasForeignKey("AuditEntryID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Parent");
+                });
+
             modelBuilder.Entity("AccountingTM.Domain.Permissions.RolePermission", b =>
                 {
                     b.HasOne("AccountingTM.Domain.Models.Role", "Role")
@@ -1277,14 +1435,9 @@ namespace AccountingTM.Domain.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Accounting.Models.User", b =>
+            modelBuilder.Entity("Z.EntityFramework.Plus.AuditEntry", b =>
                 {
-                    b.Navigation("UserRoles");
-                });
-
-            modelBuilder.Entity("AccountingTM.Domain.Models.Role", b =>
-                {
-                    b.Navigation("UserRoles");
+                    b.Navigation("Properties");
                 });
 #pragma warning restore 612, 618
         }

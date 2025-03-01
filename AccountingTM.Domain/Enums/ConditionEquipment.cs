@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace AccountingTM.Domain.Enums
 {
@@ -15,14 +10,14 @@ namespace AccountingTM.Domain.Enums
         /// <summary>Исправно</summary>
         [Description("Исправно")]
         Serviceable,
-		/// <summary>Неисправно</summary>
-		[Description("Неисправно")]
-		Faulty,
-		/// <summary>Работоспособно</summary>
-		[Description("Работоспособно")]
-		Efficient,
-		/// <summary>Неработоспособно</summary>
-		[Description("Неработоспособно")]
-		Inoperative
+        /// <summary>Неисправно</summary>
+        [Description("Неисправно")]
+        Faulty,
+        /// <summary>Работоспособно</summary>
+        [Description("Работоспособно")]
+        Efficient,
+        /// <summary>Неработоспособно</summary>
+        [Description("Неработоспособно")]
+        Inoperative
     }
 }

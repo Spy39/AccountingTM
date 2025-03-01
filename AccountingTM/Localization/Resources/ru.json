@@ -1,0 +1,79 @@
+{
+  "TechnicalEquipments.Pages": "Технические средства",
+  "TechnicalEquipments.Create": "Создать техническое средство",
+  "TechnicalEquipments.Read": "Просмотреть технические средства",
+  "TechnicalEquipments.Delete": "Удалить техническое средство",
+  "TechnicalEquipments.Archive": "Архивиров технических средств",
+
+  "TechnicalEquipmentsInfo.Pages": "Информация о техническом средстве",
+  "TechnicalEquipmentsInfo.Create": "Добавить информацию о техническом средстве",
+  "TechnicalEquipmentsInfo.Read": "Просмотреть информацию о техническом средстве",
+  "TechnicalEquipmentsInfo.Update": "Изменить информацию о техническом средстве",
+  "TechnicalEquipmentsInfo.Delete": "Удалить информацию о техническом средстве",
+
+  "Archive.Pages": "Архив",
+  "Archive.Read": "Просмотреть архив",
+  "Archive.Delete": "Удалить из архива",
+
+  "Consumables.Pages": "Расходные материалы",
+  "Consumables.Create": "Добавить расходный материал",
+  "Consumables.Read": "Просмотреть расходные материалы",
+  "Consumables.Delete": "Удалить расходный материал",
+
+  "ConsumableHistories.Pages": "История расходных материалов",
+  "ConsumableHistories.Create": "Добавить запись в историю",
+  "ConsumableHistories.Read": "Просмотреть историю расходных материалов",
+  "ConsumableHistories.Update": "Изменить запись в истории",
+  "ConsumableHistories.Delete": "Удалить запись из истории",
+
+  "Sets.Pages": "Комплекты",
+  "Sets.Create": "Создать комплект",
+  "Sets.Read": "Просмотреть комплекты",
+  "Sets.Delete": "Удалить комплект",
+
+  "SetsInfo.Pages": "Информация о комплекте",
+  "SetsInfo.Create": "Добавить информацию о комплекте",
+  "SetsInfo.Read": "Просмотреть информацию о комплекте",
+  "SetsInfo.Update": "Изменить информацию о комплекте",
+  "SetsInfo.Delete": "Удалить информацию о комплекте",
+
+  "Applications.Pages": "Заявки",
+  "Applications.Create": "Создать заявку",
+  "Applications.Read": "Просмотреть заявки",
+  "Applications.Delete": "Удалить заявку",
+
+  "ApplicationsInfo.Pages": "Информация о заявке",
+  "ApplicationsInfo.Create": "Добавить информацию о заявке",
+  "ApplicationsInfo.Read": "Просмотреть информацию о заявке",
+  "ApplicationsInfo.Update": "Изменить информацию о заявке",
+  "ApplicationsInfo.Delete": "Удалить информацию о заявке",
+
+  "Analysis.Pages": "Анализ",
+  "Analysis.Create": "Выбрать фильтр для анализа",
+  "Analysis.Read": "Просмотреть результаты анализа",
+
+  "Statistics.Pages": "Статистика",
+  "Statistics.Create": "Выбрать фильтр для статистики",
+  "Statistics.Read": "Просмотреть статистику",
+
+  "Directories.Pages": "Справочники",
+  "Directories.Create": "Добавить справочник",
+  "Directories.Read": "Просмотреть справочники",
+  "Directories.Update": "Изменить справочник",
+  "Directories.Delete": "Удалить справочник",
+
+  "Users.Pages": "Пользователи",
+  "Users.Create": "Добавить пользователя",
+  "Users.Read": "Просмотреть пользователей",
+  "Users.Update": "Изменить пользователя",
+  "Users.Delete": "Удалить пользователя",
+
+  "Roles.Pages": "Роли",
+  "Roles.Create": "Добавить роль",
+  "Roles.Read": "Просмотреть роли",
+  "Roles.Update": "Изменить роль",
+  "Roles.Delete": "Удалить роль",
+
+  "Audit.Pages": "Аудит",
+  "Audit.Read": "Просмотреть аудит"
+}

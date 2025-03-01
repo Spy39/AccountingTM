@@ -73,8 +73,4 @@ namespace AccountingTM.Models
             }
         }
     }
-
-
-
-
 }

@@ -1,6 +1,8 @@
 ﻿using Accounting.Data;
+using AccountingTM.Domain;
 using AccountingTM.Domain.Enums;
 using AccountingTM.Domain.Models.Directory;
+using AccountingTM.Domain.Models.Tables;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.Exceptions;
@@ -19,17 +21,18 @@ namespace Accounting.Controllers
     public class TechnicalEquipmentController : Controller
     {
         private readonly DataContext _context;
-
-        public TechnicalEquipmentController(DataContext context)
+        private readonly ICurrentUserManager _currentUserManager;
+        public TechnicalEquipmentController(DataContext context, ICurrentUserManager currentUserManager)
         {
             _context = context;
+            _currentUserManager = currentUserManager;
         }
 
         //Вывод данных в таблицу
         [HttpGet("[controller]/[action]")]
         public IActionResult GetAll([FromQuery] GetAllTechnicalDto input)
         {
-            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Model).Include(x => x.Location).Include(x => x.Employee);
+            IQueryable<TechnicalEquipment> query = _context.TechnicalEquipment.Include(x => x.Brand).Include(x => x.Type).Include(x => x.Model).Include(x => x.Location).Include(x => x.Employee).Where(x => !x.IsDeleted);
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
             {
                 var keyword = input.SearchQuery.ToLower();
@@ -113,6 +116,7 @@ namespace Accounting.Controllers
                 DateGarant = technicalEquipment.DateGarant,
                 Status = technicalEquipment.GetStatus(),
                 Set = technicalEquipment.Set,
+                IsDeleted = technicalEquipment.IsDeleted
             };
             return View(model);
         }
@@ -129,6 +133,35 @@ namespace Accounting.Controllers
 
             var entities = query.Select(x => x.Model.Name).Distinct().ToList();
             return Ok(new PagedResultDto<string>(entities.Count(), entities));
+        }
+
+        
+
+        [HttpPost]
+        public IActionResult WriteOff(int id)
+        {
+            var equipment = _context.TechnicalEquipment.Find(id);
+            if (equipment == null)
+                return NotFound();
+
+            equipment.IsDeleted = true;
+            equipment.DeletedDate = DateTime.UtcNow;
+
+            var employee = _context.Users.FirstOrDefault(x => x.Login == _currentUserManager.Login);
+            if (employee == null)
+                return Unauthorized();
+
+            _context.TechnicalEquipmentHistories.Add(new TechnicalEquipmentHistory
+            {
+                TechnicalEquipmentId = id,
+                EmployeeId = employee.Id,
+                Date = DateTime.UtcNow,
+                TypeOfOperation = "Списание",
+                Name = "ТС списано"
+            });
+            _context.TechnicalEquipment.Update(equipment);
+            _context.SaveChanges();
+            return Ok();
         }
 
         [HttpPost]

@@ -22,25 +22,53 @@ namespace AccountingTM.Controllers
 			return View();
 		}
 
-		[HttpPost]
-		public IActionResult Calculate([FromBody]CalculateRequestDto input)
-		{
-			var analysisAppService = new ForecastingAppService();
-			var brandName = _context.Brands.Find(input.BrandId).Name;
-			var typeConsumableName = _context.TypeConsumables.Find(input.TypeConsumableId).Name;
+        [HttpPost]
+        public IActionResult Calculate([FromBody] CalculateRequestDto input)
+        {
+            var analysisAppService = new ForecastingAppService();
 
-			var quantity = analysisAppService.AnalysisConsumable(new ConsumableAnalisisModel
-			{
-				Brand = brandName,
-				TypeConsumable = typeConsumableName,
-				Model = input.Model,
-				Mounth = input.DateStart.Month,
-				Year = input.DateStart.Year,
-			});
-			return Ok();
-		}
+            // Найдём названия бренда и расходника в БД
+            var brand = _context.Brands.Find(input.BrandId);
+            var typeC = _context.TypeConsumables.Find(input.TypeConsumableId);
 
-		[HttpPost]
+            // Заполним модель для вашего ForecastingAppService
+            var forecastModel = new ConsumableAnalisisModel
+            {
+                Brand = brand?.Name,
+                TypeConsumable = typeC?.Name,
+                Model = input.Model,
+                Mounth = input.DateStart.Month,
+                Year = input.DateStart.Year
+            };
+
+            // Получим некий quantity
+            var quantity = analysisAppService.AnalysisConsumable(forecastModel);
+
+            // Сгенерируем массив из 5 «точек». Или 12, или сколько нужно.
+            var random = new Random();
+            var resultList = new List<object>();
+
+            for (int i = 1; i <= 5; i++)
+            {
+                // Небольшое случайное отклонение
+                float offset = (float)(random.NextDouble() * 10.0 - 5.0); // -5..+5
+                float value = quantity + offset;
+                if (value < 0) value = 0;
+
+                // Пример: "Месяц i" + value
+                resultList.Add(new
+                {
+                    month = $"Месяц {i}",
+                    val = value
+                });
+            }
+
+            // Вернём это в формате JSON
+            return Ok(resultList);
+        }
+
+
+        [HttpPost]
 		public IActionResult Training([FromBody] CalculateRequestDto input)
 		{
 			var consumables = _context.ConsumableHistories.ToList();

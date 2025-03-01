@@ -2,11 +2,9 @@
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Exceptions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using AccountingTM.Domain;
-using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace AccountingTM.Controllers.Directories
 {
@@ -41,7 +39,7 @@ namespace AccountingTM.Controllers.Directories
         public IActionResult Get(int id)
         {
             var entity = _context.Models.Find(id);
-            if(entity == null)
+            if (entity == null)
             {
                 throw new Exception($"Модель с id = {id} не найдена");
             }

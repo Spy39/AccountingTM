@@ -4,6 +4,7 @@
 let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
     paging: true,
     serverSide: true,
+    responsive: true,
     bAutoWidth: false,
     select: {
         selector: 'td:first-child',
@@ -95,6 +96,10 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
         {
             targets: 8,
             data: ``,
+            orderable: false,
+            searchable: false,
+            className: 'text-nowrap',
+            width: '1%',
             render: (data, type, row, meta) => {
                 return ``;
             }
@@ -151,6 +156,96 @@ $("#create-btn").click(function () {
 //        }
 //    });
 //})
+
+
+//обновление и изменение заявки
+document.getElementById('save-changes-btn').addEventListener('click', function () {
+    var applicationId = parseInt(document.getElementById("application").value);
+    // Значения статус/приоритет могут быть строками, нужно привести к enum на бэкенде.
+    // Можно передавать строками, если в DTO стоит string и потом мапить.
+    // Или же сделать соответствие value="0,1,2..." (enum в C#)
+    var status = document.getElementById('status').value;
+    var priority = document.getElementById('priority').value;
+    var categoryId = parseInt(document.getElementById('category').value);
+
+    axios.post('/Application/Update', {
+        applicationId: applicationId,
+        status: status,     // если DTO enum — нужно убедиться, что значения совпадают
+        priority: priority, // то же самое
+        categoryId: categoryId
+    })
+        .then(function () {
+            toastr.success('Изменения сохранены!');
+            // При необходимости перезагрузить страницу или обновить нужные поля
+            // location.reload();
+        })
+        .catch(function (error) {
+            toastr.error('Ошибка: ' + error);
+        });
+});
+//назначить себе заявку
+document.getElementById('assign-to-me-btn').addEventListener('click', function () {
+    var applicationId = parseInt(document.getElementById("application").value);
+
+    axios.post('/Application/AssignToMe', applicationId)
+        .then(function () {
+            toastr.success('Заявка назначена вам!');
+            // Можно обновить поля на форме
+            // location.reload();
+        })
+        .catch(function (error) {
+            toastr.error('Ошибка: ' + error);
+        });
+});
+
+//пометить как решенную заявку
+document.getElementById('mark-solved-btn').addEventListener('click', function () {
+    var applicationId = parseInt(document.getElementById("application").value);
+
+    axios.post('/Application/MarkAsSolved', applicationId)
+        .then(function () {
+            toastr.success('Заявка помечена как решённая!');
+            // Перезагрузка или обновление полей
+        })
+        .catch(function (error) {
+            toastr.error('Ошибка: ' + error);
+        });
+});
+//подгружаем историю изменение
+function loadHistory() {
+    var applicationId = parseInt(document.getElementById("application").value);
+    axios.get('/Application/GetHistory?applicationId=' + applicationId)
+        .then(function (response) {
+            var list = response.data;
+            var html = "";
+            list.forEach(function (item) {
+                var dateStr = new Date(item.date).toLocaleString();
+                html += `
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <strong>${dateStr}</strong><br/>
+                            <em>${item.typeOfOperation}</em><br/>
+                            ${item.name}
+                            ${item.employee
+                        ? '<br/><small>Пользователь: ' + getEmployeeName(item.employee) + '</small>'
+                        : ''}
+                        </div>
+                    </div>`;
+            });
+            document.getElementById("history-container").innerHTML = html;
+        });
+}
+
+function getEmployeeName(emp) {
+    return `${emp.lastName ?? ''} ${emp.firstName ?? ''} ${emp.fatherName ?? ''}`.trim();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    // ...
+    loadHistory();
+});
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const applicationId = +$("#application").val(); // Убедитесь, что ApplicationId доступен в модели

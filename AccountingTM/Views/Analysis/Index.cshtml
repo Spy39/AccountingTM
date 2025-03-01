@@ -1,198 +1,147 @@
 ﻿@{
-	ViewData["Title"] = "Analysis";
+    ViewData["Title"] = "Analysis";
     Layout = "~/Views/Shared/Layout/_Layout.cshtml";
 }
 
 @section LeftNavbar {
-	<ol class="breadcrumb float-sm-right m-0 bg-white">
-		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
-		<li class="breadcrumb-item active">Analysis</li>
-	</ol>
+    <ol class="breadcrumb float-sm-right m-0 bg-white">
+        <li class="breadcrumb-item">
+            <a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a>
+        </li>
+        <li class="breadcrumb-item active">Analysis</li>
+    </ol>
 }
+
 <section class="content-header">
-	<div class="container-fluid">
-		<div class="row mb-2">
-			<div class="col-sm-6">
-				<h1>Анализ</h1>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Анализ</h1>
+            </div>
+        </div>
+    </div>
 </section>
 
-<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-	<div class="row col-12">
-		<div class="col-2">
-            <select id="categories" class="form-select" aria-label="Default select example">
-                <option selected>Выберите тип анализа</option>
-                <option value="0">Технические средства</option>
-                <option value="1">Расходные материалы</option>
-                <option value="2">Неисправности</option>
-            </select>
-		</div>
+@{
+    ViewData["Title"] = "Прогноз неисправностей";
+    Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
 
-		<div class="col-2">
-				<select id="typeConsumable" class="form-select">
-					<option selected>Выберите тип расходного материала</option>
-				</select>
-		</div>
-
-		<div class="col-2">
-				<select id="brand" class="form-select">
-					<option selected>Выберите бренд</option>
-				</select>
-		</div>
-
-        <div class="col-2">
-				<select id="model" class="form-select">
-					<option selected>Выберите модель</option>
-				</select>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Прогноз неисправностей</h1>
+            </div>
         </div>
+    </div>
+</section>
 
-        <div class="col-2">
-				<input type="text"
-					   class="form-control"
-					   id="date"
-					   name="dateCompletedWork"
-					   placeholder="Дата" />
+<div class="container-fluid">
+    <!-- 🔴 Фильтр для прогнозирования неисправностей -->
+    <div class="card card-outline card-danger">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-tools"></i> Выберите параметры</h3>
         </div>
+        <div class="card-body">
+            <div class="row g-2 align-items-end">
+                <div class="col-md-4">
+                    <label for="equipmentType" class="form-label">Тип технического средства</label>
+                    <select id="equipmentType" class="form-select"></select>
+                </div>
+                <div class="col-md-4">
+                    <label for="brand" class="form-label">Бренд</label>
+                    <select id="brand" class="form-select"></select>
+                </div>
+                <div class="col-md-4">
+                    <label for="model" class="form-label">Модель</label>
+                    <select id="model" class="form-select"></select>
+                </div>
+            </div>
+            <div class="mt-3 d-flex justify-content-end gap-2">
+                <button class="btn btn-outline-primary w-100" id="CalculateBtn">
+                    <i class="fa-solid fa-check"></i> Применить
+                </button>
+                <button class="btn btn-outline-secondary w-100" id="TrainingBtn">
+                    <i class="fa-solid fa-brain"></i> Обучить
+                </button>
+            </div>
+        </div>
+    </div>
 
-		<div class="col-2">
-			<div class="float-sm-right">
-				<button class="btn btn-default" id="CalculateBtn">Применить</button>
-				<button class="btn btn-default" id="TrainingBtn">Обучить</button>
-			</div>
-		</div>
-	</div>
+    <!-- 🔄 Спиннер загрузки -->
+    <div id="loadingSpinner" class="text-center my-3" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2">Идёт расчёт, пожалуйста подождите...</p>
+    </div>
+
+    <!-- 🔴 График и таблица прогнозов неисправностей -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card card-outline card-danger">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-chart-line"></i> Прогноз неисправностей</h3>
+                </div>
+                <div class="card-body">
+                    <canvas id="faultLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-outline card-danger">
+                <div class="card-header">
+                    <h3 class="card-title"><i class="fas fa-table"></i> Детальный прогноз</h3>
+                </div>
+                <div class="card-body">
+                    <table id="faultsForecastTable" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Месяц</th>
+                                <th>Ожидаемые неисправности</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-box"></i> Прогноз расходных материалов</h3>
+        </div>
+        <div class="card-body">
+            <div class="row g-2">
+                <div class="col-md-4">
+                    <label for="consumableType">Тип</label>
+                    <select id="consumableType" class="form-select"></select>
+                </div>
+                <div class="col-md-4">
+                    <label for="consumableBrand">Бренд</label>
+                    <select id="consumableBrand" class="form-select"></select>
+                </div>
+                <div class="col-md-4">
+                    <label for="consumableModel">Модель</label>
+                    <select id="consumableModel" class="form-select"></select>
+                </div>
+            </div>
+            <div class="mt-3 d-flex justify-content-end">
+                <button class="btn btn-outline-primary" id="CalculateConsumableBtn">Применить</button>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="consumablesChart"></canvas>
+    <table id="consumablesForecastTable" class="table">
+        <thead><tr><th>Месяц</th><th>Прогноз расхода</th></tr></thead>
+        <tbody></tbody>
+    </table>
 </div>
 
-
-<section class="content">
-	<div class="container-fluid">
-		<div class="row">
-			<div class="col-12">
-
-				<div class="card card-primary card-outline">
-					<div class="card-header">
-						<h3 class="card-title">
-							<i class="far fa-chart-bar"></i><ya-tr-span data-index="36-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Interactive Area Chart " data-translation=" Интерактивная карта местности " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Интерактивная карта местности </ya-tr-span>
-						</h3>
-						<div class="card-tools">
-							<ya-tr-span data-index="37-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Real time " data-translation=" В режиме реального времени " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> В режиме реального времени </ya-tr-span><div class="btn-group" id="realtime" data-toggle="btn-toggle">
-								<button type="button" class="btn btn-default btn-sm active" data-toggle="on"><ya-tr-span data-index="38-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="On" data-translation="Вкл ." data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Вкл .</ya-tr-span></button>
-								<button type="button" class="btn btn-default btn-sm" data-toggle="off"><ya-tr-span data-index="38-1" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Off" data-translation="ВЫКЛ" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">ВЫКЛ</ya-tr-span></button>
-							</div>
-						</div>
-					</div>
-					<div class="card-body">
-						<div id="interactive" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 1107.8px; height: 300px;" width="1384" height="375"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 1107.8px; height: 300px;" width="1384" height="375"></canvas><div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;"><svg style="width: 100%; height: 100%;"><g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;"><text x="28" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">0</text><text x="131.88241388821842" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">10</text><text x="239.74099974680428" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">20</text><text x="347.59958560539013" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">30</text><text x="455.458171463976" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">40</text><text x="563.3167573225619" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">50</text><text x="671.1753431811477" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">60</text><text x="779.0339290397336" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">70</text><text x="886.8925148983194" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">80</text><text x="994.7511007569053" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">90</text></g><g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;"><text x="8.952343940734863" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0</text><text x="1" y="218.2" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">20</text><text x="1" y="167.4" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">40</text><text x="1" y="116.6" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">60</text><text x="1" y="65.8" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">80</text><text x="-6.95156192779541" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">100</text></g></svg></div></div>
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-		<div class="row">
-			<div class="col-md-6">
-
-				<div class="card card-primary card-outline">
-					<div class="card-header">
-						<h3 class="card-title">
-							<i class="far fa-chart-bar"></i><ya-tr-span data-index="39-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Line Chart " data-translation=" Линейный график " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Линейный график </ya-tr-span>
-						</h3>
-						<div class="card-tools">
-							<button type="button" class="btn btn-tool" data-card-widget="collapse">
-								<i class="fas fa-minus"></i>
-							</button>
-							<button type="button" class="btn btn-tool" data-card-widget="remove">
-								<i class="fas fa-times"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card-body">
-						<div id="line-chart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;"><svg style="width: 100%; height: 100%;"><g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;"><text x="37" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">0</text><text x="107.72592592592592" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">2</text><text x="178.45185185185184" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">4</text><text x="249.17777777777775" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">6</text><text x="319.9037037037037" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">8</text><text x="386.6534576592622" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">10</text><text x="457.37938358518807" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">12</text></g><g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;"><text x="1" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-1.5</text><text x="1" y="226.66666666666669" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-1.0</text><text x="1" y="184.33333333333334" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">-0.5</text><text x="5.975780487060547" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">1.5</text><text x="5.975780487060547" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0.0</text><text x="5.975780487060547" y="99.66666666666667" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0.5</text><text x="5.975780487060547" y="57.333333333333336" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">1.0</text></g></svg></div></div>
-					</div>
-
-				</div>
-
-
-				<div class="card card-primary card-outline">
-					<div class="card-header">
-						<h3 class="card-title">
-							<i class="far fa-chart-bar"></i><ya-tr-span data-index="40-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Area Chart " data-translation=" Схема местности " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Схема местности </ya-tr-span>
-						</h3>
-						<div class="card-tools">
-							<button type="button" class="btn btn-tool" data-card-widget="collapse">
-								<i class="fas fa-minus"></i>
-							</button>
-							<button type="button" class="btn btn-tool" data-card-widget="remove">
-								<i class="fas fa-times"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card-body">
-						<div id="area-chart" style="height: 338px; padding: 0px; position: relative;" class="full-width-chart"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 564.4px; height: 338px;" width="705" height="422"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 564.4px; height: 338px;" width="705" height="422"></canvas></div>
-					</div>
-
-				</div>
-
-			</div>
-
-			<div class="col-md-6">
-
-				<div class="card card-primary card-outline">
-					<div class="card-header">
-						<h3 class="card-title">
-							<i class="far fa-chart-bar"></i><ya-tr-span data-index="41-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Bar Chart " data-translation=" Столбчатая диаграмма " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Столбчатая диаграмма </ya-tr-span>
-						</h3>
-						<div class="card-tools">
-							<button type="button" class="btn btn-tool" data-card-widget="collapse">
-								<i class="fas fa-minus"></i>
-							</button>
-							<button type="button" class="btn btn-tool" data-card-widget="remove">
-								<i class="fas fa-times"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card-body">
-						<div id="bar-chart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><div class="flot-svg" style="position: absolute; top: 0px; left: 0px; height: 100%; width: 100%; pointer-events: none;"><svg style="width: 100%; height: 100%;"><g class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; inset: 0px;"><text x="106.95021230524236" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">February</text><text x="201.02272612831808" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">March</text><text x="289.8460229180076" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">April</text><text x="376.23377092534844" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">May</text><text x="25.455823482166636" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">January</text><text x="457.76839526783334" y="294" class="flot-tick-label tickLabel" style="position: absolute; text-align: center;">June</text></g><g class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; inset: 0px;"><text x="8.952343940734863" y="269" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">0</text><text x="8.952343940734863" y="205.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">5</text><text x="1" y="15" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">20</text><text x="1" y="142" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">10</text><text x="1" y="78.5" class="flot-tick-label tickLabel" style="position: absolute; text-align: right;">15</text></g></svg></div></div>
-					</div>
-
-				</div>
-
-
-				<div class="card card-primary card-outline">
-					<div class="card-header">
-						<h3 class="card-title">
-							<i class="far fa-chart-bar"></i><ya-tr-span data-index="42-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Donut Chart " data-translation=" Пончиковая диаграмма " data-ch="0" data-type="trSpan" style="visibility: inherit !important;"> Пончиковая диаграмма </ya-tr-span>
-						</h3>
-						<div class="card-tools">
-							<button type="button" class="btn btn-tool" data-card-widget="collapse">
-								<i class="fas fa-minus"></i>
-							</button>
-							<button type="button" class="btn btn-tool" data-card-widget="remove">
-								<i class="fas fa-times"></i>
-							</button>
-						</div>
-					</div>
-					<div class="card-body">
-						<div id="donut-chart" style="height: 300px; padding: 0px; position: relative;"><canvas class="flot-base" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><canvas class="flot-overlay" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 526.4px; height: 300px;" width="658" height="375"></canvas><span class="pieLabel" id="pieLabel0" style="position: absolute; top: 69.5px; left: 321.156px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;"><ya-tr-span data-index="43-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Series2" data-translation="Серия 2" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Серия 2</ya-tr-span><br><ya-tr-span data-index="43-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="30%" data-translation="30%" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">30%</ya-tr-span></div></span><span class="pieLabel" id="pieLabel1" style="position: absolute; top: 209.5px; left: 299.156px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;"><ya-tr-span data-index="44-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Series3" data-translation="Серия 3" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Серия 3</ya-tr-span><br><ya-tr-span data-index="44-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="20%" data-translation="20%" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">20%</ya-tr-span></div></span><span class="pieLabel" id="pieLabel2" style="position: absolute; top: 128.5px; left: 140.156px;"><div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;"><ya-tr-span data-index="45-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Series4" data-translation="Серия 4" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Серия 4</ya-tr-span><br><ya-tr-span data-index="45-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="50%" data-translation="50%" data-ch="0" data-type="trSpan" style="visibility: inherit !important;">50%</ya-tr-span></div></span></div>
-					</div>
-
-				</div>
-
-			</div>
-
-		</div>
-
-	</div>
-</section>
-
-
-
-@* @await Html.PartialAsync("_EditSetModal.cshtml") *@
-
 @section Scripts {
-	<script src="~/views/analysis/index.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/views/analysis/index.js"></script>
 }

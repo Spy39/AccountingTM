@@ -25,26 +25,28 @@
 </section>
 
 <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-	<div class="row">
-		<div class="col-1">
-			<a class="btn btn-default" asp-area="" asp-controller="Application" asp-action="Index">Назад</a>
-		</div>
-		<div class="col-3">
-	
-		</div>
-		<div class="col-4">
-		</div>
-		<div class="col-2">
+    <div class="row align-items-center">
+        <!-- Кнопка "Назад" -->
+        <div class="col-auto">
+            <a class="btn btn-outline-secondary" asp-area="" asp-controller="Application" asp-action="Index">
+                <i class="fa-solid fa-arrow-left"></i> Назад
+            </a>
+        </div>
 
-		</div>
+        <!-- Номер заявки -->
+        <div class="col-auto">
+            <p class="mb-0"><strong>Номер заявки:</strong> @Model.ApplicationNumber</p>
+        </div>
 
-		<div class="col-2">
-			<div class="float-sm-right">
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#AddTechnicalEquipmentModal">Прикрепить к ТС</button>
-			</div>
-		</div>
-	</div>
+        <!-- Выравнивание кнопки "Прикрепить к ТС" -->
+        <div class="col-auto ms-auto">
+            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#AddTechnicalEquipmentModal">
+                <i class="fa-solid fa-paperclip"></i> Прикрепить к ТС
+            </button>
+        </div>
+    </div>
 </div>
+
 
 <div class="container col-12">
 
@@ -93,6 +95,8 @@
                         <p>Исполнитель: <strong>@Model.Executor</strong></p>
                         <button class="btn btn-link">Назначить себе</button>
                         <button class="btn btn-link">Решена</button>
+                        <button class="btn btn-primary" id="save-changes-btn">Сохранить изменения</button>
+
                     </div>
                 </div>
             </div>
@@ -107,7 +111,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <p>Номер заявки: <strong>@Model.ApplicationNumber</strong></p>
+                    
                     <p>Прикреплена к ТС: <strong>@* @Model.ApplicationNumber *@ Нет</strong></p>
                     
                     <p>Дата создания: <strong>@Model.DateOfCreation</strong></p>
@@ -126,8 +130,8 @@
                         </h5>
                     </div>
                 </div>
-                <div class="card-body">
-                    <p>Здесь будет история изменений...</p>
+                <div class="card-body" id="history-container">
+                    <!-- История загрузится AJAX-ом -->
                 </div>
             </div>
 

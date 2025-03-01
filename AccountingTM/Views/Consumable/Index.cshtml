@@ -1,75 +1,80 @@
 ﻿@{
-	ViewData["Title"] = "Consumable";
+	ViewData["Title"] = "Расходные материалы";
 	Layout = "~/Views/Shared/Layout/_Layout.cshtml";
 }
 
-
 @section LeftNavbar {
 	<ol class="breadcrumb float-sm-right m-0 bg-white">
-		<li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
-		<li class="breadcrumb-item active">Consumable</li>
+		<li class="breadcrumb-item"><a asp-controller="TechnicalEquipment" asp-action="Index">Главная</a></li>
+		<li class="breadcrumb-item active">Расходные материалы</li>
 	</ol>
 }
+
 <section class="content-header">
 	<div class="container-fluid">
 		<div class="row mb-2">
 			<div class="col-sm-6">
-				<h1>Расходные материалы</h1>
+				<h1><i class="fa-solid fa-boxes-stacked me-2"></i> Расходные материалы</h1>
 			</div>
 		</div>
 	</div>
 </section>
 
-<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-	<div class="row">
-		<div class="col-9">
-			<!-- SEARCH FORM -->
-				<div class="col-3">
-					<div class="input-group">
-						<input id="search-input" type="search" class="form-control" placeholder="Поиск" aria-label="Recipient's username" aria-describedby="button-addon2">
-						<button class="btn btn-outline-secondary" type="submit" id="searchConsumableBtn"><i class="fas fa-search"></i></button>
-					</div>
-				</div>
+<div class="container-fluid shadow-sm p-3 mb-3 bg-body-tertiary rounded">
+	<div class="row align-items-center">
+		<!-- Поле поиска (вернул прошлый размер) -->
+		<div class="col-md-3 col-sm-12 mb-2">
+			<div class="input-group">
+				<input id="search-input" type="search" class="form-control" placeholder="Поиск..." aria-label="Поиск">
+				<button class="btn btn-outline-secondary" type="button" id="searchConsumableBtn">
+					<i class="fas fa-search"></i>
+				</button>
+			</div>
 		</div>
 
-		<div class="col-3">
-			<div class="float-sm-right">
+		<!-- Кнопки действий -->
+		<div class="col-md-9 col-sm-12 d-flex justify-content-md-end justify-content-start gap-2 flex-wrap">
+			<button class="btn btn-outline-primary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#create">
+				<i class="fa-solid fa-plus"></i> <span>Создать</span>
+			</button>
 
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#create">Добавить</button>
-
-				<div class="btn-group" role="group">
-					<button id="btnGroupDrop1" type="button" class="btn btn-default dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-						Фильтр
-					</button>
-					<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-						<li><a class="dropdown-item" href="#">В наличии</a></li>
-						<li><a class="dropdown-item" href="#">Нет в наличии</a></li>
-					</ul>
-				</div>
-
+			<!-- Выпадающий фильтр -->
+			<div class="dropdown">
+				<button class="btn btn-outline-secondary dropdown-toggle" type="button" id="btnGroupDrop1" data-bs-toggle="dropdown" aria-expanded="false">
+					<i class="fa-solid fa-filter"></i> Фильтр
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+					<li><a class="dropdown-item" href="#">В наличии</a></li>
+					<li><a class="dropdown-item" href="#">Нет в наличии</a></li>
+				</ul>
 			</div>
 		</div>
 	</div>
 </div>
 
-<table id="consumableTable" class="table table-striped table-hover" style="width:100%">
-	<thead>
-		<tr>
-			<th>Тип</th>
-			<th>Бренд</th>
-			<th>Модель</th>
-			<th>Местоположение</th>
-			<th>Количество</th>
-			<th>Ед. изм.</th>
-			<th>Статус</th>
-			<th>Последнее пополнение</th>
-			<th></th>
-		</tr>
-	</thead>
-
-	<tbody>
-	</tbody>
-</table>
+<!-- Таблица с данными -->
+<div class="container-fluid">
+	<div class="table-responsive w-100">
+		<table id="consumableTable" class="table table-striped table-hover align-middle">
+			<thead class="table-light">
+				<tr>
+					<th>Тип</th>
+					<th>Бренд</th>
+					<th>Модель</th>
+					<th>Местоположение</th>
+					<th>Количество</th>
+					<th>Ед. изм.</th>
+					<th>Статус</th>
+					<th>Последнее пополнение</th>
+					<th class="text-center">Действия</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- Данные загружаются динамически -->
+			</tbody>
+		</table>
+	</div>
+</div>
 
 @await Html.PartialAsync("_AddConsumableModal.cshtml")
 

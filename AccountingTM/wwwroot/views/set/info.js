@@ -4,7 +4,7 @@
 let tableCompoundSets = new DataTable('#compoundSetTable', {
     paging: true,
     serverSide: true,
-
+    responsive: true,
     ajax: function (data, callback, settings) {
         var filter = {};
         filter.setId = +$("#SetId").val();
@@ -74,6 +74,10 @@ let tableCompoundSets = new DataTable('#compoundSetTable', {
         {
             targets: 6,
             data: null,
+            orderable: false,
+            searchable: false,
+            className: 'text-nowrap',
+            width: '1%',
             render: (data, type, row, meta) => {
                 return `<a href="/technicalEquipment/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о ТС"><i class="fa-solid fa-circle-info"></i></a>
                         <button class="btn btn-danger delete compoundSet" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
@@ -85,6 +89,7 @@ let tableCompoundSets = new DataTable('#compoundSetTable', {
 let tableChangesSets = new DataTable('#changesSetTable', {
     paging: true,
     serverSide: true,
+    responsive: true,
     ajax: function (data, callback, settings) {
         var filter = {};
         filter.maxResultCount = data.length || 10;
@@ -137,6 +142,10 @@ let tableChangesSets = new DataTable('#changesSetTable', {
         {
             targets: 4,
             data: null,
+            orderable: false,
+            searchable: false,
+            className: 'text-nowrap',
+            width: '1%',
             render: (data, type, row, meta) => {
                 return `<button class="btn btn-danger delete changesCompoundSet" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;
             }
@@ -150,6 +159,7 @@ $("#search-btn").click(function () {
 let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
     paging: true,
     serverSide: true,
+    responsive: true,
     bAutoWidth: false,
     select: {
         selector: 'td:first-child',
@@ -241,6 +251,10 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
         {
             targets: 8,
             data: ``,
+            orderable: false,
+            searchable: false,
+            className: 'text-nowrap',
+            width: '1%',
             render: (data, type, row, meta) => {
                 return ``;
             }

@@ -1,4 +1,5 @@
 ﻿using AccountingTM.Domain.Models.Directory;
+using AccountingTM.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AccountingTM.Domain.Models
@@ -8,6 +9,9 @@ namespace AccountingTM.Domain.Models
     /// </summary>
     public class Consumable : Entity
     {
+        public int? TechnicalEquipmentId { get; set; }
+        [ForeignKey(nameof(TechnicalEquipmentId))]
+        public TechnicalEquipment? TechnicalEquipment { get; set; }
         public int TypeConsumableId { get; set; }
         [ForeignKey(nameof(TypeConsumableId))]
         public TypeConsumable TypeConsumable { get; set; } //Тип расходного матерала

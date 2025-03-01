@@ -1,27 +1,35 @@
-﻿@* Списание расходного материала *@
+﻿@* Модальное окно списания расходного материала *@
 <div class="modal fade" tabindex="-1" id="WriteOffConsumableModal">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Списание расходного материала</h5>
+				<h5 class="modal-title"><i class="fa-solid fa-minus-circle me-2"></i> Списание расходного материала</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
 
-				<div class="mb-1">
-					<label class="form-label" for="floatingInput">Количество</label>
-					<input type="text" class="form-control" id="quantityWriteOff" name="quantity" placeholder="Количество" />
+				@* Выбор технического средства (если списание связано с ТС) *@
+				<div class="mb-3">
+					<label class="form-label"><i class="fa-solid fa-print me-2"></i> Техническое средство</label>
+					<select id="technicalEquipment" class="form-control">
+						<option value="">— Не привязывать к ТС —</option>
+					</select>
 				</div>
 
-				<div class="mb-1">
-					<label class="form-label" for="floatingInput">Комментарий</label>
-					<input type="text" class="form-control" id="comment" name="comment" placeholder="Комментарий" />
+				<div class="mb-3">
+					<label class="form-label"><i class="fa-solid fa-box-open me-2"></i> Количество</label>
+					<input type="number" class="form-control" id="quantityWriteOff" name="quantity" placeholder="Введите количество">
+				</div>
+
+				<div class="mb-3">
+					<label class="form-label"><i class="fa-solid fa-comment me-2"></i> Комментарий</label>
+					<input type="text" class="form-control" id="commentWriteOff" name="comment" placeholder="Введите комментарий">
 				</div>
 
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-				<button id="writeOffBtn" class="btn btn-primary">Списать</button>
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-times"></i> Закрыть</button>
+				<button id="writeOffBtn" class="btn btn-danger"><i class="fa-solid fa-minus"></i> Списать</button>
 			</div>
 		</div>
 	</div>

@@ -25,430 +25,518 @@
 </section>
 
 <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-	<div class="row">
-		<div class="col-1">
-			<a class="btn btn-default" asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Назад</a>
+	<div class="row align-items-center">
+		<!-- Кнопка "Назад" -->
+		<div class="col-auto">
+			<a class="btn btn-outline-secondary" asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">
+				<i class="fa-solid fa-arrow-left"></i> Назад
+			</a>
 		</div>
-        <div class="col-9">
-            <h3>@Model.TypeEquipment @Model.Brand @Model.Model</h3>
-        </div>
-        <div class="col-2 text-end">
-            <button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editBasicModal" type="button">
-                <i class="fa-solid fa-pen"></i>
-            </button>
-            <button class="btn btn-default" type="button">
-                <i class="fa-solid fa-download"></i>
-            </button>
-            <button class="btn btn-default" type="button">
-                <i class="fa-solid fa-print"></i>
-            </button>
-        </div>
+
+		<!-- Название оборудования -->
+		<div class="col text-center">
+			@if (Model.IsDeleted)
+			{
+				<h3 class="mb-0 text-danger">
+					@Model.TypeEquipment @Model.Brand @Model.Model
+				</h3>
+			}
+			else
+			{
+				<h3 class="mb-0">
+					@Model.TypeEquipment @Model.Brand @Model.Model
+				</h3>
+			}
+		</div>
+
+		<!-- Кнопки действий -->
+		<!-- Кнопки действий -->
+		<div class="col-auto d-flex flex-wrap gap-2 justify-content-end">
+			@* Если ТС списано, кнопки редактирования и списания не отображаем *@
+			@if (!Model.IsDeleted)
+			{
+				<button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editBasicModal" type="button">
+					<i class="fa-solid fa-pen"></i> Изменить
+				</button>
+				<button id="writeOffEquipmentBtn" class="btn btn-outline-danger" data-id="@Model.TechnicalId">
+					<i class="fa-solid fa-trash"></i> Списать
+				</button>
+			}
+			else
+			{
+				<button class="btn btn-outline-secondary" disabled>
+					<i class="fa-solid fa-pen"></i> Изменить
+				</button>
+				<button class="btn btn-outline-danger" disabled>
+					<i class="fa-solid fa-trash"></i> Списать
+				</button>
+			}
+		</div>
 	</div>
 </div>
 
+
 <div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
-	<div class="row">
-		
-		<div class="col-3 p-1">
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="floatingInputValue" value="@(Model.Status ?? string.Empty)" readonly>
-				<label for="floatingInputValue">Статус</label>
-			</form>
+	<div class="row g-2">
+		<!-- Статус -->
+		<div class="col-md-3">
+			<div class="form-floating">
+				<input type="text" class="form-control" id="statusInput" value="@(Model.Status ?? "Неизвестно")" readonly>
+				<label for="statusInput">Статус</label>
+			</div>
 		</div>
-		<div class="col-3 p-1">
-			<form class="form-floating mb-2">
-				@if(Model.Set != null){
+
+		<!-- Комплект -->
+		<div class="col-md-3">
+			<div class="form-floating">
+				@if (Model.Set != null)
+				{
 					<a href="/Set/@Model.Set.Id" class="form-control text-decoration-none" readonly>
 						@Model.Set.Name
 					</a>
 				}
-				else{
-					<input type="text" class="form-control" id="floatingInputValue" value="Не входит в комплект" readonly>
-
+				else
+				{
+					<input type="text" class="form-control" id="setInput" value="Не входит в комплект" readonly>
 				}
-
-				<label for="floatingInputValue">Комплект</label>
-			</form>
-		</div>
-		<div class="col-3 p-1">
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="floatingInputValue" value="Добавить дату" readonly>
-				<label for="floatingInputValue">Последнее обслуживание</label>
-			</form>
-		</div>
-		<div class="col-3 p-1">
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="floatingInputValue" value="Добавить дату" readonly>
-				<label for="floatingInputValue">Последнее изменение</label>
-			</form>
+				<label for="setInput">Комплект</label>
+			</div>
 		</div>
 
-@* 		<button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="Подсказка вверху">
-			Подсказка вверху
-		</button> *@
+		<!-- Последнее обслуживание -->
+		<div class="col-md-3">
+			<div class="form-floating">
+				<input type="text" class="form-control" id="lastServiceInput" value="Добавить дату" readonly>
+				<label for="lastServiceInput">Последнее обслуживание</label>
+			</div>
+		</div>
 
-		
+		<!-- Последнее изменение -->
+		<div class="col-md-3">
+			<div class="form-floating">
+				<input type="text" class="form-control" id="lastChangeInput" value="Добавить дату" readonly>
+				<label for="lastChangeInput">Последнее изменение</label>
+			</div>
+		</div>
 	</div>
 </div>
 
 
 
+<div id="equipmentInfo">
+
 <div class="container col-12">
 	<div class="row">
-		<div class="col-3 p-1">
-			<div class="row btn-light">
-				<h4>Основная информация</h4>
-				<img src="~/img/technical-support.png" class="img-fluid mb-3" alt="Technical Support">
-			</div>
-<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="serialNumberInput" value="@(Model.SerialNumber ?? string.Empty)" readonly>
-				<label for="serialNumberInput">Серийный номер</label>
-			</form>
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="inventoryNumberInput" value="@Model.InventoryNumber" readonly>
-				<label for="inventoryNumberInput">Инвентарный номер</label>
-			</form>
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="responsibleEmployeeInput" value="@(Model.Employee?.FullName ?? string.Empty)" readonly>
-				<label for="responsibleEmployeeInput">Ответственный</label>
-			</form>
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="locationInput" value="@Model.Location.Name" readonly>
-				<label for="locationInput">Местоположение</label>
-			</form>
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="manufactureDateInput" value="@(Model.Date?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
-				<label for="manufactureDateInput">Дата изготовления</label>
-			</form>
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="startDateInput" value="@(Model.DateStart?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
-				<label for="startDateInput">Ввод в эксплуатацию</label>
-			</form>
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="averageLifetimeInput" value="@(Model.DateEnd?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
-				<label for="averageLifetimeInput">Средний срок работы</label>
-			</form>
-			<form class="form-floating mb-2">
-				<input type="text" class="form-control" id="warrantyPeriodInput" value="@(Model.DateGarant?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
-				<label for="warrantyPeriodInput">Гарантийный срок работы</label>
-			</form>			
-			<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-2">
-				<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editAdditionalModal" type="button">
-					<i class="fa-solid fa-edit me-2"></i>Изменить
-				</button>
+		<div class="col-lg-3 col-md-4 p-3">
+			<div class="shadow-sm p-3 bg-body-tertiary rounded">
+				<div class="text-center mb-3">
+					<h4 class="mb-2">Основная информация</h4>
+					@* <img src="~/img/technical-support.png" class="img-fluid" alt="Technical Support"> *@
+				</div>
+
+				<div class="row g-2">
+					<div class="col-12">
+						<label class="form-label">Серийный номер</label>
+						<input type="text" class="form-control" value="@(Model.SerialNumber ?? string.Empty)" readonly>
+					</div>
+					<div class="col-12">
+						<label class="form-label">Инвентарный номер</label>
+						<input type="text" class="form-control" value="@Model.InventoryNumber" readonly>
+					</div>
+					<div class="col-12">
+						<label class="form-label">Ответственный</label>
+						<input type="text" class="form-control" value="@(Model.Employee?.FullName ?? string.Empty)" readonly>
+					</div>
+					<div class="col-12">
+						<label class="form-label">Местоположение</label>
+						<input type="text" class="form-control" value="@Model.Location.Name" readonly>
+					</div>
+					<div class="col-12">
+						<label class="form-label">Дата изготовления</label>
+						<input type="text" class="form-control" value="@(Model.Date?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
+					</div>
+					<div class="col-12">
+						<label class="form-label">Ввод в эксплуатацию</label>
+						<input type="text" class="form-control" value="@(Model.DateStart?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
+					</div>
+					<div class="col-12">
+						<label class="form-label">Средний срок работы</label>
+						<input type="text" class="form-control" value="@(Model.DateEnd?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
+					</div>
+					<div class="col-12">
+						<label class="form-label">Гарантийный срок работы</label>
+						<input type="text" class="form-control" value="@(Model.DateGarant?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
+					</div>
+				</div>
+
+				<div class="d-grid mt-3">
+						@if (!Model.IsDeleted)
+						{
+							<button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#editAdditionalModal">
+								<i class="fa-solid fa-pen"></i> Изменить
+							</button>
+						}
+						else
+						{
+							<button class="btn btn-outline-secondary" disabled>
+								<i class="fa-solid fa-pen"></i> Изменить
+							</button>
+						}
+				</div>
 			</div>
 		</div>
+		
 
 
 
 		<div class="col-9 p-3">
 
 			<div class="row">
-				<div class="shadow-sm p-3 mb-3 bg-body-tertiary rounded">
-					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="mb-0">
-							<i class="fa-solid fa-file-pen"></i> Описание
-						</h5>
-						<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#editDescriptionModal" type="button">
-							<i class="fa-solid fa-pen"></i> Изменить
-						</button>
-					</div>
-					<div class="mt-3">
-						<p>Здесь текст описания...</p>
+				<!-- Описание -->
+				<div class="col-12">
+					<div class="card card-outline card-secondary shadow-sm">
+						<div class="card-header d-flex justify-content-between align-items-center">
+							<h5 class="mb-0"><i class="fa-solid fa-file-pen me-2"></i> Описание</h5>
+							<div class="card-tools ms-auto">
+									@if (!Model.IsDeleted)
+									{
+										<button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#editDescriptionModal">
+											<i class="fa-solid fa-pen"></i> Изменить
+										</button>
+									}
+									else
+									{
+										<button class="btn btn-outline-secondary" disabled>
+											<i class="fa-solid fa-pen"></i> Изменить
+										</button>
+									}
+
+							</div>
+						</div>
+						<div class="card-body">
+							<p>Здесь текст описания...</p>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="row">
-				<div class="shadow-sm p-3 mb-3 bg-body-tertiary rounded">
-					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="mb-0">
-							<i class="fa-solid fa-clipboard-list"></i> Учет выполненных работ
-						</h5>
-						<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#addCompletedWorkModal" type="button">
-							<i class="fa-solid fa-plus"></i> Добавить
-						</button>
-					</div>
-					<div class="table-responsive mt-3">
-						<table id="completedWorkTable" class="table table-bordered align-middle table-hover" style="width:100%">
-							<thead class="table-light">
-								<tr>
-									<th>Дата</th>
-									<th>Номер заявки</th>
-									<th>Наименование</th>
-									<th>Фамилия выполнившего работу</th>
-									<th>Статус</th>
-									<th>Действия</th>
-								</tr>
-							</thead>
-							<tbody>
-								<!-- Динамические данные -->
-							</tbody>
-						</table>
+				<!-- Учет выполненных работ -->
+				<div class="col-12">
+					<div class="card card-outline card-secondary shadow-sm">
+						<div class="card-header d-flex justify-content-between align-items-center">
+							<h5 class="mb-0"><i class="fa-solid fa-clipboard-list me-2"></i> Учет выполненных работ</h5>
+								<div class="card-tools ms-auto">
+									@if (!Model.IsDeleted)
+									{
+										<button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addCompletedWorkModal">
+											<i class="fa-solid fa-plus"></i> Добавить
+										</button>
+									}
+									else
+									{
+										<button class="btn btn-outline-secondary" disabled>
+											<i class="fa-solid fa-plus"></i> Добавить
+										</button>
+									}
+								</div>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table id="completedWorkTable" class="table table-bordered table-striped table-hover align-middle">
+									<thead class="table-light">
+										<tr>
+											<th>Дата</th>
+											<th>Номер заявки</th>
+											<th>Наименование</th>
+											<th>Фамилия выполнившего работу</th>
+											<th>Статус</th>
+											<th>Действия</th>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- Динамические данные -->
+									</tbody>
+								</table>
+							</div>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="row">
-				<div class="shadow-sm p-3 mb-3 bg-body-tertiary rounded">
-					<div class="d-flex justify-content-between align-items-center">
-						<h5 class="mb-0">
-							<i class="fa-solid fa-wrench"></i> Техническое обслуживание
-						</h5>
-						<button class="btn btn-default" data-bs-toggle="modal" data-bs-target="#addCompletedWorkModal" type="button">
-							<i class="fa-solid fa-plus"></i> Добавить
-						</button>
-					</div>
-					<div class="table-responsive mt-3">
-						<table id="completedWorkTable" class="table table-bordered align-middle table-hover" style="width:100%">
-							<thead class="table-light">
-								<tr>
-									<th>Дата</th>
-									<th>Вид ТО</th>
-									<th>Наименование</th>
-									<th>Фамилия проводившего ТО</th>
-									<th>Действия</th>
-								</tr>
-							</thead>
-							<tbody>
-								<!-- Динамические данные -->
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
 
-			<div class="row">
-				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
-					<div class="card collapsed-card">
-						<div class="card-header">
-							<h3 class="card-title mb-0">
-								<i class="fa-solid fa-list me-2"></i>Характеристики
-							</h3>
-							<div class="card-tools">
-								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#createCharacteristicModal">
-									<i class="fas fa-square-plus"></i>
-								</button>
-								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
+
+
+					<div class="row">
+						<!-- Характеристики -->
+						<div class="col-12 mb-3">
+							<div class="card card-outline card-secondary collapsed-card shadow-sm">
+								<div class="card-header d-flex justify-content-between align-items-center">
+									<h5 class="mb-0">
+										<i class="fa-solid fa-list me-2"></i> Характеристики
+									</h5>
+									<div class="card-tools ms-auto">
+										@if (!Model.IsDeleted)
+										{
+											<button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#createCharacteristicModal">
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										else
+										{
+											<button class="btn btn-outline-secondary btn-sm" disabled>
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										<button type="button" class="btn btn-outline-secondary btn-sm" data-card-widget="collapse">
+											<i class="fas fa-chevron-down"></i>
+										</button>
+										<button type="button" class="btn btn-outline-danger btn-sm" data-card-widget="remove">
+											<i class="fas fa-times"></i>
+										</button>
+									</div>
+								</div>
+								<div class="card-body">
+									<table id="characteristic" class="table table-bordered table-hover align-middle w-100">
+										<thead class="table-light">
+											<tr>
+												<th>Показатель</th>
+												<th>Ед. измерения</th>
+												<th>Значение</th>
+												<th>Действия</th>
+											</tr>
+										</thead>
+										<tbody>
+											<!-- Динамические данные -->
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 
-						<div class="card-body">
-							<table id="characteristic" class="table table-bordered table-hover align-middle">
-								<thead class="table">
-									<tr>
-										<th>Показатель</th>
-										<th>Ед. измерения</th>
-										<th>Значение</th>
-										<th>Действия</th>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
-					<div class="card collapsed-card">
-						<div class="card-header">
-							<h3 class="card-title mb-0">
-                                <i class="fa-solid fa-handshake me-2"></i>Прием и передача изделия
-							</h3>
-							<div class="card-tools">
-								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addReceptionAndTransmissionModal">
-									<i class="fas fa-square-plus"></i>
-								</button>
-								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
+						<!-- Прием и передача изделия -->
+						<div class="col-12 mb-3">
+							<div class="card card-outline card-secondary collapsed-card shadow-sm">
+								<div class="card-header d-flex justify-content-between align-items-center">
+									<h5 class="mb-0">
+										<i class="fa-solid fa-handshake me-2"></i> Прием и передача изделия
+									</h5>
+									<div class="card-tools ms-auto">
+										@if (!Model.IsDeleted)
+										{
+											<button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addReceptionAndTransmissionModal">
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										else
+										{
+											<button class="btn btn-outline-secondary btn-sm" disabled>
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										<button type="button" class="btn btn-outline-secondary btn-sm" data-card-widget="collapse">
+											<i class="fas fa-chevron-down"></i>
+										</button>
+										<button type="button" class="btn btn-outline-danger btn-sm" data-card-widget="remove">
+											<i class="fas fa-times"></i>
+										</button>
+									</div>
+								</div>
+								<div class="card-body">
+									<table id="receptionAndTransmissionTable" class="table table-bordered table-hover align-middle w-100">
+										<thead class="table-light">
+											<tr>
+												<th>Дата</th>
+												<th>Состояние изделия</th>
+												<th>Основание (наименование и номер документа)</th>
+												<th>Предприятие и ФИО сдавшего</th>
+												<th>Предприятие и ФИО принявшего</th>
+												<th>Примечание</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<!-- Динамические данные -->
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 
-						<div class="card-body">
-							<table id="receptionAndTransmissionTable" class="table table-bordered align-middle table-hover">
-								<thead class="table">
-									<tr>
-										<td>Дата</td>
-										<td>Состояние изделия</td>
-										<td>Основание (наименование и номер документа)</td>
-										<td>Предприятие и ФИО сдавшего</td>
-										<td>Предприятие и ФИО принявшего</td>
-										<td>Примечание</td>
-										<td></td>
-									</tr>
-								</thead>
-								<tbody>
-
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
-					<div class="card collapsed-card">
-						<div class="card-header">
-							<h3 class="card-title mb-0">
-								<i class="fa-solid fa-screwdriver-wrench me-2"></i>Ремонт
-							</h3>
-							<div class="card-tools">
-								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addRepairModal">
-									<i class="fas fa-square-plus"></i>
-								</button>
-								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
+						<!-- Ремонт -->
+						<div class="col-12 mb-3">
+							<div class="card card-outline card-secondary collapsed-card shadow-sm">
+								<div class="card-header d-flex justify-content-between align-items-center">
+									<h5 class="mb-0">
+										<i class="fa-solid fa-screwdriver-wrench me-2"></i> Ремонт
+									</h5>
+									<div class="card-tools ms-auto">
+										@if (!Model.IsDeleted)
+										{
+											<button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addRepairModal">
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										else
+										{
+											<button class="btn btn-outline-secondary btn-sm" disabled>
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										<button type="button" class="btn btn-outline-secondary btn-sm" data-card-widget="collapse">
+											<i class="fas fa-chevron-down"></i>
+										</button>
+										<button type="button" class="btn btn-outline-danger btn-sm" data-card-widget="remove">
+											<i class="fas fa-times"></i>
+										</button>
+									</div>
+								</div>
+								<div class="card-body">
+									<table id="repairTable" class="table table-bordered table-hover align-middle w-100">
+										<thead class="table-light">
+											<tr>
+												<th>Дата</th>
+												<th>Предприятие</th>
+												<th>Причина поступления в ремонт</th>
+												<th>Сведения о производственном ремонте</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<!-- Динамические данные -->
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 
-						<div class="card-body">
-							<table id="repairTable" class="table table-bordered align-middle table-hover" style="width:100%">
-								<thead class="table">
-									<tr>
-										<td>Дата</td>
-										<td>Предприятие</td>
-										<td>Причина поступления в ремонт</td>
-										<td>Сведения о производственном ремонте</td>
-										<td></td>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
-					<div class="card collapsed-card">
-						<div class="card-header">
-							<h3 class="card-title mb-0">
-								<i class="fa-solid fa-box-archive me-2"></i>Хранение
-							</h3>
-							<div class="card-tools">
-								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addStorageModal">
-									<i class="fas fa-square-plus"></i>
-								</button>
-								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
+						<!-- Хранение -->
+						<div class="col-12 mb-3">
+							<div class="card card-outline card-secondary collapsed-card shadow-sm">
+								<div class="card-header d-flex justify-content-between align-items-center">
+									<h5 class="mb-0">
+										<i class="fa-solid fa-box-archive me-2"></i> Хранение
+									</h5>
+									<div class="card-tools ms-auto">
+										@if (!Model.IsDeleted)
+										{
+											<button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addStorageModal">
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										else
+										{
+											<button class="btn btn-outline-secondary btn-sm" disabled>
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										<button type="button" class="btn btn-outline-secondary btn-sm" data-card-widget="collapse">
+											<i class="fas fa-chevron-down"></i>
+										</button>
+										<button type="button" class="btn btn-outline-danger btn-sm" data-card-widget="remove">
+											<i class="fas fa-times"></i>
+										</button>
+									</div>
+								</div>
+								<div class="card-body">
+									<table id="storageTable" class="table table-bordered table-hover align-middle w-100">
+										<thead class="table-light">
+											<tr>
+												<th>Дата приемки</th>
+												<th>Дата снятия</th>
+												<th>Условия</th>
+												<th>Вид хранения</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<!-- Динамические данные -->
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 
-						<div class="card-body">
-							<table id="storageTable" class="table table-bordered align-middle table-hover" style="width:100%">
-								<thead class="table">
-									<tr>
-										<td>Дата приемки на хранение</td>
-										<td>Дата снятия с хранения</td>
-										<td>Условия хранения</td>
-										<td>Вид хранения</td>
-										<td></td>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
-					<div class="card collapsed-card">
-						<div class="card-header">
-							<h3 class="card-title mb-0">
-								<i class="fa-solid fa-warehouse me-2"></i>Консервация
-							</h3>
-							<div class="card-tools">
-								<button type="submit" title="Добавить" class="btn btn-tool" data-bs-toggle="modal" data-bs-target="#addConservationModal">
-									<i class="fas fa-square-plus"></i>
-								</button>
-								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
+						<!-- Консервация -->
+						<div class="col-12 mb-3">
+							<div class="card card-outline card-secondary collapsed-card shadow-sm">
+								<div class="card-header d-flex justify-content-between align-items-center">
+									<h5 class="mb-0">
+										<i class="fa-solid fa-warehouse me-2"></i> Консервация
+									</h5>
+									<div class="card-tools ms-auto">
+										@if (!Model.IsDeleted)
+										{
+											<button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#addConservationModal">
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										else
+										{
+											<button class="btn btn-outline-secondary btn-sm" disabled>
+												<i class="fas fa-plus"></i> Добавить
+											</button>
+										}
+										<button type="button" class="btn btn-outline-secondary btn-sm" data-card-widget="collapse">
+											<i class="fas fa-chevron-down"></i>
+										</button>
+										<button type="button" class="btn btn-outline-danger btn-sm" data-card-widget="remove">
+											<i class="fas fa-times"></i>
+										</button>
+									</div>
+								</div>
+								<div class="card-body">
+									<table id="conservationTable" class="table table-bordered table-hover align-middle w-100">
+										<thead class="table-light">
+											<tr>
+												<th>Дата</th>
+												<th>Наименование работ</th>
+												<th>Срок действия</th>
+												<th>Ответственный</th>
+												<th></th>
+											</tr>
+										</thead>
+										<tbody>
+											<!-- Динамические данные -->
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
-
-						<div class="card-body">
-							<table id="conservationTable" class="table table-bordered align-middle table-hover" style="width:100%">
-								<thead class="table">
-									<tr>
-										<td>Дата</td>
-										<td>Наименование работ</td>
-										<td>Срок действия</td>
-										<td>Фамилия и инициалы</td>
-										<td></td>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
 					</div>
 				</div>
-			</div>
-
-			<div class="row">
-				<div class="shadow-sm p-2 mb-1 bg-body-tertiary rounded">
-					<div class="card collapsed-card">
-						<div class="card-header">
-							<h3 class="card-title mb-0">
-								<i class="fa-solid fa-timeline me-2"></i>История операций
-							</h3>
-							<div class="card-tools">
-								<button type="button" title="Отобразить / Скрыть" class="btn btn-tool" data-card-widget="collapse">
-									<i class="fas fa-minus"></i>
-								</button>
-								<button type="button" title="Убрать" class="btn btn-tool" data-card-widget="remove">
-									<i class="fas fa-times"></i>
-								</button>
+				<!-- История операций -->
+	@* 				<div class="col-12">
+						<div class="card card-outline card-secondary collapsed-card shadow-sm">
+							<div class="card-header d-flex justify-content-between align-items-center">
+								<h5 class="mb-0">
+									<i class="fa-solid fa-timeline me-2"></i> История операций
+								</h5>
+								<div class="card-tools ms-auto">
+									<button type="button" class="btn btn-outline-secondary btn-sm" data-card-widget="collapse">
+										<i class="fas fa-chevron-down"></i>
+									</button>
+									<button type="button" class="btn btn-outline-danger btn-sm" data-card-widget="remove">
+										<i class="fas fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body">
+								<table id="disposalInformationTable" class="table table-bordered align-middle table-hover">
+									<thead class="table-light">
+										<tr>
+											<th>Дата</th>
+											<th>Тип операции</th>
+											<th>Наименование операции</th>
+											<th>ФИО</th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<!-- Динамические данные -->
+									</tbody>
+								</table>
 							</div>
 						</div>
-
-						<div class="card-body">
-							<table id="disposalInformationTable" class="table table-bordered align-middle table-hover" style="width:100%">
-								<thead class="table">
-									<tr>
-										<td>Дата</td>
-										<td>Тип операции</td>
-										<td>Наименование операции</td>
-										<td>ФИО</td>
-										<td></td>
-									</tr>
-								</thead>
-								<tbody>
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
+					</div> *@
+		
 			</div>
 			
 		</div>

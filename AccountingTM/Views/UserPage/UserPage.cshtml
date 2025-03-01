@@ -1,0 +1,100 @@
+﻿@using AccountingTM.ViewModels.UserPage
+@model UserPageViewModel
+
+@{
+    ViewData["Title"] = "Персональная страница";
+    Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+
+@section LeftNavbar {
+    <ol class="breadcrumb float-sm-right m-0 bg-white">
+        <li class="breadcrumb-item">
+            <a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Главная</a>
+        </li>
+        <li class="breadcrumb-item active">Персональная страница</li>
+    </ol>
+}
+
+<div class="container col-lg-10 col-md-12 mb-4">
+    <div class="shadow-sm p-4 bg-body-tertiary rounded">
+        <!-- Заголовок страницы -->
+        <h3 class="fw-bold text-center mb-4">
+            <i class="fa-solid fa-user-circle me-2"></i> Персональная страница
+        </h3>
+
+        <div class="row row-cols-1 row-cols-md-2 g-3">
+            <!-- Блок информации о пользователе -->
+            <div class="col">
+                <div class="card card-outline card-secondary shadow-sm h-100">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fa-solid fa-id-badge me-2"></i> Информация</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="userFullName" value="@Model.FullName" readonly>
+                            <label for="userFullName"><i class="fa-solid fa-user me-2"></i> ФИО</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="userLogin" value="@Model.Login" readonly>
+                            <label for="userLogin"><i class="fa-solid fa-user-lock me-2"></i> Логин</label>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="userPosition" value="@Model.Position" readonly>
+                            <label for="userPosition"><i class="fa-solid fa-briefcase me-2"></i> Должность</label>
+                        </div>
+
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="userRights" value="@Model.Rights" readonly>
+                            <label for="userRights"><i class="fa-solid fa-user-shield me-2"></i> Права доступа</label>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-end">
+                        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#resetPasswordModal">
+                            <i class="fa-solid fa-rotate me-1"></i> Сбросить пароль
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Блок уведомлений -->
+            <div class="col">
+                <div class="card card-outline card-primary shadow-sm h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0"><i class="fa-solid fa-bell me-2"></i> Уведомления</h5>
+                        <button id="markAllRead" class="btn btn-outline-secondary btn-sm">
+                            <i class="fa-solid fa-check"></i> Отметить все
+                        </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Сообщение</th>
+                                        <th class="text-center">Дата</th>
+                                        <th class="text-center">Статус</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="notificationTableBody">
+                                    <tr>
+                                        <td colspan="3" class="text-center py-3">Загрузка...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@await Html.PartialAsync("_ResetPasswordModal.cshtml")
+
+@section Scripts {
+    <script src="~/views/userPage/index.js" asp-append-version="true"></script>
+    <script src="~/js/userNotifications.js" asp-append-version="true"></script>
+}

@@ -1,56 +1,25 @@
-﻿    <!-- Right navbar links -->
-<ul class="navbar-nav ml-auto">
-    <!-- Messages Dropdown Menu -->
-    <li class="nav-item">
-        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-            <i class="fas fa-search"></i>
-        </a>
-        <div class="navbar-search-block" style="display: none;">
-            <form class="form-inline">
-                <div class="input-group input-group-sm">
-                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                    <div class="input-group-append">
-                        <button class="btn btn-navbar" type="submit">
-                            <i class="fas fa-search"></i>
-                        </button>
-                        <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </li>
+﻿<!-- Right navbar links -->
+<ul class="navbar-nav ms-auto d-flex align-items-center gap-3">
+
+    <!-- Notifications Dropdown -->
     <li class="nav-item dropdown">
-        <a class="nav-link" data-toggle="dropdown" href="#" aria-expanded="false">
+        <a class="nav-link" id="notificationIcon" data-toggle="dropdown" href="#">
             <i class="far fa-bell"></i>
-            <span class="badge badge-warning navbar-badge">15</span>
+            <span id="notificationCount" class="badge badge-warning navbar-badge" style="display: none;">0</span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="left: inherit; right: 0px;">
-            <span class="dropdown-item dropdown-header">15 Notifications</span>
+        <div id="notificationDropdown" class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+            <span class="dropdown-item dropdown-header">Уведомления</span>
             <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-                <i class="fas fa-envelope mr-2"></i> 4 new messages
-                <span class="float-right text-muted text-sm">3 mins</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-                <i class="fas fa-users mr-2"></i> 8 friend requests
-                <span class="float-right text-muted text-sm">12 hours</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item">
-                <i class="fas fa-file mr-2"></i> 3 new reports
-                <span class="float-right text-muted text-sm">2 days</span>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+            <div id="notificationList"></div>
+            <a href="#" class="dropdown-item dropdown-footer" onclick="markAsRead()">Отметить все как прочитанные</a>
         </div>
     </li>
+
+    <!-- Logout Button -->
     <li class="nav-item">
-        <form asp-action="Logout" asp-controller="Account" method="post">
-            <button class="nav-link" type="submit">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        <form asp-action="Logout" asp-controller="Account" method="post" class="d-inline">
+            <button class="btn btn-outline-danger btn-sm">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Выйти
             </button>
         </form>
     </li>

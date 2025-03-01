@@ -3,6 +3,7 @@
 let tableCompletedWorks = new DataTable('#completedWorkTable', {
     paging: true,
     serverSide: true,
+    responsive: true,
     ajax: function (data, callback, settings) {
         var filter = {};
         filter.searchQuery = $("#search-input").val()
@@ -76,6 +77,10 @@ let tableCompletedWorks = new DataTable('#completedWorkTable', {
     {
         targets: 5,
         data: null,
+        orderable: false,
+        searchable: false,
+        className: 'text-nowrap',
+        width: '1%',
         render: (data, type, row, meta) => {
             return `<a href="application/${row.id}" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-title="Информация о заявке"><i class="fa-solid fa-circle-info"></i></a>
                     <button class="btn btn-danger delete completedWork" data-id="${row.id}" data-name="${row.name}" data-bs-toggle="tooltip" data-bs-title="Удалить"><i class="fa-solid fa-trash"></i></button>`;

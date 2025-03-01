@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "Audit";
+    Layout = "~/Views/Shared/Layout/_Layout.cshtml";
+}
+
+@section LeftNavbar {
+    <ol class="breadcrumb float-sm-right m-0 bg-white">
+        <li class="breadcrumb-item"><a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">Home</a></li>
+        <li class="breadcrumb-item active">Audit</li>
+    </ol>
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Аудит</h1>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="shadow-sm p-3 mb-1 bg-body-tertiary rounded">
+    <div class="row align-items-center">
+        <!-- Поле поиска -->
+        <div class="col-md-4">
+            <div class="input-group">
+                <input id="search-input" type="search" class="form-control" placeholder="Поиск">
+                <button class="btn btn-outline-secondary" type="submit" id="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Пустой блок для центрирования -->
+        <div class="col-md-4 d-none d-md-block"></div>
+
+        <!-- Поле выбора диапазона дат -->
+        <div class="col-md-4">
+            <div class="input-group">
+                <input id="dateAudit" type="text" class="form-control" placeholder="Выберите диапазон дат">
+                <button class="btn btn-outline-secondary" type="submit" id="date-search-btn">
+                    <i class="fas fa-calendar-alt"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+                <table id="auditTable" class="table table-bordered align-middle table-hover table-striped w-100">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Дата</th>
+                            <th>Таблица</th>
+                            <th>Операция</th>
+                            <th>PrimaryKey</th>
+                            <th>Пользователь</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Заполнение происходит через DataTables -->
+                    </tbody>
+                </table>
+
+
+@section Scripts {
+    <script src="~/views/audit/index.js" asp-append-version="true"></script>
+}

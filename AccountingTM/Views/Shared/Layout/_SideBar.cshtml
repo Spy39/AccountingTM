@@ -1,115 +1,175 @@
-﻿<!-- Main Sidebar Container -->
+﻿@using AccountingTM.Authorization
+@using AccountingTM.Domain.Authorization
+
+@{
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+
+    bool isAdminActive = new[] { "Directory", "Users", "Roles", "Audit" }.Contains(currentController);
+}
+
+@inject PermissionChecker _permissionChecker;
+
+<!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
+
     <!-- Brand Logo -->
-    <a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index" class="brand-link">
-        <img src="~/img/technical-support.png" alt="AccountingTM Logo" class="brand-image img-circle elevation-3"
-             style="opacity: .8">
-        <span class="brand-text font-weight-light">AccountingTM</span>
+    <a asp-area="" asp-controller="TechnicalEquipment" asp-action="Index" class="brand-link text-center">
+        <img src="~/img/technical-support.png" alt="AccountingTM Logo" class="brand-image img-circle elevation-3">
+        <span class="brand-text font-weight-bold">AccountingTM</span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+
+        <!-- User Panel -->
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex align-items-center">
             <div class="image">
-                <i class="fa-solid fa-user img-circle elevation-2"></i>
+                <i class="fa-solid fa-user img-circle elevation-2 text-white"></i>
             </div>
             <div class="info">
-                <a asp-area="" asp-controller="Account" asp-action="UserPage" class="d-block">@User.Identity.Name</a>
+                <a asp-area="" asp-controller="UserPage" asp-action="UserPage" class="d-block">@User.Identity.Name</a>
             </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-                <!-- Add icons to the links using the .nav-icon class
-                     with font-awesome or any other icon font library -->
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">
-                        <i class="nav-icon fa-solid fa-computer"></i>
-                        <p>
-                            Технические средства
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Consumable" asp-action="Index">
-                        <i class="nav-icon fa-solid fa-battery-three-quarters"></i>
-                        <p>
-                            Расходные материалы
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Set" asp-action="Index">
-                        <i class="nav-icon fa-solid fa-toolbox"></i>
-                        <p>
-                            Комплекты
-                        </p>
-                    </a>
-                </li>
+
+                <!-- Технические средства -->
+                @if(await _permissionChecker.IsGranted(PermissionNames.TechnicalEquipments.Pages))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "TechnicalEquipment" ? "active" : "")"
+                           asp-area="" asp-controller="TechnicalEquipment" asp-action="Index">
+                            <i class="nav-icon fa-solid fa-computer"></i>
+                            <p>Технические средства</p>
+                        </a>
+                    </li>
+                }
+                <!-- Расходные материалы -->
+                @if (await _permissionChecker.IsGranted(PermissionNames.Sets.Pages))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "Consumable" ? "active" : "")"
+                           asp-area="" asp-controller="Consumable" asp-action="Index">
+                            <i class="nav-icon fa-solid fa-battery-three-quarters"></i>
+                            <p>Расходные материалы</p>
+                        </a>
+                    </li>
+                }
+                <!-- Комплекты -->
+                @if (await _permissionChecker.IsGranted(PermissionNames.Consumables.Pages))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "Set" ? "active" : "")"
+                           asp-area="" asp-controller="Set" asp-action="Index">
+                            <i class="nav-icon fa-solid fa-toolbox"></i>
+                            <p>Комплекты</p>
+                        </a>
+                    </li>
+                }
+                
+                <!-- Разделитель -->
                 <li class="nav-line"></li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Application" asp-action="Index">
-                        <i class="nav-icon fas fa-edit"></i>
-                        <p>
-                            Заявки
-                        </p>
-                    </a>
-                </li>
+                <!-- Заявки -->
+                @if (await _permissionChecker.IsGranted(PermissionNames.Applications.Pages))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "Application" ? "active" : "")"
+                           asp-area="" asp-controller="Application" asp-action="Index">
+                            <i class="nav-icon fas fa-edit"></i>
+                            <p>Заявки</p>
+                        </a>
+                    </li>
+                }
+
+                <!-- Разделитель -->
                 <li class="nav-line"></li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Analysis" asp-action="Index">
-                        <i class="nav-icon fas fa-chart-line"></i>
-                        <p>
-                            Анализ
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Statistic" asp-action="Index">
-                        <i class="nav-icon fas fa-chart-pie"></i>
-                        <p>
-                            Статистика
-                        </p>
-                    </a>
-                </li>
+                <!-- Анализ -->
+                @if (await _permissionChecker.IsGranted(PermissionNames.Analysis.Pages))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "Analysis" ? "active" : "")"
+                           asp-area="" asp-controller="Analysis" asp-action="Index">
+                            <i class="nav-icon fas fa-chart-line"></i>
+                            <p>Анализ</p>
+                        </a>
+                    </li>
+                }
+                <!-- Статистика -->
+                @if (await _permissionChecker.IsGranted(PermissionNames.Statistics.Pages))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(currentController == "Statistic" ? "active" : "")"
+                           asp-area="" asp-controller="Statistic" asp-action="Index">
+                            <i class="nav-icon fas fa-chart-pie"></i>
+                            <p>Статистика</p>
+                        </a>
+                    </li>
+                }
+
+                <!-- Разделитель -->
                 <li class="nav-line"></li>
 
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fa-solid fa-screwdriver-wrench"></i></i>
-                        <p>
-                            <ya-tr-span data-index="12-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value=" Forms " data-translation=" Администрирование " data-ch="0" data-type="trSpan" style="visibility: inherit !important;">Администрирование   </ya-tr-span><i class="fas fa-angle-left right"></i>
-                        </p>
+
+                <!-- Администрирование с подменю -->
+                <li class="nav-item @(isAdminActive ? "menu-open" : "")">
+                    <a href="#" class="nav-link @(isAdminActive ? "active" : "")">
+                        <i class="nav-icon fa-solid fa-screwdriver-wrench"></i>
+                        <p>Администрирование <i class="fas fa-angle-left right"></i></p>
                     </a>
+
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">
-                                <i class="nav-icon fa-solid fa-user-tie"></i>
-                                <p>
-                                    Пользователи
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Roles" asp-action="Index">
-                                <i class="nav-icon fa-solid fa-lock"></i>
-                                <p>
-                                    Права
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="Directory" asp-action="Index">
-                                <i class="nav-icon fa-solid fa-folder-tree"></i>
-                                <p>
-                                    Справочники
-                                </p>
-                            </a>
-                        </li>
+
+                        @if (await _permissionChecker.IsGranted(PermissionNames.Directories.Pages))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(currentController == "Directory" ? "active" : "")"
+                                   asp-area="" asp-controller="Directory" asp-action="Index">
+                                    <i class="nav-icon fa-solid fa-folder-tree"></i>
+                                    <p>Справочники</p>
+                                </a>
+                            </li>
+                        }
+
+                        @if (await _permissionChecker.IsGranted(PermissionNames.Users.Pages))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(currentController == "Users" ? "active" : "")"
+                                   asp-area="" asp-controller="Users" asp-action="Index">
+                                    <i class="nav-icon fa-solid fa-user-tie"></i>
+                                    <p>Пользователи</p>
+                                </a>
+                            </li>
+                        }
+
+                        @if (await _permissionChecker.IsGranted(PermissionNames.Roles.Pages))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(currentController == "Roles" ? "active" : "")"
+                                   asp-area="" asp-controller="Roles" asp-action="Index">
+                                    <i class="nav-icon fa-solid fa-lock"></i>
+                                    <p>Роли</p>
+                                </a>
+                            </li>
+                        }
+
+
+                        @if (await _permissionChecker.IsGranted(PermissionNames.Audit.Pages))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @(currentController == "Audit" ? "active" : "")"
+                                   asp-area="" asp-controller="Audit" asp-action="Index">
+                                    <i class="nav-icon fa-solid fa-calendar-check"></i>
+                                    <p>Аудит</p>
+                                </a>
+                            </li>
+                        }
+
                     </ul>
                 </li>
+
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
