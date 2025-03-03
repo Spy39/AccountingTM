@@ -2,11 +2,16 @@ using Accounting.Data;
 using AccountingTM.Authorization;
 using AccountingTM.Domain;
 using AccountingTM.Domain.Authorization;
+using AccountingTM.Domain.Seeds;
 using AccountingTM.Localization;
 using AccountingTM.Middlewares;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using NLog;
+using NLog.Web;
 
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+logger.Info("Запуск приложения!");
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
@@ -24,6 +29,8 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserManager, CurrentUserManager>();
 builder.Services.AddSingleton(x => new LocalizationManager("Localization/Resources"));
 builder.Services.AddScoped<PermissionChecker>();
+builder.Logging.ClearProviders();
+builder.Host.UseNLog();
 
 var app = builder.Build();
 
@@ -37,5 +44,11 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=TechnicalEquipment}/{action=Index}/{id?}");
 PermissionProvider.SetPermissions();
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+    dbContext.Database.Migrate();
+    new RoleSeed(dbContext).Seed();
+}
 
 app.Run();
