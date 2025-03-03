@@ -1,24 +1,22 @@
 ﻿// Вывод данных в таблицу истории операций
+// Вывод данных в таблицу истории операций
 let tableConsumables = new DataTable('#transactionHistoryTable', {
     paging: true,
     serverSide: true,
-    responsive: true,
-    ajax: function (data, callback) {
-        let filter = {
-            searchQuery: $("#search-input").val(),
-            maxResultCount: data.length || 10,
-            skipCount: data.start,
-            consumableId: parseInt($("#consumableId").val()) || 0,
-            // Преобразуем выбранное значение: "supply" → true, "writeoff" → false, иначе null
-            isSupply: $("#filterOperationValue").val() === "supply" ? true :
-                $("#filterOperationValue").val() === "writeoff" ? false : null,
-            startDate: $("#filterStartDate").val(),
-            endDate: $("#filterEndDate").val()
-        };
+    ajax: function (data, callback, settings) {
+        const filterOperationValue = $("#filterOperationValue").val();
+        var filter = {};
+        filter.searchQuery = $("#search-input").val(),
+            filter.maxResultCount = data.length || 10,
+            filter.skipCount = data.start,
+            filter.consumableId = +$("#consumableId").val();
+        if (filterOperationValue) {
+            filter.isSupply = filterOperationValue == "supply"
+        }
 
-        console.log("Параметры фильтра:", filter);
-
-        axios.get('/ConsumableHistory/GetAll', { params: filter })
+        axios.get('/ConsumableHistory/GetAll', {
+            params: filter
+        })
             .then(function (result) {
                 callback({
                     recordsTotal: result.data.totalCount,
@@ -30,6 +28,21 @@ let tableConsumables = new DataTable('#transactionHistoryTable', {
                 console.error("Ошибка загрузки данных:", error);
                 toastr.error("Ошибка загрузки данных");
             });
+    },
+    buttons: [
+        {
+            name: 'refresh',
+            text: '<i class="fas fa-redo-alt"></i>',
+            action: () => tableConsumables.draw(false)
+        }
+    ],
+    initComplete: function () { $('[data-bs-toggle="tooltip"]').tooltip(); },
+    rowCallback: function (row, data) {
+        if (data.isSupply) {
+            $(row).addClass('table-success'); // Зеленый цвет для пополнения
+        } else {
+            $(row).addClass('table-danger'); // Красный цвет для списания
+        }
     },
     columnDefs: [
         { targets: 0, data: 'dateOfOperation', render: (data) => data ? dayjs(data).format("DD.MM.YYYY HH:mm") : "Нет данных" },
@@ -60,6 +73,7 @@ let tableConsumables = new DataTable('#transactionHistoryTable', {
         }
     ]
 });
+
 
 // Фильтр по кнопке
 $("#search-btn").click(function () {
@@ -111,21 +125,22 @@ function handleSupply() {
         });
 }
 //списание
-    function handleWriteOff() {
-        const comment = ($("#commentWriteOff").val() || "").trim();
+function handleWriteOff() {
+    const comment = ($("#commentWriteOff").val() || "").trim();
     let quantity = +$("#quantityWriteOff").val();
     if (quantity <= 0) {
         toastr.warning("Количество должно быть больше 0");
         return;
     }
 
-        axios.post("/ConsumableHistory/WriteOff", {
-            consumableId: +$("#consumableId").val(),
-            quantity: quantity,
-            comment: comment
-        }, {
-            headers: { 'Content-Type': 'application/json' }
-        })
+    axios.post("/ConsumableHistory/WriteOff", {
+        consumableId: +$("#consumableId").val(),
+        technicalEquipmentId: +$("#technicalEquipment").val(),
+        quantity: quantity,
+        comment: comment
+    }, {
+        headers: { 'Content-Type': 'application/json' }
+    })
         .then(() => {
             toastr.success("Расходный материал успешно списан!");
             $("#WriteOffConsumableModal").modal("hide");
@@ -233,43 +248,47 @@ $(document).on("click", "#transactionHistoryTable tbody .delete.consumable", fun
 
 //Select
 
-$("#filterEquipment").select2({
+$("#technicalEquipment").select2({
     width: '100%',
     allowClear: true,
     placeholder: 'Выберите ТС',
     ajax: {
-        url: '/TechnicalEquipment/GetAll', // URL endpoint-а
-        dataType: 'json',
-        delay: 250,
-        data: function (params) {
-            return {
-                keyword: params.term, // поисковый запрос
-                page: params.page || 1
-            };
-        },
-        processResults: function (data, params) {
+        transport: (data, success, failure) => {
+            let params = data.data;
+            let maxResultCount = 30;
+
             params.page = params.page || 1;
-            return {
-                results: data.items,
-                pagination: {
-                    more: (params.page * 30) < data.totalCount
-                }
-            };
+
+            let filter = {};
+            filter.maxResultCount = maxResultCount;
+            filter.skipCount = (params.page - 1) * maxResultCount;
+            filter.keyword = params.term
+            axios.get("/TechnicalEquipment/GetAll", { params: filter }).then(function (result) {
+
+                success({
+
+                    results: result.data.items.map(x => {
+                        const brand = x.brand?.name || "Неизвестный бренд";
+                        const model = x.model?.name || "Неизвестная модель";
+                        const serial = x.serialNumber || "Без серийного номера";
+                        const name = `${brand} ${model} (${serial})`;
+                        return { id: x.id, name }
+                    }),
+                    pagination: {
+                        more: (params.page * maxResultCount) < result.data.totalCount
+                    }
+                });
+            });
         },
         cache: true
     },
-    templateResult: function (item) {
-        return item.text; // отображаемое значение
-    },
-    templateSelection: function (item) {
-        return item.text || item.id;
-    }
-});
-
+    templateResult: (data) => data.name,
+    templateSelection: (data) => data.name
+})
 
 //Тип расходного материала
 
-//техническое средств
+
 $("#typeConsumable").select2({
     width: '100%',
     allowClear: true,

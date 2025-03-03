@@ -8,5 +8,7 @@ namespace AccountingTM.Dto.Application
         public ApplicationStatus Status { get; set; }
         public Priority Priority { get; set; }
         public int CategoryId { get; set; }
+        public DateTime? ExpirationDate { get; set; }
+
     }
 }

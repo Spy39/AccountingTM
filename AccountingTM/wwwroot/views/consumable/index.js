@@ -6,13 +6,23 @@ let tableConsumables = new DataTable('#consumableTable', {
     serverSide: true,
     responsive: true,
     ajax: function (data, callback) {
+        const filterOperationValue = $("#filterOperationValue").val();
         let filter = {
             searchQuery: $("#search-input").val(),
             maxResultCount: data.length || 10,
             skipCount: data.start
         };
 
-        console.log("Отправка запроса с параметрами:", filter);
+        // Добавляем фильтр "В наличии" / "Нет в наличии"
+        if (filterOperationValue) {
+            if (filterOperationValue === "instock") {
+                filter.inStock = true;
+            } else if (filterOperationValue === "outofstock") {
+                filter.inStock = false;
+            }
+        }
+
+        console.log("Финальные параметры запроса:", filter);
 
         axios.get('/Consumable/GetAll', { params: filter })
             .then(function (result) {
@@ -37,7 +47,6 @@ let tableConsumables = new DataTable('#consumableTable', {
             action: () => tableConsumables.draw(false)
         }
     ],
-    // Подсветка строк по статусу
     rowCallback: function (row, data, index) {
         if (data.status === "В наличии") {
             $(row).addClass("table-success");
@@ -77,7 +86,22 @@ let tableConsumables = new DataTable('#consumableTable', {
     ]
 });
 
+// Обработчик клика для выбора фильтра по типу операции
+$(document).on("click", ".dropdown-menu .dropdown-item", function (e) {
+    e.preventDefault();
+    let selectedType = $(this).data("type"); // "instock" или "outofstock"
 
+    if (!selectedType) {
+        console.error("Не удалось получить выбранный фильтр");
+        return;
+    }
+
+    $("#filterOperationValue").val(selectedType);
+    $("#btnGroupDrop1").html('<i class="fa-solid fa-filter me-1"></i> ' + $(this).text());
+
+    // Перезагружаем таблицу с новым фильтром
+    tableConsumables.ajax.reload();
+});
 
 // Поиск
 $("#searchConsumableBtn").click(() => tableConsumables.ajax.reload());

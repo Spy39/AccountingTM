@@ -69,31 +69,31 @@
     //Редактирование дополнительной информации о ТС
     $(document).on("click", ".edit.additionalEquipment", function () {
         let id = $(this).data("id");
+        if (!id || id === 0) {
+            alert("Ошибка: ID оборудования отсутствует!");
+            return;
+        }
 
-        // Делаем GET-запрос, чтобы получить текущие данные (в том числе серийный номер и др.)
-        axios.get('/TechnicalEquipmentInfo/GetAditional', {
-            params: { id }
-        })
+        axios.get('/TechnicalEquipmentInfo/GetAditional', { params: { id } })
             .then(function (response) {
                 const te = response.data;
+                console.log("Загруженные данные о ТС:", te);
 
-                // Заполняем скрытое поле с ID
+                // Заполняем скрытое поле ID
                 $("#editAdditionalId").val(te.id);
 
-                // Заполняем формы дополнительной информации
                 $("#serialNumber").val(te.serialNumber || "");
                 $("#inventoryNumber").val(te.inventoryNumber || "");
 
-                // Выпадающие списки для сотрудника и локации:
+                // Выпадающие списки
                 $("#employee").val(te.employeeId).trigger("change");
                 $("#location").val(te.locationId).trigger("change");
 
-                // Даты
-                // В зависимости от формата даты на сервере, возможно нужно форматирование
-                if (te.date) $("#date").val(formatDateForInput(te.date));
-                if (te.dateStart) $("#dateStart").val(formatDateForInput(te.dateStart));
-                if (te.dateEnd) $("#dateEnd").val(formatDateForInput(te.dateEnd));
-                if (te.dateGarant) $("#dateGarant").val(formatDateForInput(te.dateGarant));
+                // Даты (форматируем перед установкой)
+                $("#date").val(formatDateForInput(te.date));
+                $("#dateStart").val(formatDateForInput(te.dateStart));
+                $("#dateEnd").val(formatDateForInput(te.dateEnd));
+                $("#dateGarant").val(formatDateForInput(te.dateGarant));
 
                 // Открываем модальное окно
                 $("#editAdditionalModal").modal("show");
@@ -104,25 +104,29 @@
             });
     });
 
-    // Нажатие кнопки "Сохранить" в модальном окне editAdditionalModal
     $("#editAdditionalBtn").click(function () {
-        // Собираем данные
+        let id = +$("#editAdditionalId").val();  // Проверяем, что ID есть и корректное
+        if (!id || id === 0) {
+            alert("Ошибка: ID технического средства не найден!");
+            return;
+        }
+
         let payload = {
-            id: +$("#editAdditionalId").val(),
+            id: id,
             serialNumber: $("#serialNumber").val(),
             inventoryNumber: $("#inventoryNumber").val(),
             employeeId: +$("#employee").val(),
             locationId: +$("#location").val(),
-            date: $("#date").val(),
-            dateStart: $("#dateStart").val(),
-            dateEnd: $("#dateEnd").val(),
-            dateGarant: $("#dateGarant").val()
+            date: formatDateForServer($("#date").val()),
+            dateStart: formatDateForServer($("#dateStart").val()),
+            dateEnd: formatDateForServer($("#dateEnd").val()),
+            dateGarant: formatDateForServer($("#dateGarant").val())
         };
 
-        // Делаем POST-запрос на сервер, чтобы обновить доп. информацию
+        console.log("Отправляем данные:", payload);
+
         axios.post("/TechnicalEquipmentInfo/UpdateAditional", payload)
             .then(function () {
-                // Успешно сохранили
                 location.reload();
             })
             .catch(function (error) {
@@ -130,6 +134,27 @@
                 alert("Не удалось сохранить изменения.");
             });
     });
+
+    function formatDateForInput(dateStr) {
+        if (!dateStr) return "";
+
+        let date = new Date(dateStr);
+        if (isNaN(date)) return dateStr; // Если дата в неизвестном формате, возвращаем как есть
+
+        return date.toISOString().split('T')[0].split('-').reverse().join('.');
+    }
+    function formatDateForServer(dateStr) {
+        if (!dateStr) return null;
+
+        let parts = dateStr.split(".");
+        if (parts.length === 3) {
+            return `${parts[2]}-${parts[1]}-${parts[0]}`; // Преобразуем в YYYY-MM-DD
+        }
+
+        return dateStr;
+    }
+
+
 
     function formatDateForInput(dateStr) {
         // Если приходит "2025-02-15T00:00:00" или "2025-02-15" 

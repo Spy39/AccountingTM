@@ -36,7 +36,7 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
         {
             name: 'refresh',
             text: '<i class="fas fa-redo-alt"></i>',
-            action: () => tableClients.draw(false)
+            action: () => tabletechnicalEquipments.draw(false)
         }
     ],
     drawCallback: function () {
@@ -107,18 +107,167 @@ let tabletechnicalEquipments = new DataTable('#technicalEquipmentTable', {
 });
 
 //Добавление к ТС
-$("#create-btn").click(function () {
-    axios.post("/Set/CreateCompoundSet", {
-        setId: +$("#SetId").val(),
-        technicalEquipmentIds: tabletechnicalEquipments.rows({ selected: true }).data().map(x => x.id).toArray()
-    }).then(function () {
-        location.reload()
-    })
-})
+ $("#create-btn").click(function () {
+     axios.post("/Set/CreateCompoundSet", {
+         setId: +$("#SetId").val(),
+         technicalEquipmentIds: tabletechnicalEquipments.rows({ selected: true }).data().map(x => x.id).toArray()
+     }).then(function () {
+         location.reload();
+     });
+ });
 
+
+$("#category").select2({
+    width: '100%',
+    allowClear: true,
+    placeholder: 'Выберите категорию',
+    ajax: {
+        // Транспорт – переопределяет логику отправки запроса
+        transport: (data, success, failure) => {
+            // Внутри data у Select2 хранится объект params:
+            // { term: "введённый текст", page: 1, ... }
+            let params = data.data;
+            let maxResultCount = 30;
+
+            // Если page не определён, ставим 1
+            params.page = params.page || 1;
+
+            // Подготавливаем фильтр для бэкенда
+            let filter = {};
+            filter.maxResultCount = maxResultCount;
+            filter.skipCount = (params.page - 1) * maxResultCount;
+            filter.keyword = params.term; // терм для поиска
+
+            // Делаем GET-запрос
+            axios.get("Category/GetAll", { params: filter })
+                .then(function (result) {
+                    // Ожидаем, что result.data.items – список категорий,
+                    // а result.data.totalCount – общее число.
+                    success({
+                        results: result.data.items,
+                        pagination: {
+                            // Вычисляем, есть ли ещё страницы
+                            more: (params.page * maxResultCount) < result.data.totalCount
+                        }
+                    });
+                })
+                .catch(function (error) {
+                    // Если ошибка – вызываем failure() или обрабатываем по-своему
+                    console.error("Ошибка при загрузке категорий:", error);
+                    failure(error);
+                });
+        },
+        cache: true
+    },
+    // Как отобразить варианты в выпадающем списке
+    templateResult: (data) => {
+        // Если это служебный элемент (например, "Searching…")
+        if (data.loading) return data.text;
+        // Если real data – выводим data.name
+        return data.name;
+    },
+    // Как отображать выбранный элемент в поле
+    templateSelection: (data) => {
+        return data.name || data.text;
+    }
+});
+
+
+
+// 2. Обновление/изменение заявки
+document.getElementById('save-changes-btn').addEventListener('click', function () {
+    const applicationId = parseInt(document.getElementById("application").value);
+
+    // >>> Изменение: Собираем статус/приоритет и пр. как enum/строку
+    const status = document.getElementById('status').value;
+    const priority = document.getElementById('priority').value;
+    const categoryId = parseInt(document.getElementById('category').value);
+
+    // >>> Добавили expirationDate
+    const expirationDate = document.getElementById('expirationDate').value
+        ? document.getElementById('expirationDate').value
+        : null;
+
+    axios.post('/Application/Update', {
+        applicationId: applicationId,
+        status: status,
+        priority: priority,
+        categoryId: categoryId,
+        // >>> Изменение: Если добавили поле в DTO, нужно передавать его
+        expirationDate: expirationDate
+    })
+        .then(function () {
+            toastr.success('Изменения сохранены!');
+            // location.reload(); // если нужно
+            loadHistory(); // обновляем историю
+        })
+        .catch(function (error) {
+            toastr.error('Ошибка: ' + error);
+        });
+});
+
+// 3. Назначить себе заявку
+document.getElementById('assign-to-me-btn').addEventListener('click', function () {
+    const applicationId = parseInt(document.getElementById("application").value);
+
+    axios.post('/Application/AssignToMe', applicationId)
+        .then(function () {
+            toastr.success('Заявка назначена вам!');
+            loadHistory(); // обновляем историю
+        })
+        .catch(function (error) {
+            toastr.error('Ошибка: ' + error);
+        });
+});
+
+// 4. Пометить как решенную
+document.getElementById('mark-solved-btn').addEventListener('click', function () {
+    const applicationId = parseInt(document.getElementById("application").value);
+
+    axios.post('/Application/MarkAsSolved', applicationId)
+        .then(function () {
+            toastr.success('Заявка помечена как решённая!');
+            loadHistory();
+        })
+        .catch(function (error) {
+            toastr.error('Ошибка: ' + error);
+        });
+});
+
+// 5. Подгрузка истории изменений
+function loadHistory() {
+    const applicationId = parseInt(document.getElementById("application").value);
+    axios.get('/Application/GetHistory?applicationId=' + applicationId)
+        .then(function (response) {
+            const list = response.data;
+            let html = "";
+            list.forEach(function (item) {
+                const dateStr = new Date(item.date).toLocaleString();
+                html += `
+                    <div class="card mb-2">
+                        <div class="card-body">
+                            <strong>${dateStr}</strong><br/>
+                            <em>${item.typeOfOperation}</em><br/>
+                            ${item.name}
+                            ${item.employee
+                        ? '<br/><small>Пользователь: ' + getEmployeeName(item.employee) + '</small>'
+                        : ''}
+                        </div>
+                    </div>`;
+            });
+            document.getElementById("history-container").innerHTML = html;
+        });
+}
+
+// Вспомогательная функция для ФИО
+function getEmployeeName(emp) {
+    return `${emp.lastName ?? ''} ${emp.firstName ?? ''} ${emp.fatherName ?? ''}`.trim();
+}
+
+//КОММЕНТАРИИ
 
 ////Добавление комментария
-//$("#create-btn").click(function () {
+//$("#add-comment-btn").click(function () {
 //    axios.post("Application/Create", {
 //        categoryId: +$("#category").val(),
 //        subject: $("#subject").val(),
@@ -157,154 +306,76 @@ $("#create-btn").click(function () {
 //    });
 //})
 
-
-//обновление и изменение заявки
-document.getElementById('save-changes-btn').addEventListener('click', function () {
-    var applicationId = parseInt(document.getElementById("application").value);
-    // Значения статус/приоритет могут быть строками, нужно привести к enum на бэкенде.
-    // Можно передавать строками, если в DTO стоит string и потом мапить.
-    // Или же сделать соответствие value="0,1,2..." (enum в C#)
-    var status = document.getElementById('status').value;
-    var priority = document.getElementById('priority').value;
-    var categoryId = parseInt(document.getElementById('category').value);
-
-    axios.post('/Application/Update', {
-        applicationId: applicationId,
-        status: status,     // если DTO enum — нужно убедиться, что значения совпадают
-        priority: priority, // то же самое
-        categoryId: categoryId
-    })
-        .then(function () {
-            toastr.success('Изменения сохранены!');
-            // При необходимости перезагрузить страницу или обновить нужные поля
-            // location.reload();
-        })
-        .catch(function (error) {
-            toastr.error('Ошибка: ' + error);
-        });
-});
-//назначить себе заявку
-document.getElementById('assign-to-me-btn').addEventListener('click', function () {
-    var applicationId = parseInt(document.getElementById("application").value);
-
-    axios.post('/Application/AssignToMe', applicationId)
-        .then(function () {
-            toastr.success('Заявка назначена вам!');
-            // Можно обновить поля на форме
-            // location.reload();
-        })
-        .catch(function (error) {
-            toastr.error('Ошибка: ' + error);
-        });
-});
-
-//пометить как решенную заявку
-document.getElementById('mark-solved-btn').addEventListener('click', function () {
-    var applicationId = parseInt(document.getElementById("application").value);
-
-    axios.post('/Application/MarkAsSolved', applicationId)
-        .then(function () {
-            toastr.success('Заявка помечена как решённая!');
-            // Перезагрузка или обновление полей
-        })
-        .catch(function (error) {
-            toastr.error('Ошибка: ' + error);
-        });
-});
-//подгружаем историю изменение
-function loadHistory() {
-    var applicationId = parseInt(document.getElementById("application").value);
-    axios.get('/Application/GetHistory?applicationId=' + applicationId)
-        .then(function (response) {
-            var list = response.data;
-            var html = "";
-            list.forEach(function (item) {
-                var dateStr = new Date(item.date).toLocaleString();
-                html += `
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <strong>${dateStr}</strong><br/>
-                            <em>${item.typeOfOperation}</em><br/>
-                            ${item.name}
-                            ${item.employee
-                        ? '<br/><small>Пользователь: ' + getEmployeeName(item.employee) + '</small>'
-                        : ''}
-                        </div>
-                    </div>`;
-            });
-            document.getElementById("history-container").innerHTML = html;
-        });
-}
-
-function getEmployeeName(emp) {
-    return `${emp.lastName ?? ''} ${emp.firstName ?? ''} ${emp.fatherName ?? ''}`.trim();
-}
-
+// 6. Комментарии
 document.addEventListener('DOMContentLoaded', function () {
-    // ...
-    loadHistory();
-});
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const applicationId = +$("#application").val(); // Убедитесь, что ApplicationId доступен в модели
+    const applicationElement = document.getElementById("application");
+    const applicationId = parseInt(applicationElement.value);
     const commentsList = document.getElementById('comments-list');
     const commentInput = document.getElementById('comment');
-    const fileInput = document.getElementById('file');
-    const addCommentBtn = document.getElementById('add-comment-btn');
+    let fileInput = document.getElementById('file');
 
-    // Функция для загрузки комментариев
+    // Загрузка списка комментариев
     function loadComments() {
-        fetch(`/Application/GetComments?applicationId=${applicationId}`)
-            .then(response => response.json())
-            .then(comments => {
-                commentsList.innerHTML = comments.map(comment => `
-                    <div class="card mb-2">
-                        <div class="card-body">
-                            <p>${comment.text}</p>
-                            <small>${new Date(comment.date).toLocaleString()}</small>
-                            ${comment.pathToFile ? `<a href="${comment.pathToFile}" target="_blank">Скачать файл</a>` : ''}
-                            <button class="btn btn-danger btn-sm delete-comment" data-id="${comment.id}">Удалить</button>
-                        </div>
+        axios.get(`/Application/GetComments?applicationId=${applicationId}`)
+            .then(response => {
+                commentsList.innerHTML = response.data.map(comment => `
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <p>${comment.text}</p>
+                        <small><strong>${comment.author}</strong> | ${new Date(comment.date).toLocaleString()}</small>
+                        ${comment.pathToFile ? `<br><a href="${comment.pathToFile}" target="_blank">📎 Скачать файл</a>` : ""}
+                        <button class="btn btn-danger btn-sm delete-comment" data-id="${comment.id}">Удалить</button>
                     </div>
-                `).join('');
-            });
+                </div>
+            `).join('');
+            })
+            .catch(error => console.error("Ошибка при загрузке комментариев:", error));
     }
 
-    // Функция для добавления комментария
-    addCommentBtn.addEventListener('click', function () {
+
+    // Добавление комментария
+    function addComment() {
         const commentText = commentInput.value.trim();
         const file = fileInput.files[0];
 
-        if (commentText) {
-            const formData = new FormData();
-            formData.append('ApplicationId', applicationId);
-            formData.append('Text', commentText);
-            if (file) {
-                formData.append('File', file);
-            }
+        if (!commentText) {
+            toastr.error("Введите комментарий перед отправкой.");
+            return;
+        }
 
-            fetch('/Application/AddComment', {
-                method: 'POST',
-                body: formData
+        const formData = new FormData();
+        formData.append('ApplicationId', applicationId);
+        formData.append('Text', commentText);
+        if (file) {
+            formData.append('File', file);
+        }
+
+        axios.post('/Application/AddComment', formData)
+            .then(() => {
+                commentInput.value = '';
+                fileInput.value = '';
+                toastr.success("Комментарий добавлен!");
+                loadComments();
+                loadHistory(); // >>> Изменение: перезапрашиваем историю, т.к. мог смениться LastReply
             })
-                .then(response => response.json())
-                .then(comment => {
-                    commentInput.value = '';
-                    fileInput.value = '';
-                    loadComments();
-                });
+            .catch(error => console.error("Ошибка при добавлении комментария:", error));
+    }
+
+    // Обработка клика по кнопке "Добавить комментарий"
+    document.addEventListener('click', function (event) {
+        if (event.target && event.target.id === 'add-comment-btn') {
+            event.preventDefault();
+            addComment();
         }
     });
 
-    // Функция для удаления комментария
+    // Удаление комментария
     commentsList.addEventListener('click', function (e) {
         if (e.target.classList.contains('delete-comment')) {
             const commentId = e.target.dataset.id;
             Swal.fire({
                 title: "Вы уверены?",
-                text: `Комментарий будет удален!`,
+                text: "Комментарий будет удален!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -313,18 +384,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 cancelButtonText: "Нет",
             }).then((result) => {
                 if (result.isConfirmed) {
-                    fetch(`/Application/DeleteComment?id=${commentId}`, {
-                        method: 'DELETE'
-                    })
+                    axios.delete(`/Application/DeleteComment?id=${commentId}`)
                         .then(() => {
+                            toastr.success("Комментарий успешно удален!");
                             loadComments();
-                            toastr.success('Комментарий успешно удален!');
-                        });
+                            loadHistory();
+                        })
+                        .catch(error => console.error("Ошибка при удалении комментария:", error));
                 }
             });
         }
     });
 
-    // Загрузка комментариев при открытии страницы
+    // При старте страницы грузим историю и комментарии
+    loadHistory();
     loadComments();
 });

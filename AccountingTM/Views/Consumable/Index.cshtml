@@ -44,9 +44,11 @@
 					<i class="fa-solid fa-filter"></i> Фильтр
 				</button>
 				<ul class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-					<li><a class="dropdown-item" href="#">В наличии</a></li>
-					<li><a class="dropdown-item" href="#">Нет в наличии</a></li>
+					<li><a class="dropdown-item" href="#" data-type="instock">В наличии</a></li>
+					<li><a class="dropdown-item" href="#" data-type="outofstock">Нет в наличии</a></li>
 				</ul>
+				<!-- Скрытое поле для хранения выбранного фильтра -->
+				<input type="hidden" id="filterOperationValue" value="">
 			</div>
 		</div>
 	</div>

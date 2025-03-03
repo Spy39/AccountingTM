@@ -335,12 +335,22 @@ namespace AccountingTM.Controllers
         public async Task<IActionResult> GetComments(int applicationId)
         {
             var comments = await _context.CommentsOnTheApplications
+                .Include(c => c.Employee) // 🔹 Подключаем данные о пользователе
                 .Where(c => c.ApplicationId == applicationId)
                 .OrderByDescending(c => c.Date)
+                .Select(c => new
+                {
+                    id = c.Id,
+                    text = c.Text,
+                    date = c.Date,
+                    pathToFile = c.PathToFile,
+                    author = c.Employee != null ? $"{c.Employee.LastName} {c.Employee.FirstName}" : "Неизвестный" // 🔹 Отображаем автора
+                })
                 .ToListAsync();
 
             return Ok(comments);
         }
+
 
         [HttpDelete]
         public async Task<IActionResult> DeleteComment(int id)
@@ -360,34 +370,54 @@ namespace AccountingTM.Controllers
         [HttpPost]
         public async Task<IActionResult> AddComment([FromForm] CommentDto input, IFormFile file)
         {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(x => x.Login == User.Identity.Name);
+
+            if (user == null)
+            {
+                return BadRequest("Пользователь не найден");
+            }
+
+            // Проверяем, есть ли у пользователя привязанный EmployeeId
+            int? employeeId = user.EmployeeId;
+
             var comment = new CommentsOnTheApplication
             {
                 ApplicationId = input.ApplicationId,
                 Text = input.Text,
-                Date = DateTime.Now
+                Date = DateTime.Now,
+                EmployeeId = user.EmployeeId.Value, // 🔹 Указываем сотрудника, если он есть
             };
 
-            if (file != null)
+            // Обрабатываем файл, если он передан
+            if (file != null && file.Length > 0)
             {
-                var uploadsDir = Path.Combine("wwwroot", "uploads");
-                if (!Directory.Exists(uploadsDir))
-                {
-                    Directory.CreateDirectory(uploadsDir);
-                }
-
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                 var filePath = Path.Combine("wwwroot/uploads", fileName);
+
+                // Сохраняем файл
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
+
                 comment.PathToFile = $"/uploads/{fileName}";
             }
 
+            // Добавляем комментарий в БД
             _context.CommentsOnTheApplications.Add(comment);
             await _context.SaveChangesAsync();
 
-            return Ok(comment);
+            return Ok(new
+            {
+                id = comment.Id,
+                text = comment.Text,
+                date = comment.Date,
+                pathToFile = comment.PathToFile,
+                author = $"{user.LastName} {user.FirstName}" // 🔹 Возвращаем ФИО автора
+            });
         }
+
+
     }
 }

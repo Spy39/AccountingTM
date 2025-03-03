@@ -7,5 +7,7 @@
         // свойства для фильтрации по диапазону дат
         public string StartDate { get; set; }
         public string EndDate { get; set; }
+
+        public bool? InStock { get; set; }
     }
 }

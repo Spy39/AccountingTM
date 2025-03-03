@@ -41,6 +41,21 @@ namespace AccountingTM.Controllers
                     x.Status.ToLower().Contains(keyword));
             }
 
+            // Фильтр по типу операции
+            if (input.InStock.HasValue)
+            {
+                if (input.InStock.Value)
+                {
+                    // InStock = true => фильтруем "В наличии"
+                    query = query.Where(x => x.Status == "В наличии");
+                }
+                else
+                {
+                    // InStock = false => фильтруем "Отсутствует"
+                    query = query.Where(x => x.Status == "Отсутствует");
+                }
+            }
+
             var totalCount = query.Count();
             var entities = query
                 .Skip(input.SkipCount)

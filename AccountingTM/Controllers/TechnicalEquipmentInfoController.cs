@@ -24,7 +24,12 @@ namespace AccountingTM.Controllers
         [HttpGet]
         public IActionResult Get(int id)
         {
-            var entity = _context.TechnicalEquipment.FirstOrDefault(x => x.Id == id);
+            var entity = _context.TechnicalEquipment
+                        .Include(x => x.Type)
+                        .Include(x => x.Brand)
+                        .Include(x => x.Model)
+                        .FirstOrDefault(x => x.Id == id);
+
             if (entity == null)
             {
                 throw new Exception($"ТС с id = {id} не найдено");
@@ -38,7 +43,9 @@ namespace AccountingTM.Controllers
         {
             // Находим объект в БД (теперь без AsNoTracking)
             var entity = _context.TechnicalEquipment
-                .FirstOrDefault(x => x.Id == input.Id);
+                        .AsNoTracking()
+                        .FirstOrDefault(x => x.Id == input.Id);
+
 
             if (entity == null)
             {
@@ -53,7 +60,9 @@ namespace AccountingTM.Controllers
             entity.State = input.State;
 
             // Сохраняем
+            _context.TechnicalEquipment.Update(input);
             _context.SaveChanges();
+
 
             return Ok();
         }
@@ -75,27 +84,37 @@ namespace AccountingTM.Controllers
         [HttpPost]
         public IActionResult UpdateAditional([FromBody] TechnicalEquipment input)
         {
-            var entity = _context.TechnicalEquipment
-                .FirstOrDefault(x => x.Id == input.Id);
+            if (input == null)
+                return BadRequest("Ошибка: входные данные пустые.");
+
+            if (input.Id == 0)
+                return BadRequest("Ошибка: ID технического средства не передан.");
+
+            var entity = _context.TechnicalEquipment.Find(input.Id);
 
             if (entity == null)
-                throw new Exception($"ТС с id = {input.Id} не найдено");
+            {
+                Console.WriteLine($"Ошибка: ТС с id = {input.Id} не найдено");
+                return NotFound($"ТС с id = {input.Id} не найдено");
+            }
 
             // Копируем нужные поля
             entity.SerialNumber = input.SerialNumber;
             entity.InventoryNumber = input.InventoryNumber;
             entity.EmployeeId = input.EmployeeId;
             entity.LocationId = input.LocationId;
-            entity.Date = input.Date;
-            entity.DateStart = input.DateStart;
-            entity.DateEnd = input.DateEnd;
-            entity.DateGarant = input.DateGarant;
-            // и т.д.
+
+            // Проверка формата дат перед сохранением
+            if (DateTime.TryParse(input.Date?.ToString(), out var date)) entity.Date = date;
+            if (DateTime.TryParse(input.DateStart?.ToString(), out var dateStart)) entity.DateStart = dateStart;
+            if (DateTime.TryParse(input.DateEnd?.ToString(), out var dateEnd)) entity.DateEnd = dateEnd;
+            if (DateTime.TryParse(input.DateGarant?.ToString(), out var dateGarant)) entity.DateGarant = dateGarant;
 
             _context.SaveChanges();
 
             return Ok();
         }
+
 
 
         //Характеристики технического средства

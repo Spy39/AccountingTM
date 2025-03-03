@@ -3,6 +3,7 @@ using AccountingTM.Domain.Enums;
 using AccountingTM.Dto.Statistics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AccountingTM.Controllers
 {
@@ -84,6 +85,32 @@ namespace AccountingTM.Controllers
             var technicalEquipments = _context.TechnicalEquipment.ToList();
             var applications = _context.Applications.ToList();
             var consumables = _context.Consumables.ToList();
+            //try
+            //{
+            //    Console.WriteLine(_context.ConsumableHistories
+            //        .Where(x => x.DateOfOperation.HasValue && x.DateOfOperation >= DateTime.Now.AddMonths(-6))
+            //        .GroupBy(x => x.DateOfOperation.Value.Month)
+            //        .Select(g => new { Month = g.Key, TotalQuantity = g.Sum(x => x.Quantity) }) // Вычисляем сумму
+            //        .AsEnumerable() // Переключаем на клиентскую обработку
+            //        .Select(g => g.TotalQuantity)
+            //        .DefaultIfEmpty(0)
+            //        .Average());
+            //    Console.WriteLine(_context.ConsumableHistories
+            //        .Where(x => x.Consumable != null && !string.IsNullOrEmpty(x.Consumable.Model))
+            //        .GroupBy(x => x.Consumable.Model)
+            //        .Select(g => new { Model = g.Key, Count = g.Count() }) // Группируем
+            //        .OrderByDescending(g => g.Count)
+            //        .AsEnumerable() // Переключаем на клиентскую обработку
+            //        .Select(g => g.Model)
+            //        .FirstOrDefault() ?? "Не определено");
+            //}
+            //catch(Exception ex)
+            //{
+            //    Console.WriteLine("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq111111111111111111111111" + ex.Message);
+
+            //}
+
+            var histories = _context.ConsumableHistories.ToList();
 
             var result = new StatisticDto
             {
@@ -111,27 +138,32 @@ namespace AccountingTM.Controllers
                     InStockCount = consumables.Count(x => x.Status == "В наличии"),
                     LowStockCount = consumables.Count(x => x.Status == "Малый запас"),
                     OutOfStockCount = consumables.Count(x => x.Status == "Отсутствует"),
-                    //AvgUsagePerMonth = _context.ConsumableHistories.Where(x => x.DateOfOperation >= DateTime.Now.AddMonths(-6)) // За последние 6 мес
-                    //                                               .GroupBy(x => x.DateOfOperation.Value.Month)
-                    //                                               .Average(g => g.Sum(x => x.Quantity)), // Средний расход
-                    //MostUsedConsumable = _context.ConsumableHistories.GroupBy(x => x.Consumable.Model)
-                    //                                                 .OrderByDescending(g => g.Count())
-                    //                                                 .Select(g => g.Key)
-                    //                                                 .FirstOrDefault() ?? "Не определено",
+                    AvgUsagePerMonth = histories.Where(x => x.DateOfOperation >= DateTime.Now.AddMonths(-6)) // За последние 6 мес
+                                                                   .GroupBy(x => x.DateOfOperation.Value.Month)
+                                                                   .Select(g => g.Sum(x => x.Quantity))
+                                                                   .DefaultIfEmpty(0)
+                                                                   .Average(), // Средний расход
+                    MostUsedConsumable = histories.Where(x => x.Consumable != null && !string.IsNullOrEmpty(x.Consumable.Model))
+                                                                    .GroupBy(x => x.Consumable.Model)
+                                                                     .OrderByDescending(g => g.Count())
+                                                                     .Select(g => g.Key)
+                                                                     .FirstOrDefault() ?? "Не определено",
                 },
 
-                //// 📌 Количество неисправностей по месяцам
-                //FaultsByMonth = _context.TechnicalEquipment
-                //    .Where(t => t.DateStart.HasValue) // ✅ Проверяем, что есть дата
-                //    .GroupBy(t => t.DateStart.Value.Month)
-                //    .Select(g => new FaultsByMonthDto
-                //    {
-                //        Month = new DateTime(2024, g.Key, 1).ToString("MMMM"),
-                //        FaultCount = g.Count()
-                //    })
-                //    .ToList(),
 
-                //// 📌 Топ-5 самых ненадёжных моделей
+
+                // 📌 Количество неисправностей по месяцам
+                FaultsByMonth = applications
+                    .Where(t => t.Status != ApplicationStatus.Solved) // ✅ Проверяем, что есть дата
+                    .GroupBy(t => t.DateOfCreation.Month)
+                    .Select(g => new FaultsByMonthDto
+                    {
+                        Month = new DateTime(2025, g.Key, 1).ToString("MMMM"),
+                        FaultCount = g.Count()
+                    })
+                    .ToList(),
+
+                // 📌 Топ-5 самых ненадёжных моделей
                 //FaultyEquipment = _context.TechnicalEquipment
                 //    .Where(t => t.Model != null && t.Brand != null) // ✅ Исключаем NULL
                 //    .GroupBy(t => new
@@ -188,5 +220,25 @@ namespace AccountingTM.Controllers
 
             return View(result);
         }
+
+        //// Контроллер API для получения статистики по заявкам
+        //[HttpGet]
+        //public async Task<IActionResult> GetApplicationStatistics()
+        //{
+        //    var applications = await _context.Applications.ToListAsync();
+
+        //    var statusCounts = applications
+        //        .GroupBy(a => a.Status)
+        //        .OrderByDescending(g => g.Count())
+        //        .Take(5)
+        //        .Select(g => new { Status = g.Key.ToString(), Count = g.Count() })
+        //        .ToList();
+
+        //    return Json(new
+        //    {
+        //        labels = statusCounts.Select(s => s.Status),
+        //        counts = statusCounts.Select(s => s.Count)
+        //    });
+        //}
     }
 }

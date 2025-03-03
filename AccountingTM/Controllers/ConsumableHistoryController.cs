@@ -3,6 +3,7 @@ using AccountingTM.Domain.Models;
 using AccountingTM.Domain.Models.Directory;
 using AccountingTM.Dto.Common;
 using AccountingTM.Dto.Consumable;
+using AccountingTM.Dto.TechnicalEquipment;
 using AccountingTM.ViewModels.Consumable;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +28,11 @@ namespace AccountingTM.Controllers
             // Загружаем связанные сущности Employee и TechnicalEquipment
             var query = _context.ConsumableHistories
                 .Include(x => x.Employee)
-                .Include(x => x.TechnicalEquipment)
+                .Include(x => x.TechnicalEquipment).ThenInclude(x => x.Brand)
+                .Include(x => x.TechnicalEquipment).ThenInclude(x => x.Model)
                 .Where(x => x.ConsumableId == input.ConsumableId);
+
+
 
             // Фильтрация по поисковому запросу (комментарий, ФИО сотрудника, модель ТС)
             if (!string.IsNullOrWhiteSpace(input.SearchQuery))
@@ -49,6 +53,7 @@ namespace AccountingTM.Controllers
 
 
             int totalCount = query.Count();
+            Console.WriteLine("количество расходных материалов" + query.Count());
             var entities = query
                 .OrderByDescending(x => x.DateOfOperation)
                 .Skip(input.SkipCount)

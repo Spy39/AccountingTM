@@ -215,7 +215,7 @@
                     </div>
                     <div class="card-body">
                         <div class="chart-container">
-                            <canvas id="faultyEquipmentChart"></canvas>
+                            <canvas id="applicationChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -354,6 +354,43 @@
             faultCategories: @Html.Raw(Json.Serialize(Model.FaultCategories)) // Категории неисправностей
         };
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var applicationChart;
+    function loadApplicationData() {
+        fetch('/Statistic/GetApplicationStatistics')
+            .then(response => response.json())
+            .then(data => {
+                if (applicationChart) {
+                    applicationChart.destroy();
+                }
+                var ctx = document.getElementById("applicationChart").getContext("2d");
+                applicationChart = new Chart(ctx, {
+                    type: "bar",
+                    data: {
+                        labels: data.labels,
+                        datasets: [{
+                            label: "Количество заявок",
+                            data: data.counts,
+                            backgroundColor: "rgba(75, 192, 192, 0.2)",
+                            borderColor: "rgba(75, 192, 192, 1)",
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: { beginAtZero: true }
+                        }
+                    }
+                });
+            })
+            .catch(error => console.error("Ошибка загрузки данных заявок:", error));
+    }
+    
+    loadApplicationData();
+</script>
 
     <!-- Подключаем JS -->
     <script src="~/views/statistic/index.js"></script>
