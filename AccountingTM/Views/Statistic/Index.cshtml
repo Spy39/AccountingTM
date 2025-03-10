@@ -60,6 +60,23 @@
             background: #ffc107 !important; /* Жёлтый */
         }
 
+        .chart-container {
+            position: relative;
+            height: 260px;
+        }
+
+        .table-responsive {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+
+
     </style>
 }
 
@@ -206,25 +223,38 @@
         </div>
 
 
-        <!-- 🔴 Топ-5 самых ненадёжных ТС / Неисправности по месяцам -->
+        <!-- 🔴 ТОП-5 ненадежных ТС / Динамика неисправностей -->
         <div class="row">
+            <!-- Топ-5 ненадежных ТС (Таблица) -->
             <div class="col-md-6">
                 <div class="card card-outline card-danger h-100">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-exclamation-triangle"></i> Топ-5 самых ненадёжных ТС</h3>
+                        <h3 class="card-title"><i class="fas fa-exclamation-triangle"></i> Топ-5 ненадёжных ТС</h3>
                     </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="applicationChart"></canvas>
-                        </div>
+                    <div class="card-body table-responsive">
+                        <table id="faultyEquipmentTable" class="table table-bordered">
+                            <thead>
+                                <tr><th>Название</th><th>Количество отказов</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.FaultyEquipment)
+                                {
+                                    <tr>
+                               @*      <td>@item.Name</td>
+                                    <td>@item.FaultCount</td> *@
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
 
+            <!-- График неисправностей по месяцам -->
             <div class="col-md-6">
                 <div class="card card-outline card-danger h-100">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-chart-line"></i> Неисправности по месяцам</h3>
+                        <h3 class="card-title"><i class="fas fa-chart-line"></i> Динамика неисправностей</h3>
                     </div>
                     <div class="card-body">
                         <div class="chart-container">
@@ -235,12 +265,13 @@
             </div>
         </div>
 
-        <!-- 🟢 Доля исправных / Топ-5 расходников -->
+        <!-- 🟢 Статус оборудования / ТОП-5 расходников -->
         <div class="row">
+            <!-- Круговая диаграмма: Доля исправных и неисправных ТС -->
             <div class="col-md-6">
                 <div class="card card-outline card-primary h-100">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-check-circle"></i> Доля исправных и неисправных ТС</h3>
+                        <h3 class="card-title"><i class="fas fa-check-circle"></i> Состояние технических средств</h3>
                     </div>
                     <div class="card-body">
                         <div class="chart-container">
@@ -250,22 +281,35 @@
                 </div>
             </div>
 
+            <!-- Топ-5 расходников (Таблица) -->
             <div class="col-md-6">
                 <div class="card card-outline card-primary h-100">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-tools"></i> Топ-5 расходников</h3>
+                        <h3 class="card-title"><i class="fas fa-tools"></i> Топ-5 используемых расходников</h3>
                     </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="topConsumablesChart"></canvas>
-                        </div>
+                    <div class="card-body table-responsive">
+                        <table id="topConsumablesTable" class="table table-bordered">
+                            <thead>
+                                <tr><th>Название</th><th>Количество использований</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.TopConsumables)
+                                {
+                                    <tr>
+                               @*          <td>@item.Name</td>
+                                        <td>@item.UsageCount</td> *@
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 🔵 Средний расход / Запасы на складах -->
+        <!-- 🔵 Средний расход материалов / Категории неисправностей -->
         <div class="row">
+            <!-- Линейный график: Средний расход материалов -->
             <div class="col-md-6">
                 <div class="card card-outline card-success h-100">
                     <div class="card-header">
@@ -279,21 +323,33 @@
                 </div>
             </div>
 
+            <!-- Частые категории неисправностей (Таблица) -->
             <div class="col-md-6">
-                <div class="card card-outline card-success h-100">
+                <div class="card card-outline card-warning h-100">
                     <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-warehouse"></i> Запасы на складах</h3>
+                        <h3 class="card-title"><i class="fas fa-bug"></i> Частые категории неисправностей</h3>
                     </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="stockLevelsChart"></canvas>
-                        </div>
+                    <div class="card-body table-responsive">
+                        <table id="faultCategoriesTable" class="table table-bordered">
+                            <thead>
+                                <tr><th>Категория</th><th>Количество случаев</th></tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.FaultCategories)
+                                {
+                                    <tr>
+                                        <td>@item.CategoryName</td>
+                                        <td>@item.Count</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 🟠 Среднее время закрытия / Категории неисправностей -->
+        <!-- 🟠 Среднее время закрытия заявок -->
         <div class="row">
             <div class="col-md-6">
                 <div class="card card-outline card-warning h-100">
@@ -307,21 +363,8 @@
                     </div>
                 </div>
             </div>
-
-            <div class="col-md-6">
-                <div class="card card-outline card-warning h-100">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-bug"></i> Частые категории неисправностей</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="faultCategoriesChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-
+    </div>
 </section>
 
 @section Scripts {
@@ -347,49 +390,52 @@
                 lowStockCount: @Model.Consumable.LowStockCount,
                 outOfStockCount: @Model.Consumable.OutOfStockCount
             },
-            faultsByMonth: @Html.Raw(Json.Serialize(Model.FaultsByMonth)), // Кол-во неисправностей за 12 месяцев
-            faultyEquipment: @Html.Raw(Json.Serialize(Model.FaultyEquipment)), // Топ-5 неисправных ТС
-            topConsumables: @Html.Raw(Json.Serialize(Model.TopConsumables)), // Топ-5 расходников
-            avgClosureTime: @Html.Raw(Json.Serialize(Model.AvgClosureTime)), // Среднее время закрытия заявки
-            faultCategories: @Html.Raw(Json.Serialize(Model.FaultCategories)) // Категории неисправностей
+            faultsByMonth: {
+                labels: @Html.Raw(Json.Serialize(Model.FaultsByMonth.Select(f => f.Month))),
+               // values: Html.Raw(Json.Serialize(Model.FaultsByMonth.Select(f => f.Count)))
+            },
+                faultyEquipment: @Html.Raw(Json.Serialize(Model.FaultyEquipment)),
+                topConsumables: @Html.Raw(Json.Serialize(Model.TopConsumables)),
+                avgClosureTime: @Html.Raw(Json.Serialize(Model.AvgClosureTime)),
+                faultCategories: @Html.Raw(Json.Serialize(Model.FaultCategories))
         };
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    var applicationChart;
-    function loadApplicationData() {
-        fetch('/Statistic/GetApplicationStatistics')
-            .then(response => response.json())
-            .then(data => {
-                if (applicationChart) {
-                    applicationChart.destroy();
-                }
-                var ctx = document.getElementById("applicationChart").getContext("2d");
-                applicationChart = new Chart(ctx, {
-                    type: "bar",
-                    data: {
-                        labels: data.labels,
-                        datasets: [{
-                            label: "Количество заявок",
-                            data: data.counts,
-                            backgroundColor: "rgba(75, 192, 192, 0.2)",
-                            borderColor: "rgba(75, 192, 192, 1)",
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: { beginAtZero: true }
-                        }
-                    }
-                });
-            })
-            .catch(error => console.error("Ошибка загрузки данных заявок:", error));
-    }
+    // var applicationChart;
+    // function loadApplicationData() {
+    //     fetch('/Statistic/GetApplicationStatistics')
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             if (applicationChart) {
+    //                 applicationChart.destroy();
+    //             }
+    //             var ctx = document.getElementById("applicationChart").getContext("2d");
+    //             applicationChart = new Chart(ctx, {
+    //                 type: "bar",
+    //                 data: {
+    //                     labels: data.labels,
+    //                     datasets: [{
+    //                         label: "Количество заявок",
+    //                         data: data.counts,
+    //                         backgroundColor: "rgba(75, 192, 192, 0.2)",
+    //                         borderColor: "rgba(75, 192, 192, 1)",
+    //                         borderWidth: 1
+    //                     }]
+    //                 },
+    //                 options: {
+    //                     responsive: true,
+    //                     scales: {
+    //                         y: { beginAtZero: true }
+    //                     }
+    //                 }
+    //             });
+    //         })
+    //         .catch(error => console.error("Ошибка загрузки данных заявок:", error));
+    // }
     
-    loadApplicationData();
+    // loadApplicationData();
 </script>
 
     <!-- Подключаем JS -->

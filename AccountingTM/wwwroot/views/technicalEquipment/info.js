@@ -1,6 +1,7 @@
 ﻿$(function () {
     $('#date').datepicker({ dateFormat: "dd.mm.yyyy" });
     $('#dateStart').datepicker({ dateFormat: "dd.mm.yyyy" });
+    $('#dateGarant').datepicker({ dateFormat: "dd.mm.yyyy" });
 
     $('#dateCompletedWork').datepicker({ container: '#addCompletedWorkModal', dateFormat: "dd.mm.yyyy" });
     $('#dateReceptionAndTransmission').datepicker({ container: '#addReceptionAndTransmissionModal', dateFormat: "dd.mm.yyyy" });
@@ -86,13 +87,13 @@
                 $("#inventoryNumber").val(te.inventoryNumber || "");
 
                 // Выпадающие списки
-                $("#employee").val(te.employeeId).trigger("change");
-                $("#location").val(te.locationId).trigger("change");
+                $("#employee1").val(te.employeeId).trigger("change");
+                $("#location1").val(te.locationId).trigger("change");
 
                 // Даты (форматируем перед установкой)
                 $("#date").val(formatDateForInput(te.date));
                 $("#dateStart").val(formatDateForInput(te.dateStart));
-                $("#dateEnd").val(formatDateForInput(te.dateEnd));
+                $("#workTimeAvg").val(te.workTimeAvg);
                 $("#dateGarant").val(formatDateForInput(te.dateGarant));
 
                 // Открываем модальное окно
@@ -115,11 +116,11 @@
             id: id,
             serialNumber: $("#serialNumber").val(),
             inventoryNumber: $("#inventoryNumber").val(),
-            employeeId: +$("#employee").val(),
-            locationId: +$("#location").val(),
+            employeeId: +$("#employee1").val(),
+            locationId: +$("#location1").val(),
             date: formatDateForServer($("#date").val()),
             dateStart: formatDateForServer($("#dateStart").val()),
-            dateEnd: formatDateForServer($("#dateEnd").val()),
+            workTimeAvg: +$("#workTimeAvg").val(),
             dateGarant: formatDateForServer($("#dateGarant").val())
         };
 
@@ -340,4 +341,71 @@
         templateSelection: (data) => data.name
     })
 
+    //Помещение
+    $("#location1").select2({
+        width: '100%',
+        allowClear: true,
+        placeholder: 'Помещение',
+        ajax: {
+            transport: (data, success, failure) => {
+                let params = data.data;
+                let maxResultCount = 30;
+
+                params.page = params.page || 1;
+
+                let filter = {};
+                filter.maxResultCount = maxResultCount;
+                filter.skipCount = (params.page - 1) * maxResultCount;
+                filter.keyword = params.term
+                axios.get("/Location/GetAll", { params: filter }).then(function (result) {
+
+                    success({
+                        results: result.data.items,
+                        pagination: {
+                            more: (params.page * maxResultCount) < result.data.totalCount
+                        }
+                    });
+                });
+            },
+            cache: true
+        },
+        templateResult: (data) => data.name,
+        templateSelection: (data) => data.name
+    })
+
+    //Ответственный
+    $("#employee1").select2({
+        width: '100%',
+        allowClear: true,
+        placeholder: 'Ответственный',
+        ajax: {
+            transport: (data, success, failure) => {
+                let params = data.data;
+                let maxResultCount = 30;
+
+                params.page = params.page || 1;
+
+                let filter = {};
+                filter.maxResultCount = maxResultCount;
+                filter.skipCount = (params.page - 1) * maxResultCount;
+                filter.keyword = params.term
+                axios.get("/Employee/GetAll", { params: filter }).then(function (result) {
+
+                    success({
+                        results: result.data.items,
+                        pagination: {
+                            more: (params.page * maxResultCount) < result.data.totalCount
+                        }
+                    });
+                });
+            },
+            cache: true
+        },
+        templateResult: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
+        templateSelection: (data) => `${data.lastName || ''} ${data.firstName || ''} ${data.fatherName || ''}`,
+
+    })
+
+
 })
+

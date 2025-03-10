@@ -9,7 +9,7 @@
   <ItemGroup>
     <Content Remove="Views\Account\UserPage.cshtml" />
     <Content Remove="Views\Shared\Layout\_Header.LeftNavbar.cshtml" />
-    <Content Remove="wwwroot\js\notifications.js.js" />
+    <Content Remove="wwwroot\js\notifications.js" />
     <Content Remove="wwwroot\views\audit\index.js" />
     <Content Remove="wwwroot\views\roles\index.js" />
     <Content Remove="wwwroot\views\technicalEquipment\archive.js" />
@@ -69,7 +69,7 @@
   <ItemGroup>
     <None Include="Views\UserPage\UserPage.cshtml" />
     <None Include="Views\Shared\Layout\_Header.LeftNavbar.cshtml" />
-    <None Include="wwwroot\js\notifications.js.js" />
+    <None Include="wwwroot\js\notifications.js" />
     <None Include="wwwroot\views\audit\index.js" />
     <None Include="wwwroot\views\roles\index.js" />
     <None Include="wwwroot\views\archive\index.js" />

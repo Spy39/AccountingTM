@@ -7,7 +7,8 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h5 class="modal-title">Редактирование информации о техническом средстве</h5>
-				<input type="hidden" id="editAdditionalId">
+				
+				<input type="hidden" id="editAdditionalId" value="@Model.TechnicalId">
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
 			<div class="modal-body">
@@ -23,7 +24,7 @@
 
 				<div class="mb-1">
 					<label for="floatingInput">Ответственный</label>
-					<select id="employee">
+					<select id="employee1">
 						@if(Model.Employee != null)
 						{
 							<option value="@Model.Employee.Id" selected>
@@ -35,7 +36,7 @@
 
 				<div class="mb-1">
 					<label for="floatingInput">Местоположение</label>
-					<select id="location">
+					<select id="location1">
 						@if (Model.Location != null)
 						{
 							<option value="@Model.Location.Id" selected>
@@ -47,22 +48,22 @@
 				@* <input type="text" class="form-control" id="date" name="date" placeholder="Дата изготовления" /> *@
 				<div class="mb-1">
 					<label for="floatingInput">Дата изготовления</label>
-					<input value="@Model.Date" type="text" id="date" class="form-control" name="date" placeholder="Дата изготовления" @* value="@Model.Date.ToString("dd.MM.yyyy")" *@>
+                    <input value="@(Model.Date?.ToString("dd.MM.yyyy") ?? string.Empty)" type="text" id="date" class="form-control" name="date" placeholder="Дата изготовления" @* value="@Model.Date.ToString("dd.MM.yyyy")" *@>
 				</div>
 
 				<div class="mb-1">
 					<label for="floatingInput">Дата ввода в эксплуатацию</label>
-					<input value="@Model.DateStart" type="text" class="form-control" id="dateStart" name="dateStart" placeholder="Дата ввода в эксплуатацию" />
+                    <input value="@(Model.DateStart?.ToString("dd.MM.yyyy") ?? string.Empty)" type="text" class="form-control" id="dateStart" name="dateStart" placeholder="Дата ввода в эксплуатацию" />
 				</div>
 
 				<div class="mb-1">
 					<label for="floatingInput">Средний срок работы</label>
-					<input value="@Model.DateEnd" type="text" class="form-control" id="dateEnd" name="dateEnd" placeholder="Средний срок работы" />
+					<input value="@Model.WorkTimeAvg" type="text" class="form-control" id="workTimeAvg" name="workTimeAvg" placeholder="Средний срок работы" />
 				</div>
 
 				<div class="mb-1">
 					<label for="floatingInput">Гарантийный срок работы</label>
-					<input value="@Model.DateGarant" type="text" class="form-control" id="dateGarant" name="dateGarant" placeholder="Гарантийный срок работы" />
+                    <input value="@(Model.DateGarant?.ToString("dd.MM.yyyy") ?? string.Empty)" type="text" class="form-control" id="dateGarant" name="dateGarant" placeholder="Гарантийный срок работы" />
 				</div>
 
 			</div>

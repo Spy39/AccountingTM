@@ -139,7 +139,7 @@ $("#category").select2({
             filter.keyword = params.term; // терм для поиска
 
             // Делаем GET-запрос
-            axios.get("Category/GetAll", { params: filter })
+            axios.get("/Category/GetAll", { params: filter })
                 .then(function (result) {
                     // Ожидаем, что result.data.items – список категорий,
                     // а result.data.totalCount – общее число.
@@ -190,8 +190,8 @@ document.getElementById('save-changes-btn').addEventListener('click', function (
 
     axios.post('/Application/Update', {
         applicationId: applicationId,
-        status: status,
-        priority: priority,
+        status: +status,
+        priority: +priority,
         categoryId: categoryId,
         // >>> Изменение: Если добавили поле в DTO, нужно передавать его
         expirationDate: expirationDate

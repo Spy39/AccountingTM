@@ -112,7 +112,7 @@ namespace Accounting.Controllers
                 Location = technicalEquipment.Location,
                 Date = technicalEquipment.Date,
                 DateStart = technicalEquipment.DateStart,
-                DateEnd = technicalEquipment.DateEnd,
+                WorkTimeAvg = technicalEquipment.WorkTimeAvg,
                 DateGarant = technicalEquipment.DateGarant,
                 Status = technicalEquipment.GetStatus(),
                 Set = technicalEquipment.Set,

@@ -24,7 +24,7 @@ namespace AccountingTM.ViewModels.TechnicalEquipment
         /// <summary>
         /// Средний срок работы
         /// </summary>
-        public DateTime? DateEnd { get; set; }
+        public int? WorkTimeAvg { get; set; }
         /// <summary>
         /// Дата действия гарантии
         /// </summary>

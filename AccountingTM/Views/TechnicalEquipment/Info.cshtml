@@ -161,7 +161,7 @@
 					</div>
 					<div class="col-12">
 						<label class="form-label">Средний срок работы</label>
-						<input type="text" class="form-control" value="@(Model.DateEnd?.ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
+						<input type="text" class="form-control" value="@(Model.DateStart?.AddMonths(Model.WorkTimeAvg ?? 0).ToString("dd.MM.yyyy") ?? string.Empty)" readonly>
 					</div>
 					<div class="col-12">
 						<label class="form-label">Гарантийный срок работы</label>

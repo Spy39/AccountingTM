@@ -2,6 +2,7 @@
 using AccountingTM.Domain.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace AccountingTM.Controllers
@@ -19,13 +20,15 @@ namespace AccountingTM.Controllers
         [HttpGet]
         public IActionResult GetAllUserNotifications()
         {
-            var userId = int.Parse(User.Identity.Name); // Получаем ID текущего пользователя
-            var notifications = _context.Notifications
-                .Where(n => n.UserId == userId)
-                .OrderByDescending(n => n.CreatedAt)
-                .ToList();
+            var technicalEquipments = _context.TechnicalEquipment.Where(x => x.DateGarant.HasValue && x.DateGarant <= DateTime.Now).Include(x => x.Brand).Include(x => x.Model).ToList();
+            var notifications = technicalEquipments.Select(x => new Notification
+            {
+                CreatedAt = DateTime.Now,
+                IsRead = false,
+                 Message = $"Истек срок гарантии {x.Brand.Name} {x.Model.Name} {x.SerialNumber}",
+            });
 
-            return Json(notifications);
+            return Ok(notifications);
         }
 
         [HttpPost]

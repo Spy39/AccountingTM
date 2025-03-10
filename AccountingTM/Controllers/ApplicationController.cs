@@ -7,6 +7,7 @@ using AccountingTM.ViewModels.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Z.EntityFramework.Plus;
 
 namespace AccountingTM.Controllers
 {
@@ -156,6 +157,7 @@ namespace AccountingTM.Controllers
             application.CategoryId = input.CategoryId;
             application.DateOfChange = DateTime.Now;
 
+            _context.Applications.Update(application);
             // Сохраняем и фиксируем изменения
             await _context.SaveChangesAsync();
 
