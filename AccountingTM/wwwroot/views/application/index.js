@@ -32,7 +32,7 @@ let tableClients = new DataTable('#applicationsTable', {
         }
     ],
     initComplete: function () {
-        $('[data-bs-toggle="tooltip"]').tooltip();
+    //    $('[data-bs-toggle="tooltip"]').tooltip();
     },
     // Подсветка строк: если статус решена (4) – зеленый, иначе по приоритету
     rowCallback: function (row, data, index) {
@@ -85,10 +85,12 @@ let tableClients = new DataTable('#applicationsTable', {
             render: (data, type, row, meta) => {
                 switch (data) {
                     case 0: return "Новая";
-                    case 1: return "В работе";
-                    case 2: return "Приостановлена";
-                    case 3: return "Передана";
-                    case 4: return "Решена";
+                    case 1: return "Получен комментарий";
+                    case 2: return "Комментарий отправлен";
+                    case 3: return "В работе";
+                    case 4: return "Приостановлена";
+                    case 5: return "Передана";
+                    case 6: return "Решена";
                     default: return "Неизвестно";
                 }
             }

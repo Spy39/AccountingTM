@@ -30,7 +30,6 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-
         .card-body {
             padding: 15px 18px;
         }
@@ -234,14 +233,15 @@
                     <div class="card-body table-responsive">
                         <table id="faultyEquipmentTable" class="table table-bordered">
                             <thead>
-                                <tr><th>Название</th><th>Количество отказов</th></tr>
+                                <tr><th>Модель</th><th>Бренд</th><th>Количество отказов</th></tr>
                             </thead>
                             <tbody>
                                 @foreach (var item in Model.FaultyEquipment)
                                 {
                                     <tr>
-                               @*      <td>@item.Name</td>
-                                    <td>@item.FaultCount</td> *@
+                                    <td>@item.EquipmentModel</td>
+                                        <td>@item.Brand</td>
+                                    <td>@item.FaultCount</td>
                                     </tr>
                                 }
                             </tbody>
@@ -249,38 +249,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- График неисправностей по месяцам -->
-            <div class="col-md-6">
-                <div class="card card-outline card-danger h-100">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-chart-line"></i> Динамика неисправностей</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="faultsByMonthChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 🟢 Статус оборудования / ТОП-5 расходников -->
-        <div class="row">
-            <!-- Круговая диаграмма: Доля исправных и неисправных ТС -->
-            <div class="col-md-6">
-                <div class="card card-outline card-primary h-100">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-check-circle"></i> Состояние технических средств</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="equipmentStateChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- Топ-5 расходников (Таблица) -->
             <div class="col-md-6">
                 <div class="card card-outline card-primary h-100">
@@ -296,8 +264,8 @@
                                 @foreach (var item in Model.TopConsumables)
                                 {
                                     <tr>
-                               @*          <td>@item.Name</td>
-                                        <td>@item.UsageCount</td> *@
+                                                 <td>@item.ConsumableName</td>
+                                        <td>@item.UsageCount</td>
                                     </tr>
                                 }
                             </tbody>
@@ -305,26 +273,17 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
+        <!-- 🟢 Статус оборудования / ТОП-5 расходников -->
+
+
         <!-- 🔵 Средний расход материалов / Категории неисправностей -->
-        <div class="row">
-            <!-- Линейный график: Средний расход материалов -->
-            <div class="col-md-6">
-                <div class="card card-outline card-success h-100">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-chart-bar"></i> Средний расход материалов</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="monthlyConsumablesChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="row mt-4">
 
             <!-- Частые категории неисправностей (Таблица) -->
-            <div class="col-md-6">
+            <div class="col-12">
                 <div class="card card-outline card-warning h-100">
                     <div class="card-header">
                         <h3 class="card-title"><i class="fas fa-bug"></i> Частые категории неисправностей</h3>
@@ -349,21 +308,6 @@
             </div>
         </div>
 
-        <!-- 🟠 Среднее время закрытия заявок -->
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card card-outline card-warning h-100">
-                    <div class="card-header">
-                        <h3 class="card-title"><i class="fas fa-clock"></i> Среднее время закрытия заявки</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="chart-container">
-                            <canvas id="avgClosureTimeChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 

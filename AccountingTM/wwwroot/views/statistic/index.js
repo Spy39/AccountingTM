@@ -68,7 +68,18 @@
 
 
         // 🔄 Обновление таблиц
-        updateTable('#faultyEquipmentTable tbody', data.faultyEquipment);
+        //Топ 5 ненадежных ТС
+        //let tableBody = $('#faultyEquipmentTable tbody');
+        //tableBody.empty();
+        //data.faultyEquipment.forEach(item => {
+        //    let row = `<tr>
+        //        <td>${item.equipmentModel || "Неизвестно"}</td>
+        //        <td>${item.brand || "Неизвестно"}</td>
+        //        <td>${item.faultCount}</td>
+        //    </tr>`;
+        //    tableBody.append(row);
+        //});
+
         updateTable('#topConsumablesTable tbody', data.topConsumables);
         updateTable('#faultCategoriesTable tbody', data.faultCategories);
 
@@ -77,6 +88,124 @@
         renderPieChart("equipmentStateChart", ["Исправные", "Неисправные"], [data.tech.ActiveCount, data.tech.FaultCount]);
         renderBarChart("monthlyConsumablesChart", "Средний расход", data.monthlyConsumables.labels, data.monthlyConsumables.values);
         renderBarChart("avgClosureTimeChart", "Среднее время закрытия", data.avgClosureTime.labels, data.avgClosureTime.values);
+    }
+
+    // Функция для получения контекста холста
+    function getCanvasContext(id) {
+        let canvas = document.getElementById(id);
+        return canvas ? canvas.getContext("2d") : null;
+    }
+
+    // Общие параметры для всех графиков
+    const defaultChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+            duration: 1500,
+            easing: 'easeInOutQuart'
+        }
+    };
+
+    // ✅ График "Технические средства" (Doughnut)
+    try {
+        let techData = window.chartData.tech;
+        if (!techData) throw new Error("Данные techData отсутствуют!");
+
+        let ctxTech = getCanvasContext("techEquipChart");
+        if (ctxTech) {
+            new Chart(ctxTech, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Исправные', 'Неисправные', 'Работоспособные', 'Неработоспособные', 'Списанные'],
+                    datasets: [{
+                        data: [
+                            techData.activeCount,
+                            techData.faultCount,
+                            techData.workableCount,
+                            techData.inoperableCount,
+                            techData.writtenOffCount
+                        ],
+                        backgroundColor: [
+                            'rgba(40,167,69,0.7)',
+                            'rgba(220,53,69,0.7)',
+                            'rgba(23,162,184,0.7)',
+                            'rgba(255,193,7,0.7)',
+                            'rgba(108,117,125,0.7)'
+                        ]
+                    }]
+                },
+                options: defaultChartOptions
+            });
+        }
+    } catch (error) {
+        console.error("Ошибка при отрисовке techEquipChart:", error);
+    }
+
+    // ✅ График "Заявки" (Bar Chart)
+    try {
+        let appData = window.chartData.application;
+        if (!appData) throw new Error("Данные appData отсутствуют!");
+
+        let ctxApp = getCanvasContext("applicationsChart");
+        if (ctxApp) {
+            new Chart(ctxApp, {
+                type: 'bar',
+                data: {
+                    labels: ['Решены', 'Новые', 'В работе', 'Переданы', 'Приостановлены'],
+                    datasets: [{
+                        label: 'Количество заявок',
+                        data: [
+                            appData.solvedCount,
+                            appData.newCount,
+                            appData.inProgressCount,
+                            appData.transferredCount,
+                            appData.suspendedCount
+                        ],
+                        backgroundColor: [
+                            'rgba(0,123,255,0.7)',
+                            'rgba(108,117,125,0.7)',
+                            'rgba(40,167,69,0.7)',
+                            'rgba(220,53,69,0.7)',
+                            'rgba(255,193,7,0.7)'
+                        ]
+                    }]
+                },
+                options: defaultChartOptions
+            });
+        }
+    } catch (error) {
+        console.error("Ошибка при отрисовке applicationsChart:", error);
+    }
+
+    // ✅ График "Расходные материалы" (Doughnut)
+    try {
+        let consData = window.chartData.consumable;
+        if (!consData) throw new Error("Данные consData отсутствуют!");
+
+        let ctxCons = getCanvasContext("consumablesChart");
+        if (ctxCons) {
+            new Chart(ctxCons, {
+                type: 'doughnut',
+                data: {
+                    labels: ['В наличии', 'Малый запас', 'Отсутствуют'],
+                    datasets: [{
+                        data: [
+                            consData.inStockCount,
+                            consData.lowStockCount,
+                            consData.outOfStockCount
+                        ],
+                        backgroundColor: [
+                            'rgba(23,162,184,0.7)',
+                            'rgba(255,193,7,0.7)',
+                            'rgba(220,53,69,0.7)'
+                        ]
+                    }]
+                },
+                options: defaultChartOptions
+            });
+        }
+    } catch (error) {
+        console.error("Ошибка при отрисовке consumablesChart:", error);
     }
 
     // 🔄 Функция обновления таблиц

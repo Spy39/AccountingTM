@@ -72,5 +72,6 @@ namespace AccountingTM.Models
 
             }
         }
+         public ICollection<Application> Applications { get; set; }
     }
 }

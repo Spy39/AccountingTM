@@ -88,20 +88,21 @@ namespace AccountingTM.Controllers
 
                 // 🔴 Топ-5 самых ненадёжных моделей
                 FaultyEquipment = _context.TechnicalEquipment
-                    .Where(t => t.Model != null && t.Brand != null)
+                .Include(x => x.Applications).Include(x => x.Model).Include(x => x.Brand)
+                    .Where(t => t.Model != null && t.Brand != null && t.Applications.Any()).ToList()
                     .GroupBy(t => new { ModelName = t.Model.Name, BrandName = t.Brand.Name ?? "Неизвестный бренд" })
-                    .OrderByDescending(g => g.Count())
-                    .Take(5)
+                    
                     .Select(g => new FaultyEquipmentDto
                     {
                         EquipmentModel = g.Key.ModelName,
                         Brand = g.Key.BrandName,
-                        FaultCount = g.Count()
-                    })
+                        FaultCount = g.SelectMany(x => x.Applications).Count()
+                    }).OrderByDescending(g => g.FaultCount)
+                    .Take(5)
                     .ToList(),
 
                 // 🔵 Топ-5 расходников
-                TopConsumables = _context.ConsumableHistories
+                TopConsumables = histories
                     .Where(c => c.Consumable != null && !string.IsNullOrEmpty(c.Consumable.Model))
                     .GroupBy(c => c.Consumable.Model)
                     .OrderByDescending(g => g.Count())
